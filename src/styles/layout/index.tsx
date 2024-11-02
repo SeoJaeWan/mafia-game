@@ -1,4 +1,4 @@
-import StripDollar from "../utils/StripDollar";
+import StripDollar from "../utils/dstripDollar";
 import LayoutStyle, { ILayoutStyleProps } from "./layout.style";
 
 interface ILayoutProps extends StripDollar<ILayoutStyleProps> {
