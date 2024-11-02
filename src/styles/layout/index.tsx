@@ -1,4 +1,5 @@
-import StripDollar from "../utils/dstripDollar";
+"use client";
+import StripDollar from "../utils/stripDollar";
 import LayoutStyle, { ILayoutStyleProps } from "./layout.style";
 
 interface ILayoutProps extends StripDollar<ILayoutStyleProps> {
@@ -22,6 +23,7 @@ const Layout: React.FC<ILayoutProps> = (props) => {
     justifyContent,
     alignItems,
     flexWrap,
+    gap,
 
     width,
     height,
@@ -72,6 +74,7 @@ const Layout: React.FC<ILayoutProps> = (props) => {
       $justifyContent={justifyContent}
       $alignItems={alignItems}
       $flexWrap={flexWrap}
+      $gap={gap}
       //
       $width={width}
       $height={height}

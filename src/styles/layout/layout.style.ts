@@ -17,6 +17,7 @@ export interface ILayoutStyleProps {
     | "space-around";
   $alignItems?: "center" | "flex-start" | "flex-end" | "baseline" | "stretch";
   $flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
+  $gap?: string;
 
   $width?: string;
   $height?: string;
@@ -64,6 +65,7 @@ const LayoutStyle = styled.div<ILayoutStyleProps>`
   justify-content: ${(props) => props.$justifyContent || "flex-start"};
   align-items: ${(props) => props.$alignItems || "stretch"};
   flex-wrap: ${(props) => props.$flexWrap || "nowrap"};
+  gap: ${(props) => props.$gap || "0"};
 
   width: ${(props) => props.$width || "auto"};
   height: ${(props) => props.$height || "auto"};

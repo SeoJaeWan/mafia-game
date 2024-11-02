@@ -22,15 +22,19 @@ const Global = styled.createGlobalStyle`
   body {
     color: var(--foreground);
     background: var(--background);
-    font-family: var(--font-pretendard);
+
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    user-select: none;
   }
 
   * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+
+    font-family: var(--font-pretendard);
   }
 
   a {
