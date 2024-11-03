@@ -6,6 +6,7 @@ import Title from "@/components/atoms/common/title";
 import toRem from "@/styles/utils/toRem";
 import Button from "@/components/atoms/common/button";
 import TextButton from "@/components/atoms/common/textButton/textButton";
+import GameSetting from "@/components/molecules/room/gameSetting";
 
 const Room = () => {
   const [title, setTitle] = useState("");
@@ -46,6 +47,8 @@ const Room = () => {
       </Layout>
 
       <Button>만들기</Button>
+
+      <GameSetting isShow={gameSetting} handleGameSetting={handleGameSetting} />
     </Layout>
   );
 };

@@ -1,15 +1,27 @@
 "use client";
 
-import ButtonStyle from "./button.style";
+import StripDollar from "@/styles/utils/stripDollar";
+import ButtonStyle, { IButtonStyleProps } from "./button.style";
 
-interface IButtonProps {
+interface IButtonProps extends StripDollar<IButtonStyleProps> {
   children: React.ReactNode;
+  //
+  onClick?: () => void;
 }
 
 const Button: React.FC<IButtonProps> = (props) => {
-  const { children } = props;
+  const {
+    isSmall,
+    children,
+    //
+    onClick = () => {},
+  } = props;
 
-  return <ButtonStyle>{children}</ButtonStyle>;
+  return (
+    <ButtonStyle $isSmall={isSmall} onClick={onClick}>
+      {children}
+    </ButtonStyle>
+  );
 };
 
 export default Button;

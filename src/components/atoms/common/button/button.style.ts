@@ -1,7 +1,11 @@
 import toRem from "@/styles/utils/toRem";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const ButtonStyle = styled.button`
+export interface IButtonStyleProps {
+  $isSmall?: boolean;
+}
+
+const ButtonStyle = styled.button<IButtonStyleProps>`
   padding: ${toRem(10)} ${toRem(20)};
 
   border: none;
@@ -16,6 +20,13 @@ const ButtonStyle = styled.button`
   &:hover {
     background: var(--gray-background-active-rgba);
   }
+
+  ${(props) =>
+    props.$isSmall &&
+    css`
+      padding: ${toRem(5)} ${toRem(10)};
+      font-size: ${toRem(16)};
+    `}
 `;
 
 export default ButtonStyle;
