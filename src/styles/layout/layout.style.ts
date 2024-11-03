@@ -54,51 +54,51 @@ export interface ILayoutStyleProps {
 }
 
 const LayoutStyle = styled.div<ILayoutStyleProps>`
-  position: ${(props) => props.$position || "static"};
-  top: ${(props) => props.$top || "auto"};
-  bottom: ${(props) => props.$bottom || "auto"};
-  left: ${(props) => props.$left || "auto"};
-  right: ${(props) => props.$right || "auto"};
+  ${(props) => props.$position && `position: ${props.$position};`}
+  ${(props) => props.$top && `top: ${props.$top};`}
+${(props) => props.$bottom && `bottom: ${props.$bottom};`}
+${(props) => props.$left && `left: ${props.$left};`}
 
-  display: ${(props) => props.$display || "block"};
-  flex-direction: ${(props) => props.$flexDirection || "row"};
-  justify-content: ${(props) => props.$justifyContent || "flex-start"};
-  align-items: ${(props) => props.$alignItems || "stretch"};
-  flex-wrap: ${(props) => props.$flexWrap || "nowrap"};
-  gap: ${(props) => props.$gap || "0"};
+${(props) => props.$display && `display: ${props.$display};`}
+${(props) => props.$flexDirection && `flex-direction: ${props.$flexDirection};`}
+${(props) =>
+    props.$justifyContent && `justify-content: ${props.$justifyContent};`}
+${(props) => props.$alignItems && `align-items: ${props.$alignItems};`}
+${(props) => props.$flexWrap && `flex-wrap: ${props.$flexWrap};`} 
+${(props) => props.$gap && `gap: ${props.$gap};`}
 
-  width: ${(props) => props.$width || "auto"};
-  height: ${(props) => props.$height || "auto"};
-  max-width: ${(props) => props.$maxWidth || "none"};
-  max-height: ${(props) => props.$maxHeight || "none"};
-  min-width: ${(props) => props.$minWidth || "none"};
-  min-height: ${(props) => props.$minHeight || "none"};
+${(props) => props.$width && `width: ${props.$width};`}
+${(props) => props.$height && `height: ${props.$height};`}
+${(props) => props.$maxWidth && `max-width: ${props.$maxWidth};`}
+${(props) => props.$maxHeight && `max-height: ${props.$maxHeight};`}
+${(props) => props.$minWidth && `min-width: ${props.$minWidth};`}
+${(props) => props.$minHeight && `min-height: ${props.$minHeight};`}
 
-  margin: ${(props) => props.$margin || "0"};
-  margin-top: ${(props) => props.$marginTop || "0"};
-  margin-bottom: ${(props) => props.$marginBottom || "0"};
-  margin-left: ${(props) => props.$marginLeft || "0"};
-  margin-right: ${(props) => props.$marginRight || "0"};
+${(props) => props.$margin && `margin: ${props.$margin};`}
+${(props) => props.$marginTop && `margin-top: ${props.$marginTop};`}
+${(props) => props.$marginBottom && `margin-bottom: ${props.$marginBottom};`}
+${(props) => props.$marginLeft && `margin-left: ${props.$marginLeft};`}
+${(props) => props.$marginRight && `margin-right: ${props.$marginRight};`}
 
-  padding: ${(props) => props.$padding || "0"};
-  padding-top: ${(props) => props.$paddingTop || "0"};
-  padding-bottom: ${(props) => props.$paddingBottom || "0"};
-  padding-left: ${(props) => props.$paddingLeft || "0"};
-  padding-right: ${(props) => props.$paddingRight || "0"};
+${(props) => props.$padding && `padding: ${props.$padding};`}
+${(props) => props.$paddingTop && `padding-top: ${props.$paddingTop};`}
+${(props) => props.$paddingBottom && `padding-bottom: ${props.$paddingBottom};`}
+${(props) => props.$paddingLeft && `padding-left: ${props.$paddingLeft};`}
+${(props) => props.$paddingRight && `padding-right: ${props.$paddingRight};`}
 
-  border: ${(props) => props.$border || "none"};
-  border-top: ${(props) => props.$borderTop || "none"};
-  border-bottom: ${(props) => props.$borderBottom || "none"};
-  border-left: ${(props) => props.$borderLeft || "none"};
-  border-right: ${(props) => props.$borderRight || "none"};
+${(props) => props.$border && `border: ${props.$border};`}
+${(props) => props.$borderTop && `border-top: ${props.$borderTop};`}
+${(props) => props.$borderBottom && `border-bottom: ${props.$borderBottom};`}
+${(props) => props.$borderLeft && `border-left: ${props.$borderLeft};`}
+${(props) => props.$borderRight && `border-right: ${props.$borderRight};`}
 
-  border-radius: ${(props) => props.$borderRadius || "0"};
-  box-shadow: ${(props) => props.$boxShadow || "none"};
-  background: ${(props) => props.$background || "transparent"};
+${(props) => props.$borderRadius && `border-radius: ${props.$borderRadius};`}
+${(props) => props.$boxShadow && `box-shadow: ${props.$boxShadow};`}
+${(props) => props.$background && `background: ${props.$background};`}
 
-  overflow: ${(props) => props.$overflow || "visible"};
-  transform: ${(props) => props.$transform || "none"};
-  transition: ${(props) => props.$transition || "none"};
+${(props) => props.$overflow && `overflow: ${props.$overflow};`}
+${(props) => props.$transform && `transform: ${props.$transform};`}
+${(props) => props.$transition && `transition: ${props.$transition};`}
 `;
 
 export default LayoutStyle;
