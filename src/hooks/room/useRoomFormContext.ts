@@ -32,6 +32,8 @@ const useRoomFormContext = (): IUseRoomFormContext => {
   };
 
   const resetPlayable = () => {
+    const totalPlayers = getValues("total");
+
     const politician = totalPlayers >= 6 ? 1 : 0;
     const police = totalPlayers >= 8 ? 1 : 0;
     const doctor = totalPlayers >= 8 ? 1 : 0;

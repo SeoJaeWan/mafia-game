@@ -1,4 +1,5 @@
 "use client";
+import { forwardRef } from "react";
 import StripDollar from "../utils/stripDollar";
 import LayoutStyle, { ILayoutStyleProps } from "./layout.style";
 
@@ -7,7 +8,7 @@ interface ILayoutProps extends StripDollar<ILayoutStyleProps> {
   as?: string;
 }
 
-const Layout: React.FC<ILayoutProps> = (props) => {
+const Layout = forwardRef<HTMLDivElement, ILayoutProps>((props, ref) => {
   const {
     children,
     as,
@@ -62,6 +63,7 @@ const Layout: React.FC<ILayoutProps> = (props) => {
   return (
     <LayoutStyle
       as={as}
+      ref={ref}
       //
       $position={position}
       $top={top}
@@ -112,6 +114,6 @@ const Layout: React.FC<ILayoutProps> = (props) => {
       {children}
     </LayoutStyle>
   );
-};
+});
 
 export default Layout;

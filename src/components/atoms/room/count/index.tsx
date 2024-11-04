@@ -1,14 +1,14 @@
 import Layout from "@/styles/layout";
-import CountStyle from "./count.style";
-import { FaMinus, FaPlus } from "react-icons/fa6";
+import CountStyle, { CountStyleProps } from "./count.style";
+import { FaCheck, FaMinus, FaPlus } from "react-icons/fa6";
 import toRem from "@/styles/utils/toRem";
+import { useEffect, useRef, useState } from "react";
+import StripDollar from "@/styles/utils/stripDollar";
 
-interface ICountProps {
-  label: string;
+interface ICountProps extends StripDollar<CountStyleProps> {
   value: number;
   max?: number;
   min: number;
-  isError?: boolean;
   errorValue?: number;
   //
   onChange: (value: number) => void;
@@ -16,7 +16,6 @@ interface ICountProps {
 
 const Count: React.FC<ICountProps> = (props) => {
   const {
-    label,
     value,
     max = Infinity,
     min,
@@ -25,6 +24,10 @@ const Count: React.FC<ICountProps> = (props) => {
     //
     onChange,
   } = props;
+
+  const [isInput, setIsInput] = useState(false);
+  const [input, setInput] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleIncrease = () => {
     const isMax = value === max;
@@ -40,28 +43,83 @@ const Count: React.FC<ICountProps> = (props) => {
     onChange(value - 1);
   };
 
-  return (
-    <Layout
-      display={"flex"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      gap={toRem(5)}
-    >
-      <CountStyle.Label>{label}</CountStyle.Label>
+  const handleInputUpdate = () => {
+    if (!isInput) {
+      setIsInput(true);
+      setInput(value);
+    }
+  };
 
-      <CountStyle.Button className={"decrease"} onClick={handleDecrease}>
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(Number(e.target.value));
+  };
+
+  const handleConfirm = () => {
+    onChange(input);
+    setIsInput(false);
+  };
+
+  const handleEnterInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleConfirm();
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLInputElement;
+
+          target.select();
+        } else {
+          setIsInput(false);
+        }
+      });
+    });
+
+    if (inputRef.current) {
+      observer.observe(inputRef.current);
+    }
+
+    return () => {
+      if (inputRef.current) {
+        observer.unobserve(inputRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <CountStyle.Container $isInput={isInput}>
+      <CountStyle.Button className={"decrease count"} onClick={handleDecrease}>
         <FaMinus />
       </CountStyle.Button>
 
-      <CountStyle.Number>
-        <CountStyle.Value $isError={isError}>{value}</CountStyle.Value>
-        <CountStyle.Error $isError={isError}>{errorValue}</CountStyle.Error>
+      <CountStyle.Number onClick={handleInputUpdate}>
+        <CountStyle.Input
+          ref={inputRef}
+          type={"number"}
+          value={input}
+          onChange={handleChangeInput}
+          onKeyPress={handleEnterInput}
+        />
+
+        <CountStyle.Value className={"count"} $isError={isError}>
+          {value}
+        </CountStyle.Value>
+        <CountStyle.Error className={"count"} $isError={isError}>
+          {errorValue}
+        </CountStyle.Error>
       </CountStyle.Number>
 
-      <CountStyle.Button className={"increase"} onClick={handleIncrease}>
+      <CountStyle.Button className={"increase count"} onClick={handleIncrease}>
         <FaPlus />
       </CountStyle.Button>
-    </Layout>
+
+      <CountStyle.Button className={"confirm"} onClick={handleConfirm}>
+        <FaCheck />
+      </CountStyle.Button>
+    </CountStyle.Container>
   );
 };
 

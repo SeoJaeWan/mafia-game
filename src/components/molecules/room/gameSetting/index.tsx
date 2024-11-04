@@ -7,7 +7,9 @@ import Button from "@/components/atoms/common/button";
 import { useState } from "react";
 import useRoomFormContext from "@/hooks/room/useRoomFormContext";
 import { Controller } from "react-hook-form";
-import { playableRoles } from "@/hooks/room/useRoomForm";
+import { playableRoles, playMode } from "@/hooks/room/useRoomForm";
+import Select from "@/components/atoms/room/select";
+import Label from "@/components/atoms/room/label";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
   handleGameSetting: () => void;
@@ -32,7 +34,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
     setTimeout(() => {
       handleGameSetting();
       setBoxClass("");
-    }, 299);
+    }, 300);
   };
 
   return (
@@ -54,16 +56,15 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
             control={control}
             name={"total"}
             render={({ field: { value, onChange } }) => (
-              <Layout>
+              <Label label={"전체 인원"}>
                 <Count
-                  label={"전체 인원"}
                   value={value}
                   min={0}
                   isError={totalPlayers > value}
                   errorValue={totalPlayers}
                   onChange={onChange}
                 />
-              </Layout>
+              </Label>
             )}
           />
 
@@ -73,14 +74,9 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
               control={control}
               name={name}
               render={({ field: { value, onChange } }) => (
-                <Layout>
-                  <Count
-                    label={label}
-                    value={value}
-                    min={0}
-                    onChange={onChange}
-                  />
-                </Layout>
+                <Label label={label}>
+                  <Count value={value} min={0} onChange={onChange} />
+                </Label>
               )}
             />
           ))}
@@ -95,6 +91,60 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           <Button isSmall onClick={resetPlayable}>
             자동 설정
           </Button>
+        </Layout>
+
+        <Layout
+          display={"flex"}
+          flexDirection={"column"}
+          gap={toRem(20)}
+          //
+          marginTop={toRem(50)}
+          marginBottom={toRem(30)}
+        >
+          <Controller
+            control={control}
+            name={"time"}
+            render={({ field: { value, onChange } }) => (
+              <Label label={"낮 시간/초"}>
+                <Count
+                  value={value}
+                  min={0}
+                  isError={totalPlayers > value}
+                  errorValue={totalPlayers}
+                  onChange={onChange}
+                />
+              </Label>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name={"mode"}
+            render={({ field: { value, onChange } }) => (
+              <Label label={"게임 모드"}>
+                <Select
+                  width={toRem(139)}
+                  height={toRem(24)}
+                  value={value.label}
+                  onChange={onChange}
+                >
+                  {playMode.map((mode) => (
+                    <Select.Option value={mode} key={mode.label}>
+                      {mode.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Label>
+            )}
+          />
+        </Layout>
+
+        <Layout
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          gap={toRem(20)}
+        >
           <Button isSmall onClick={handleCloseSetting}>
             완료
           </Button>

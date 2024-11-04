@@ -23,11 +23,19 @@ export const playableRoles = Object.freeze([
   },
 ] as const);
 
+export const playMode = Object.freeze([
+  { label: "동률", value: "even" },
+  { label: "난장판", value: "chaos" },
+] as const);
+
 type PlayableRoleNames = (typeof playableRoles)[number]["name"];
+type PlayModeValues = (typeof playMode)[number];
 
 export interface IFormValues extends Record<PlayableRoleNames, number> {
   title: string;
   total: number;
+  time: number;
+  mode: PlayModeValues;
 }
 
 const createDefaultValues = () => {
@@ -42,6 +50,8 @@ const createDefaultValues = () => {
   return {
     title: "",
     total: 0,
+    time: 40,
+    mode: playMode[0] as PlayModeValues,
     ...defaultValues,
   };
 };
