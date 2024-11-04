@@ -6,8 +6,10 @@ import toRem from "@/styles/utils/toRem";
 interface ICountProps {
   label: string;
   value: number;
-  max: number;
+  max?: number;
   min: number;
+  isError?: boolean;
+  errorValue?: number;
   //
   onChange: (value: number) => void;
 }
@@ -16,8 +18,10 @@ const Count: React.FC<ICountProps> = (props) => {
   const {
     label,
     value,
-    max,
+    max = Infinity,
     min,
+    isError,
+    errorValue,
     //
     onChange,
   } = props;
@@ -45,14 +49,17 @@ const Count: React.FC<ICountProps> = (props) => {
     >
       <CountStyle.Label>{label}</CountStyle.Label>
 
-      <CountStyle.Button className={"increase"} onClick={handleIncrease}>
-        <FaPlus />
+      <CountStyle.Button className={"decrease"} onClick={handleDecrease}>
+        <FaMinus />
       </CountStyle.Button>
 
-      <CountStyle.Number>{value}</CountStyle.Number>
+      <CountStyle.Number>
+        <CountStyle.Value $isError={isError}>{value}</CountStyle.Value>
+        <CountStyle.Error $isError={isError}>{errorValue}</CountStyle.Error>
+      </CountStyle.Number>
 
-      <CountStyle.Button className={"decrease"}>
-        <FaMinus />
+      <CountStyle.Button className={"increase"} onClick={handleIncrease}>
+        <FaPlus />
       </CountStyle.Button>
     </Layout>
   );

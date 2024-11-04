@@ -1,5 +1,5 @@
 import toRem from "@/styles/utils/toRem";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Label = styled.p`
   width: ${toRem(60)};
@@ -22,11 +22,11 @@ const Button = styled.button`
   border: none;
 
   &.increase {
-    border-radius: ${toRem(15)} 0 0 ${toRem(15)};
+    border-radius: 0 ${toRem(15)} ${toRem(15)} 0;
   }
 
   &.decrease {
-    border-radius: 0 ${toRem(15)} ${toRem(15)} 0;
+    border-radius: ${toRem(15)} 0 0 ${toRem(15)};
   }
 
   &:hover {
@@ -39,8 +39,8 @@ const Number = styled.p`
   justify-content: center;
   align-items: center;
 
-  width: 48px;
-  height: 24px;
+  min-width: ${toRem(48)};
+  height: ${toRem(24)};
 
   font-size: ${toRem(18)};
   font-weight: 600;
@@ -48,10 +48,31 @@ const Number = styled.p`
   background-color: var(--gray-background-rgba);
 `;
 
+interface ErrorProps {
+  $isError?: boolean;
+}
+
+const Value = styled.span<ErrorProps>`
+  ${(props) =>
+    props.$isError &&
+    css`
+      text-decoration: line-through;
+      color: var(--gray-text);
+    `};
+`;
+
+const Error = styled.span<ErrorProps>`
+  ${(props) => !props.$isError && `display: none`};
+
+  color: var(--red);
+`;
+
 const CountStyle = {
   Label,
   Button,
   Number,
+  Value,
+  Error,
 };
 
 export default CountStyle;

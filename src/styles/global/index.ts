@@ -5,6 +5,7 @@ const Global = styled.createGlobalStyle`
     --background: #ffffff;
     --foreground: #171717;
     --shadow: rgba(0, 0, 0, 0.1);
+    --red: #e84118;
     --gray-text: #84929c;
     --gray-background-rgba: rgba(223, 228, 234, 0.5);
     --gray-background-active-rgba: rgba(223, 228, 234, 1);

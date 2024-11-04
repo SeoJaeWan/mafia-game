@@ -5,6 +5,9 @@ import Count from "@/components/atoms/room/count";
 import toRem from "@/styles/utils/toRem";
 import Button from "@/components/atoms/common/button";
 import { useState } from "react";
+import useRoomFormContext from "@/hooks/room/useRoomFormContext";
+import { Controller } from "react-hook-form";
+import { playableRoles } from "@/hooks/room/useRoomForm";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
   handleGameSetting: () => void;
@@ -14,7 +17,16 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
   const { isShow, handleGameSetting } = props;
   const [boxClass, setBoxClass] = useState("");
 
+  const {
+    control,
+    totalPlayers,
+    //
+    updateTotalPlayers,
+    resetPlayable,
+  } = useRoomFormContext();
+
   const handleCloseSetting = () => {
+    updateTotalPlayers();
     setBoxClass("close");
 
     setTimeout(() => {
@@ -38,65 +50,40 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           marginTop={toRem(40)}
           marginBottom={toRem(30)}
         >
-          <Layout>
-            <Count
-              label={"전체 인원"}
-              value={0}
-              max={10}
-              min={0}
-              onChange={() => {}}
-            />
-          </Layout>
+          <Controller
+            control={control}
+            name={"total"}
+            render={({ field: { value, onChange } }) => (
+              <Layout>
+                <Count
+                  label={"전체 인원"}
+                  value={value}
+                  min={0}
+                  isError={totalPlayers > value}
+                  errorValue={totalPlayers}
+                  onChange={onChange}
+                />
+              </Layout>
+            )}
+          />
 
-          <Layout>
-            <Count
-              label={"마피아"}
-              value={0}
-              max={10}
-              min={0}
-              onChange={() => {}}
+          {playableRoles.map(({ label, name }) => (
+            <Controller
+              key={label}
+              control={control}
+              name={name}
+              render={({ field: { value, onChange } }) => (
+                <Layout>
+                  <Count
+                    label={label}
+                    value={value}
+                    min={0}
+                    onChange={onChange}
+                  />
+                </Layout>
+              )}
             />
-          </Layout>
-
-          <Layout>
-            <Count
-              label={"시민"}
-              value={0}
-              max={10}
-              min={0}
-              onChange={() => {}}
-            />
-          </Layout>
-
-          <Layout>
-            <Count
-              label={"경찰"}
-              value={0}
-              max={10}
-              min={0}
-              onChange={() => {}}
-            />
-          </Layout>
-
-          <Layout>
-            <Count
-              label={"의사"}
-              value={0}
-              max={10}
-              min={0}
-              onChange={() => {}}
-            />
-          </Layout>
-
-          <Layout>
-            <Count
-              label={"정치인"}
-              value={0}
-              max={10}
-              min={0}
-              onChange={() => {}}
-            />
-          </Layout>
+          ))}
         </Layout>
 
         <Layout
@@ -105,8 +92,8 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           alignItems={"center"}
           gap={toRem(20)}
         >
-          <Button isSmall onClick={handleCloseSetting}>
-            초기화
+          <Button isSmall onClick={resetPlayable}>
+            자동 설정
           </Button>
           <Button isSmall onClick={handleCloseSetting}>
             완료
