@@ -4,7 +4,7 @@ import StripDollar from "../utils/stripDollar";
 import LayoutStyle, { ILayoutStyleProps } from "./layout.style";
 
 interface ILayoutProps extends StripDollar<ILayoutStyleProps> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   as?: string;
 }
 
