@@ -3,6 +3,8 @@ import Title from "@/components/atoms/header/headerTitle";
 import Layout from "@/styles/layout";
 import toRem from "@/styles/utils/toRem";
 
+export const headerHeight = toRem(50);
+
 const Header = () => {
   return (
     <Layout
@@ -14,8 +16,7 @@ const Header = () => {
       justifyContent={"space-between"}
       //
       width={"100vw"}
-      //
-      padding={`${toRem(5)} 0`}
+      height={headerHeight}
       as={"header"}
     >
       <Layout width={toRem(100)} />

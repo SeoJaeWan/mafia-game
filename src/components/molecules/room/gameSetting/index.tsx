@@ -5,9 +5,9 @@ import Count from "@/components/atoms/room/count";
 import toRem from "@/styles/utils/toRem";
 import Button from "@/components/atoms/common/button";
 import { useState } from "react";
-import useRoomFormContext from "@/hooks/room/useRoomFormContext";
+import useRoomFormContext from "@/hooks/useRoomForm/useRoomFormContext";
 import { Controller } from "react-hook-form";
-import { playableRoles, playMode } from "@/hooks/room/useRoomForm";
+import { playableRoles, playMode } from "@/hooks/useRoomForm";
 import Select from "@/components/atoms/room/select";
 import Label from "@/components/atoms/room/label";
 

@@ -1,5 +1,5 @@
 import { Control, useFormContext, useWatch } from "react-hook-form";
-import { IFormValues } from "./useRoomForm";
+import { IFormValues } from ".";
 
 interface IUseRoomFormContext {
   control: Control<IFormValues>;

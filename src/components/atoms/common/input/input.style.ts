@@ -10,7 +10,7 @@ const InputStyle = styled.input<IInputStyleProps>`
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
 
-  padding: 0 ${toRem(20)};
+  padding: 0 ${toRem(10)};
 
   background-color: var(--gray-background-rgba);
 
