@@ -6,6 +6,8 @@ import Input from "@/components/atoms/common/input";
 import Button from "@/components/atoms/common/button";
 import toRem from "@/styles/utils/toRem";
 import ChatItem from "@/components/atoms/game/chatItem";
+import InputForm from "@/components/molecules/game/inputForm";
+import ChattingList from "@/components/molecules/game/chattingList";
 
 const dummy = [
   {
@@ -54,27 +56,16 @@ const dummy = [
 const Chat = () => {
   return (
     <ChatStyle.Container>
-      <Users />
+      <ChatStyle.UserBox>
+        <Users />
+      </ChatStyle.UserBox>
 
       <ChatStyle.ChattingBox>
-        {dummy.map((item, index) => (
-          <ChatItem
-            user={item.user}
-            message={item.message}
-            isMe={item.isMe}
-            key={index}
-          />
-        ))}
+        <ChattingList list={dummy} />
       </ChatStyle.ChattingBox>
 
       <ChatStyle.InputBox>
-        <Input
-          width={`calc(100% - ${toRem(60)})`}
-          height={toRem(30)}
-          value={""}
-          onChange={() => {}}
-        />
-        <Button isSmall>전송</Button>
+        <InputForm />
       </ChatStyle.InputBox>
     </ChatStyle.Container>
   );

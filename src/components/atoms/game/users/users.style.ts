@@ -1,13 +1,19 @@
 import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
+const Container = styled.div`
+  position: relative;
+
+  height: 100%;
+`;
+
 const Button = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   width: 100%;
-  height: ${toRem(35)};
+  height: 100%;
 
   background-color: var(--gray-background-rgba);
   border: ${toRem(2)} solid var(--gray-background-active-rgba);
@@ -66,6 +72,7 @@ const Item = styled.li`
 `;
 
 const UsersStyle = {
+  Container,
   Button,
   Label,
   Arrow,

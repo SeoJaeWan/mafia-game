@@ -12,7 +12,7 @@ const Users = () => {
   };
 
   return (
-    <Layout position={"relative"}>
+    <UsersStyle.Container>
       <UsersStyle.Button onClick={handleToggle}>
         <UsersStyle.Label>Users</UsersStyle.Label>
         <UsersStyle.Arrow>
@@ -29,7 +29,7 @@ const Users = () => {
         <UsersStyle.Item>Player 6</UsersStyle.Item>
         <UsersStyle.Item>Player 7</UsersStyle.Item>
       </UsersStyle.List>
-    </Layout>
+    </UsersStyle.Container>
   );
 };
 

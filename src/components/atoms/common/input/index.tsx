@@ -11,6 +11,8 @@ interface IInputProps extends StripDollar<IInputStyleProps> {
 
 const Input: React.FC<IInputProps> = (props) => {
   const {
+    flex,
+    //
     width,
     height,
     //
@@ -25,6 +27,8 @@ const Input: React.FC<IInputProps> = (props) => {
 
   return (
     <InputStyle
+      $flex={flex}
+      //
       $width={width}
       $height={height}
       //

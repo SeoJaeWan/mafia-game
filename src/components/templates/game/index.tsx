@@ -1,6 +1,7 @@
 import Layout from "@/styles/layout";
 import { headerHeight } from "../header";
-import Chat from "@/components/molecules/game/chat";
+import Chat from "@/components/organisms/game/chat";
+import PlayBoard from "@/components/organisms/game/playBoard";
 
 const GameTemplate = () => {
   return (
@@ -13,7 +14,9 @@ const GameTemplate = () => {
       //
       paddingTop={headerHeight}
     >
-      <Layout width={"70%"} height={"100%"}></Layout>
+      <Layout width={"70%"} height={"100%"}>
+        <PlayBoard />
+      </Layout>
       <Layout width={"30%"} height={"100%"}>
         <Chat />
       </Layout>

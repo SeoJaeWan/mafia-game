@@ -2,11 +2,15 @@ import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
 export interface IInputStyleProps {
+  $flex?: string;
+  //
   $width?: string;
   $height?: string;
 }
 
 const InputStyle = styled.input<IInputStyleProps>`
+  flex: ${(props) => props.$flex || "initial"};
+
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
 
