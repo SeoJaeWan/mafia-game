@@ -11,6 +11,9 @@ interface IButtonProps extends StripDollar<IButtonStyleProps> {
 
 const Button: React.FC<IButtonProps> = (props) => {
   const {
+    width,
+    height,
+    //
     isSmall,
     children,
     //
@@ -18,7 +21,13 @@ const Button: React.FC<IButtonProps> = (props) => {
   } = props;
 
   return (
-    <ButtonStyle $isSmall={isSmall} onClick={onClick}>
+    <ButtonStyle
+      width={width}
+      height={height}
+      //
+      $isSmall={isSmall}
+      onClick={onClick}
+    >
       {children}
     </ButtonStyle>
   );

@@ -12,7 +12,18 @@ const Card = styled.div`
   transition: transform 0.5s;
 `;
 
-const CardScreen = styled.div`
+const FrontCard = styled(Image)`
+  width: 70%;
+  height: auto;
+
+  aspect-ratio: 299/427;
+`;
+
+interface ICardScreenProps {
+  $color: string;
+}
+
+const CardScreen = styled.div<ICardScreenProps>`
   position: absolute;
   top: 0;
   left: 0;
@@ -26,23 +37,23 @@ const CardScreen = styled.div`
 
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-`;
 
-const FrontCard = styled(Image)`
-  width: 70%;
-  height: auto;
+  border: ${toRem(7)} solid black;
+  border-radius: ${toRem(10)};
 
-  aspect-ratio: 299/427;
+  background-color: ${(props) => props.$color};
 `;
 
 const Front = styled(CardScreen)`
-  background-color: red;
+  color: white;
+
+  text-align: center;
+  font-size: ${toRem(24)};
+  font-weight: 700;
 `;
 
 const Back = styled(CardScreen)`
   transform: rotateY(180deg);
-
-  background-color: blue;
 `;
 
 interface IContainerProps {
@@ -54,12 +65,12 @@ const Container = styled.div<IContainerProps>`
   height: auto;
   aspect-ratio: 63/88;
 
-  /* &:hover ${Card} {
+  &:hover ${Card} {
     transform: rotateY(180deg);
-  } */
+  }
 `;
 
-export type CardStyleProps = IContainerProps;
+export type CardStyleProps = IContainerProps & ICardScreenProps;
 
 const CardStyle = {
   Container,
