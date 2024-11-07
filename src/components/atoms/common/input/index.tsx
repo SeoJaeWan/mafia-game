@@ -5,6 +5,7 @@ import InputStyle, { IInputStyleProps } from "./input.style";
 interface IInputProps extends StripDollar<IInputStyleProps> {
   value: string;
   placeholder?: string;
+  maxLength?: number;
   //
   onChange: (value: string) => void;
 }
@@ -16,12 +17,15 @@ const Input: React.FC<IInputProps> = (props) => {
     width,
     height,
     //
+    maxLength,
     value,
     placeholder,
     onChange,
   } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (maxLength && e.target.value.length > maxLength) return;
+
     onChange(e.target.value);
   };
 

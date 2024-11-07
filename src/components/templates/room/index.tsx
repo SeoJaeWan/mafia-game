@@ -56,6 +56,21 @@ const RoomTemplate = () => {
             />
           )}
         />
+        <Controller
+          name={"nickname"}
+          control={control}
+          render={({ field: { value, onChange } }) => (
+            <Input
+              width={toRem(500)}
+              height={toRem(60)}
+              //
+              value={value}
+              maxLength={6}
+              placeholder={"닉네임을 입력해주세요."}
+              onChange={onChange}
+            />
+          )}
+        />
         <TextButton onClick={handleGameSetting}>게임 설정</TextButton>
       </Layout>
 
