@@ -4,7 +4,7 @@ import Game from "./game";
 const game = new Game();
 
 const useGame = () => {
-  const [players, setPlayers] = useState();
+  const [players, setPlayers] = useState([]);
 
   return;
 };
