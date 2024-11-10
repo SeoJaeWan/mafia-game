@@ -32,7 +32,6 @@ type PlayableRoleNames = (typeof playableRoles)[number]["name"];
 type PlayModeValues = (typeof playMode)[number];
 
 export interface IFormValues extends Record<PlayableRoleNames, number> {
-  title: string;
   nickname: string;
   total: number;
   time: number;
@@ -49,7 +48,6 @@ const createDefaultValues = () => {
   );
 
   return {
-    title: "",
     nickname: "",
     total: 0,
     time: 40,

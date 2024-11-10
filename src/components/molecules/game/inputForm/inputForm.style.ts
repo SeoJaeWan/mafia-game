@@ -31,7 +31,7 @@ const EmojiButton = styled.button`
 `;
 
 interface IEmojiBoxProps {
-  show: boolean;
+  $show: boolean;
 }
 
 const EmojiBox = styled.div<IEmojiBoxProps>`
@@ -39,7 +39,7 @@ const EmojiBox = styled.div<IEmojiBoxProps>`
   top: ${toRem(-62)};
   right: ${toRem(10)};
 
-  display: ${(props) => (props.show ? "flex" : "none")};
+  display: ${(props) => (props.$show ? "flex" : "none")};
   flex-wrap: wrap;
   gap: ${toRem(5)};
 

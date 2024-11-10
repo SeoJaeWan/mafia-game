@@ -1,10 +1,11 @@
-import Layout from "@/styles/layout";
 import UsersStyle from "./users.style";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import { useState } from "react";
 import toRem from "@/styles/utils/toRem";
+import useGame from "@/hooks/useGame";
 
 const Users = () => {
+  const { players } = useGame();
   const [open, setOpen] = useState(false);
 
   const handleToggle = () => {
@@ -14,20 +15,16 @@ const Users = () => {
   return (
     <UsersStyle.Container>
       <UsersStyle.Button onClick={handleToggle}>
-        <UsersStyle.Label>Users</UsersStyle.Label>
+        <UsersStyle.Label>접속자 : {players.length}명</UsersStyle.Label>
         <UsersStyle.Arrow>
           {open ? <FaCaretUp size={16} /> : <FaCaretDown size={16} />}
         </UsersStyle.Arrow>
       </UsersStyle.Button>
 
       <UsersStyle.List $height={open ? `calc(${toRem(35)} * 10)` : `0px`}>
-        <UsersStyle.Item>Player 1</UsersStyle.Item>
-        <UsersStyle.Item>Player 2</UsersStyle.Item>
-        <UsersStyle.Item>Player 3</UsersStyle.Item>
-        <UsersStyle.Item>Player 4</UsersStyle.Item>
-        <UsersStyle.Item>Player 5</UsersStyle.Item>
-        <UsersStyle.Item>Player 6</UsersStyle.Item>
-        <UsersStyle.Item>Player 7</UsersStyle.Item>
+        {players.map((name, index) => (
+          <UsersStyle.Item key={index}>{name}</UsersStyle.Item>
+        ))}
       </UsersStyle.List>
     </UsersStyle.Container>
   );

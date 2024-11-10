@@ -1,22 +1,15 @@
 import ChatItem from "@/components/atoms/game/chatItem";
 import ChattingStyle from "./chattingList.style";
+import useGame from "@/hooks/useGame";
 
-interface ChattingListProps {
-  list: {
-    user: string;
-    message: string;
-    isMe?: boolean;
-  }[];
-}
-
-const ChattingList: React.FC<ChattingListProps> = (props) => {
-  const { list } = props;
+const ChattingList: React.FC = () => {
+  const { chats } = useGame();
 
   return (
     <ChattingStyle.Container>
-      {list.map((item, index) => (
+      {chats.map((item, index) => (
         <ChatItem
-          user={item.user}
+          name={item.name}
           message={item.message}
           isMe={item.isMe}
           key={index}

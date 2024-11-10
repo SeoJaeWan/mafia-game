@@ -1,12 +1,26 @@
-import { useState } from "react";
-import Game from "./game";
-
-const game = new Game();
+import { useContext } from "react";
+import { GameContext } from "./gameProvider";
 
 const useGame = () => {
-  const [players, setPlayers] = useState();
+  const {
+    players,
+    chats,
+    //
+    setOptions,
+    joinRoom,
+    leaveRoom,
+    chat,
+  } = useContext(GameContext);
 
-  return;
+  return {
+    players,
+    chats,
+    //
+    setOptions,
+    joinRoom,
+    leaveRoom,
+    chat,
+  };
 };
 
 export default useGame;

@@ -9,8 +9,9 @@ import TextButton from "@/components/atoms/common/textButton/textButton";
 import GameSetting from "@/components/molecules/room/gameSetting";
 import { Controller, FormProvider } from "react-hook-form";
 import useRoomForm, { IFormValues } from "@/hooks/useRoomForm";
-import createRoomName from "@/utils/createRoomName";
+import createRoomId from "@/utils/createRoomId";
 import { useRouter } from "next/navigation";
+import useGame from "@/hooks/useGame";
 
 const RoomTemplate = () => {
   const [gameSetting, setGameSetting] = useState(false);
@@ -18,16 +19,19 @@ const RoomTemplate = () => {
 
   const { form } = useRoomForm();
   const { control, handleSubmit } = form;
+  const { setOptions } = useGame();
 
   const handleGameSetting = () => {
     setGameSetting((prev) => !prev);
   };
 
   const handleCreateRoom = (data: IFormValues) => {
-    const roomName = createRoomName();
+    const roomId = createRoomId();
 
     localStorage.setItem("room", JSON.stringify(data));
-    router.push(`/room/${roomName}`);
+    router.push(`/room/${roomId}`);
+
+    setOptions({ roomId, ...data });
   };
 
   return (
@@ -42,20 +46,6 @@ const RoomTemplate = () => {
         gap={toRem(5)}
         margin={`${toRem(20)} 0 ${toRem(60)}`}
       >
-        <Controller
-          name={"title"}
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <Input
-              width={toRem(500)}
-              height={toRem(60)}
-              //
-              value={value}
-              placeholder={"방 제목을 입력해주세요."}
-              onChange={onChange}
-            />
-          )}
-        />
         <Controller
           name={"nickname"}
           control={control}

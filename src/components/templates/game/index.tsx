@@ -1,3 +1,5 @@
+"use client";
+
 import Layout from "@/styles/layout";
 import { headerHeight } from "../header";
 import Chat from "@/components/organisms/game/chat";
