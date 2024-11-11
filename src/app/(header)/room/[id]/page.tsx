@@ -1,7 +1,7 @@
-import GameTemplate from "@/components/templates/game";
+import RoomTemplate from "@/components/templates/room";
 
-const Game = () => {
-  return <GameTemplate />;
+const Room = () => {
+  return <RoomTemplate />;
 };
 
-export default Game;
+export default Room;

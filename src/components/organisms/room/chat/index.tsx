@@ -1,9 +1,9 @@
 "use client";
 
-import Users from "@/components/atoms/game/users";
+import Users from "@/components/atoms/room/users";
 import ChatStyle from "./chat.style";
-import InputForm from "@/components/molecules/game/inputForm";
-import ChattingList from "@/components/molecules/game/chattingList";
+import InputForm from "@/components/molecules/room/inputForm";
+import ChattingList from "@/components/molecules/room/chattingList";
 
 const Chat = () => {
   return (

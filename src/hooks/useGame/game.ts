@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { IChats, IResponse } from "./gameProvider";
+import { IChats, IPlayers, IResponse } from "./gameProvider";
 import React from "react";
 
 const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
@@ -7,7 +7,7 @@ const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 interface IGameProps {
   setChats: React.Dispatch<React.SetStateAction<IChats[]>>;
   setResponse: React.Dispatch<React.SetStateAction<IResponse>>;
-  setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
+  setPlayers: React.Dispatch<React.SetStateAction<IPlayers[]>>;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -18,7 +18,7 @@ class Game {
 
   setChats: React.Dispatch<React.SetStateAction<IChats[]>>;
   setResponse: React.Dispatch<React.SetStateAction<IResponse>>;
-  setPlayers: React.Dispatch<React.SetStateAction<string[]>>;
+  setPlayers: React.Dispatch<React.SetStateAction<IPlayers[]>>;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 
   constructor(props: IGameProps) {
@@ -90,6 +90,10 @@ class Game {
     }
   }
 
+  readyPlayer() {
+    this.socket.emit("ready");
+  }
+
   getMessages() {
     this.socket.on("messages", (data: IChats) => {
       this.setChats((prev) => [...prev, data]);
@@ -97,7 +101,7 @@ class Game {
   }
 
   getPlayers() {
-    this.socket.on("players", (data: string[]) => {
+    this.socket.on("players", (data: IPlayers[]) => {
       this.setPlayers(data);
     });
   }

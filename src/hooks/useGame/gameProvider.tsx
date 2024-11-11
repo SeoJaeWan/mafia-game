@@ -19,9 +19,16 @@ interface IOptions extends IFormValues {
   roomId: string;
 }
 
+export interface IPlayers {
+  name: string;
+  color?: string;
+  isReady?: boolean;
+}
+
 interface IGameContext {
   isPlaying: boolean;
-  players: string[];
+  me?: IPlayers;
+  players: IPlayers[];
   chats: IChats[];
   response: IResponse;
   //
@@ -29,10 +36,12 @@ interface IGameContext {
   joinRoom: (roomId: string, name: string) => void;
   leaveRoom: (roomId: string) => void;
   chat: (message: string) => void;
+  readyPlayer: () => void;
 }
 
 export const GameContext = createContext<IGameContext>({
   isPlaying: false,
+  me: undefined,
   players: [],
   chats: [],
   response: { name: "", res: false },
@@ -41,6 +50,7 @@ export const GameContext = createContext<IGameContext>({
   joinRoom: () => {},
   leaveRoom: () => {},
   chat: (message: string) => {},
+  readyPlayer: () => {},
 });
 
 interface IGameProviderProps {
@@ -50,21 +60,22 @@ interface IGameProviderProps {
 const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const [players, setPlayers] = useState<string[]>([]);
+  const [players, setPlayers] = useState<IPlayers[]>([]);
   const [chats, setChats] = useState<IChats[]>([]);
   const [response, setResponse] = useState<IResponse>({
     name: "",
     res: false,
   });
   const router = useRouter();
-
   const game = useRef(
     new Game({ setChats, setResponse, setPlayers, setIsPlaying })
   );
 
+  const me = players.find(({ name }) => name === game.current.name);
+
   const createRoom = (options: IOptions) => {
     const { roomId, name, total, time, mode } = options;
-    setPlayers([name]);
+    setPlayers([{ name }]);
 
     game.current.createRoom(roomId, name);
   };
@@ -97,6 +108,7 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     <GameContext.Provider
       value={{
         isPlaying,
+        me,
         players,
         chats,
         response,
@@ -105,6 +117,7 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         joinRoom,
         leaveRoom: () => game.current.leaveRoom("room1"),
         chat: (message) => game.current.chat(message),
+        readyPlayer: () => game.current.readyPlayer(),
       }}
     >
       {children}

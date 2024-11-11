@@ -22,7 +22,7 @@ const Users = () => {
       </UsersStyle.Button>
 
       <UsersStyle.List $height={open ? `calc(${toRem(35)} * 10)` : `0px`}>
-        {players.map((name, index) => (
+        {players.map(({ name }, index) => (
           <UsersStyle.Item key={index}>{name}</UsersStyle.Item>
         ))}
       </UsersStyle.List>

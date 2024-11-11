@@ -2,8 +2,8 @@
 
 import Layout from "@/styles/layout";
 import { headerHeight } from "../header";
-import Chat from "@/components/organisms/game/chat";
-import PlayBoard from "@/components/organisms/game/playBoard";
+import Chat from "@/components/organisms/room/chat";
+import PlayBoard from "@/components/organisms/room/playBoard";
 
 const GameTemplate = () => {
   return (

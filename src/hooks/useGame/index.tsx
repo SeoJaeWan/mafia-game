@@ -3,6 +3,9 @@ import { GameContext } from "./gameProvider";
 
 const useGame = () => {
   const {
+    isPlaying,
+    //
+    me,
     players,
     chats,
     response,
@@ -11,9 +14,13 @@ const useGame = () => {
     joinRoom,
     leaveRoom,
     chat,
+    readyPlayer,
   } = useContext(GameContext);
 
   return {
+    isPlaying,
+    //
+    me,
     players,
     chats,
     response,
@@ -22,6 +29,7 @@ const useGame = () => {
     joinRoom,
     leaveRoom,
     chat,
+    readyPlayer,
   };
 };
 

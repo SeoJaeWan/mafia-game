@@ -1,4 +1,4 @@
-import ChatItem from "@/components/atoms/game/chatItem";
+import ChatItem from "@/components/atoms/room/chatItem";
 import ChattingStyle from "./chattingList.style";
 import useGame from "@/hooks/useGame";
 
