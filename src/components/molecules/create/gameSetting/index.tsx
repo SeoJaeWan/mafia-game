@@ -1,15 +1,15 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import GameSettingStyle, { IGameSettingStyleProps } from "./gameSetting.style";
 import Layout from "@/styles/layout";
-import Count from "@/components/atoms/room/count";
+import Count from "@/components/atoms/create/count";
 import toRem from "@/styles/utils/toRem";
 import Button from "@/components/atoms/common/button";
 import { useState } from "react";
 import useRoomFormContext from "@/hooks/useRoomForm/useRoomFormContext";
 import { Controller } from "react-hook-form";
 import { playableRoles, playMode } from "@/hooks/useRoomForm";
-import Select from "@/components/atoms/room/select";
-import Label from "@/components/atoms/room/label";
+import Select from "@/components/atoms/create/select";
+import Label from "@/components/atoms/create/label";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
   handleGameSetting: () => void;

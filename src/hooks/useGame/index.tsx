@@ -5,8 +5,9 @@ const useGame = () => {
   const {
     players,
     chats,
+    response,
     //
-    setOptions,
+    createRoom,
     joinRoom,
     leaveRoom,
     chat,
@@ -15,8 +16,9 @@ const useGame = () => {
   return {
     players,
     chats,
+    response,
     //
-    setOptions,
+    createRoom,
     joinRoom,
     leaveRoom,
     chat,

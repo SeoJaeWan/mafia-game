@@ -26,7 +26,7 @@ const HomeTemplate: React.FC = () => {
         gap={toRem(20)}
         marginTop={toRem(80)}
       >
-        <Link href={"/room"}>
+        <Link href={"/create"}>
           <Button>방 만들기</Button>
         </Link>
 

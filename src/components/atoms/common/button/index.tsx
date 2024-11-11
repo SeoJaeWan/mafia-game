@@ -5,6 +5,7 @@ import ButtonStyle, { IButtonStyleProps } from "./button.style";
 
 interface IButtonProps extends StripDollar<IButtonStyleProps> {
   children: React.ReactNode;
+  type?: "button" | "submit" | "reset";
   //
   onClick?: () => void;
 }
@@ -17,6 +18,7 @@ const Button: React.FC<IButtonProps> = (props) => {
     isSmall,
     children,
     //
+    type = "button",
     onClick = () => {},
   } = props;
 
@@ -26,6 +28,8 @@ const Button: React.FC<IButtonProps> = (props) => {
       height={height}
       //
       $isSmall={isSmall}
+      //
+      type={type}
       onClick={onClick}
     >
       {children}
