@@ -28,7 +28,9 @@ const Option = <T,>(props: IOptionProps<T>) => {
   };
 
   return (
-    <SelectStyle.Option onClick={handleClick}>{children}</SelectStyle.Option>
+    <SelectStyle.Option type={"button"} onClick={handleClick}>
+      {children}
+    </SelectStyle.Option>
   );
 };
 
@@ -74,6 +76,7 @@ const Select = <T,>(props: ISelectProps<T>) => {
     >
       <Layout position={"relative"} width={width} ref={buttonRef}>
         <SelectStyle.Button
+          type={"button"}
           $width={width}
           $height={height}
           onClick={handleToggle}

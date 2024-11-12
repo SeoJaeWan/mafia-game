@@ -2,7 +2,7 @@ import toRem from "@/styles/utils/toRem";
 import styled, { keyframes } from "styled-components";
 
 interface IGameSettingContainerProps {
-  $isShow: boolean;
+  $isGameSetting: boolean;
 }
 
 const Container = styled.div<IGameSettingContainerProps>`
@@ -10,7 +10,7 @@ const Container = styled.div<IGameSettingContainerProps>`
   top: 0;
   right: 0;
 
-  display: ${(props) => (props.$isShow ? "flex" : "none")};
+  display: ${(props) => (props.$isGameSetting ? "flex" : "none")};
   justify-content: flex-end;
 
   width: 100vw;

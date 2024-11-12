@@ -91,7 +91,11 @@ const Count: React.FC<ICountProps> = (props) => {
 
   return (
     <CountStyle.Container $isInput={isInput}>
-      <CountStyle.Button className={"decrease count"} onClick={handleDecrease}>
+      <CountStyle.Button
+        type={"button"}
+        className={"decrease count"}
+        onClick={handleDecrease}
+      >
         <FaMinus />
       </CountStyle.Button>
 
@@ -112,11 +116,19 @@ const Count: React.FC<ICountProps> = (props) => {
         </CountStyle.Error>
       </CountStyle.Number>
 
-      <CountStyle.Button className={"increase count"} onClick={handleIncrease}>
+      <CountStyle.Button
+        type={"button"}
+        className={"increase count"}
+        onClick={handleIncrease}
+      >
         <FaPlus />
       </CountStyle.Button>
 
-      <CountStyle.Button className={"confirm"} onClick={handleConfirm}>
+      <CountStyle.Button
+        type={"button"}
+        className={"confirm"}
+        onClick={handleConfirm}
+      >
         <FaCheck />
       </CountStyle.Button>
     </CountStyle.Container>

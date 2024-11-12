@@ -27,6 +27,7 @@ export interface IPlayers {
 
 interface IGameContext {
   isPlaying: boolean;
+  isAdmin?: boolean;
   me?: IPlayers;
   players: IPlayers[];
   chats: IChats[];
@@ -34,13 +35,14 @@ interface IGameContext {
   //
   createRoom: (options: IOptions) => void;
   joinRoom: (roomId: string, name: string) => void;
-  leaveRoom: (roomId: string) => void;
+  leaveRoom: () => void;
   chat: (message: string) => void;
   readyPlayer: () => void;
 }
 
 export const GameContext = createContext<IGameContext>({
   isPlaying: false,
+  isAdmin: false,
   me: undefined,
   players: [],
   chats: [],
@@ -72,6 +74,7 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
   );
 
   const me = players.find(({ name }) => name === game.current.name);
+  const isAdmin = me?.name === players[0]?.name;
 
   const createRoom = (options: IOptions) => {
     const { roomId, name, total, time, mode } = options;
@@ -104,10 +107,17 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     }
   }, [response]);
 
+  useEffect(() => {
+    if (!game.current.roomId) {
+      router.push("/");
+    }
+  }, []);
+
   return (
     <GameContext.Provider
       value={{
         isPlaying,
+        isAdmin,
         me,
         players,
         chats,
@@ -115,7 +125,7 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         //
         createRoom,
         joinRoom,
-        leaveRoom: () => game.current.leaveRoom("room1"),
+        leaveRoom: () => game.current.leaveRoom(),
         chat: (message) => game.current.chat(message),
         readyPlayer: () => game.current.readyPlayer(),
       }}

@@ -50,6 +50,7 @@ const CreateTemplate = () => {
           >
             <Controller
               name={"name"}
+              rules={{ required: "이름을 입력해주세요." }}
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Input

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import StyledComponentsRegistry from "@/styles/lib/registry";
+import GameProvider from "@/hooks/useGame/gameProvider";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -29,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${pretendard.variable} ${anton.variable}`}>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <GameProvider>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </GameProvider>
       </body>
     </html>
   );

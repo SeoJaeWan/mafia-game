@@ -4,6 +4,7 @@ import { GameContext } from "./gameProvider";
 const useGame = () => {
   const {
     isPlaying,
+    isAdmin,
     //
     me,
     players,
@@ -19,6 +20,7 @@ const useGame = () => {
 
   return {
     isPlaying,
+    isAdmin,
     //
     me,
     players,

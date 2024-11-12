@@ -71,9 +71,9 @@ class Game {
     });
   }
 
-  leaveRoom(roomId: string) {
+  leaveRoom() {
     this.roomId = undefined;
-    this.socket.emit("leaveRoom", roomId);
+    this.socket.emit("leaveRoom");
   }
 
   chat(message: string) {

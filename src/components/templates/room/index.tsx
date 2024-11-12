@@ -3,9 +3,41 @@
 import Layout from "@/styles/layout";
 import { headerHeight } from "../header";
 import Chat from "@/components/organisms/room/chat";
-import PlayBoard from "@/components/organisms/room/playBoard";
+import { useEffect } from "react";
+import useGame from "@/hooks/useGame";
+import GameBoard from "@/components/molecules/room/gameBoard";
+import WaitingBoard from "@/components/organisms/room/waitingBoard";
 
 const GameTemplate = () => {
+  const { isPlaying, leaveRoom } = useGame();
+
+  const beforeUnloadListener = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    return (e.returnValue = true);
+  };
+
+  const handlePopState = (e: PopStateEvent) => {
+    const confirmation = confirm("게임을 떠나시겠습니까?");
+    if (confirmation) {
+      history.back();
+    } else {
+      history.pushState(null, "", "");
+    }
+  };
+
+  useEffect(() => {
+    history.pushState(null, "", "");
+
+    window.addEventListener("beforeunload", beforeUnloadListener);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnloadListener);
+      window.removeEventListener("popstate", handlePopState);
+      leaveRoom();
+    };
+  }, []);
+
   return (
     <Layout
       display={"flex"}
@@ -17,7 +49,7 @@ const GameTemplate = () => {
       paddingTop={headerHeight}
     >
       <Layout width={"70%"} height={"100%"}>
-        <PlayBoard />
+        {isPlaying ? <GameBoard /> : <WaitingBoard />}
       </Layout>
       <Layout width={"30%"} height={"100%"}>
         <Chat />

@@ -16,7 +16,7 @@ interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
 }
 
 const GameSetting: React.FC<IGameSettingProps> = (props) => {
-  const { isShow, handleGameSetting } = props;
+  const { isGameSetting, handleGameSetting } = props;
   const [boxClass, setBoxClass] = useState("");
 
   const {
@@ -38,7 +38,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
   };
 
   return (
-    <GameSettingStyle.Container $isShow={isShow}>
+    <GameSettingStyle.Container $isGameSetting={isGameSetting}>
       <GameSettingStyle.Background onClick={handleCloseSetting} />
       <GameSettingStyle.Box className={boxClass}>
         <GameSettingStyle.Title>게임 설정</GameSettingStyle.Title>

@@ -9,7 +9,11 @@ interface ITextButtonProps {
 const TextButton: React.FC<ITextButtonProps> = (props) => {
   const { children, onClick } = props;
 
-  return <TextButtonStyle onClick={onClick}>{children}</TextButtonStyle>;
+  return (
+    <TextButtonStyle type={"button"} onClick={onClick}>
+      {children}
+    </TextButtonStyle>
+  );
 };
 
 export default TextButton;
