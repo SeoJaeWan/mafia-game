@@ -9,6 +9,7 @@ const Container = styled.div<IGameSettingContainerProps>`
   position: fixed;
   top: 0;
   right: 0;
+  z-index: 100;
 
   display: ${(props) => (props.$isGameSetting ? "flex" : "none")};
   justify-content: flex-end;
@@ -20,7 +21,7 @@ const Container = styled.div<IGameSettingContainerProps>`
 `;
 
 const Background = styled.button`
-  width: 40vw;
+  width: 70vw;
   height: 100vh;
 
   border: none;
@@ -31,7 +32,7 @@ const Background = styled.button`
 
 const OpenAnimation = keyframes`
   0% {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
 
   100% {
@@ -45,7 +46,7 @@ const CloseAnimation = keyframes`
   }
 
   100% {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
 `;
 
@@ -55,7 +56,7 @@ const Box = styled.div`
   justify-content: flex-start;
   align-items: center;
 
-  width: 60vw;
+  width: 30vw;
   height: 100vh;
 
   padding: ${toRem(20)} 0;

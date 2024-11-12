@@ -11,11 +11,14 @@ const useGame = () => {
     chats,
     response,
     //
+    form,
+    //
     createRoom,
     joinRoom,
     leaveRoom,
     chat,
     readyPlayer,
+    resetPlayable,
   } = useContext(GameContext);
 
   return {
@@ -27,11 +30,14 @@ const useGame = () => {
     chats,
     response,
     //
+    form,
+    //
     createRoom,
     joinRoom,
     leaveRoom,
     chat,
     readyPlayer,
+    resetPlayable,
   };
 };
 

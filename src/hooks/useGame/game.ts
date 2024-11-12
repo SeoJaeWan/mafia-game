@@ -1,13 +1,13 @@
 import { io, Socket } from "socket.io-client";
-import { IChats, IPlayers, IResponse } from "./gameProvider";
 import React from "react";
+import { IPlayers } from "./usePlayers";
+import { IChats, IResponse } from "./useRoom";
 
 const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 
-interface IGameProps {
+interface ISetRoom {
   setChats: React.Dispatch<React.SetStateAction<IChats[]>>;
   setResponse: React.Dispatch<React.SetStateAction<IResponse>>;
-  setPlayers: React.Dispatch<React.SetStateAction<IPlayers[]>>;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -16,22 +16,25 @@ class Game {
   name: string = "";
   roomId: string | undefined;
 
-  setChats: React.Dispatch<React.SetStateAction<IChats[]>>;
-  setResponse: React.Dispatch<React.SetStateAction<IResponse>>;
-  setPlayers: React.Dispatch<React.SetStateAction<IPlayers[]>>;
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  setChats: React.Dispatch<React.SetStateAction<IChats[]>> = () => {};
+  setResponse: React.Dispatch<React.SetStateAction<IResponse>> = () => {};
+  setPlayers: React.Dispatch<React.SetStateAction<IPlayers[]>> = () => {};
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>> = () => {};
 
-  constructor(props: IGameProps) {
-    const { setChats, setResponse, setPlayers, setIsPlaying } = props;
-
+  constructor() {
     this.socket = io(socketUrl);
 
+    this.socketInit();
+  }
+
+  setRoom({ setChats, setResponse, setIsPlaying }: ISetRoom) {
     this.setChats = setChats;
     this.setResponse = setResponse;
-    this.setPlayers = setPlayers;
     this.setIsPlaying = setIsPlaying;
+  }
 
-    this.socketInit();
+  setPlayer(setPlayers: React.Dispatch<React.SetStateAction<IPlayers[]>>) {
+    this.setPlayers = setPlayers;
   }
 
   socketInit() {

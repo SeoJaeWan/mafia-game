@@ -5,11 +5,11 @@ import Count from "@/components/atoms/create/count";
 import toRem from "@/styles/utils/toRem";
 import Button from "@/components/atoms/common/button";
 import { useState } from "react";
-import useRoomFormContext from "@/hooks/useRoomForm/useRoomFormContext";
 import { Controller } from "react-hook-form";
-import { playableRoles, playMode } from "@/hooks/useRoomForm";
 import Select from "@/components/atoms/create/select";
 import Label from "@/components/atoms/create/label";
+import { playableRoles, playMode } from "@/hooks/useGame/useGameModeForm";
+import useGame from "@/hooks/useGame";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
   handleGameSetting: () => void;
@@ -18,17 +18,10 @@ interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
 const GameSetting: React.FC<IGameSettingProps> = (props) => {
   const { isGameSetting, handleGameSetting } = props;
   const [boxClass, setBoxClass] = useState("");
-
-  const {
-    control,
-    totalPlayers,
-    //
-    updateTotalPlayers,
-    resetPlayable,
-  } = useRoomFormContext();
+  const { form, resetPlayable } = useGame();
+  const control = form.control;
 
   const handleCloseSetting = () => {
-    updateTotalPlayers();
     setBoxClass("close");
 
     setTimeout(() => {
@@ -39,7 +32,6 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
 
   return (
     <GameSettingStyle.Container $isGameSetting={isGameSetting}>
-      <GameSettingStyle.Background onClick={handleCloseSetting} />
       <GameSettingStyle.Box className={boxClass}>
         <GameSettingStyle.Title>게임 설정</GameSettingStyle.Title>
 
@@ -52,22 +44,6 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           marginTop={toRem(40)}
           marginBottom={toRem(30)}
         >
-          <Controller
-            control={control}
-            name={"total"}
-            render={({ field: { value, onChange } }) => (
-              <Label label={"전체 인원"}>
-                <Count
-                  value={value}
-                  min={0}
-                  isError={totalPlayers > value}
-                  errorValue={totalPlayers}
-                  onChange={onChange}
-                />
-              </Label>
-            )}
-          />
-
           {playableRoles.map(({ label, name }) => (
             <Controller
               key={label}
@@ -106,13 +82,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
             name={"time"}
             render={({ field: { value, onChange } }) => (
               <Label label={"낮 시간/초"}>
-                <Count
-                  value={value}
-                  min={0}
-                  isError={totalPlayers > value}
-                  errorValue={totalPlayers}
-                  onChange={onChange}
-                />
+                <Count value={value} min={0} onChange={onChange} />
               </Label>
             )}
           />
@@ -150,6 +120,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           </Button>
         </Layout>
       </GameSettingStyle.Box>
+      <GameSettingStyle.Background onClick={handleCloseSetting} />
     </GameSettingStyle.Container>
   );
 };
