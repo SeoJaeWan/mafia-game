@@ -1,7 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import React from "react";
 import { IPlayers } from "./usePlayers";
-import { IChats, IResponse } from "./useRoom";
+import { IChats, IResponse, Time, Turn } from "./useRoom";
 import { IRole, ISetting } from "./useGameModeForm";
 import { UseFormGetValues } from "react-hook-form";
 
@@ -11,6 +11,9 @@ interface ISetRoom {
   setChats: React.Dispatch<React.SetStateAction<IChats[]>>;
   setResponse: React.Dispatch<React.SetStateAction<IResponse>>;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  setTime: React.Dispatch<React.SetStateAction<Time>>;
+  setTurn: React.Dispatch<React.SetStateAction<Turn>>;
+  setDay: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface IGame {
@@ -32,6 +35,9 @@ class Game {
   setResponse: React.Dispatch<React.SetStateAction<IResponse>> = () => {};
   setPlayers: React.Dispatch<React.SetStateAction<IPlayers[]>> = () => {};
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>> = () => {};
+  setTime: React.Dispatch<React.SetStateAction<Time>> = () => {};
+  setTurn: React.Dispatch<React.SetStateAction<Turn>> = () => {};
+  setDay: React.Dispatch<React.SetStateAction<number>> = () => {};
 
   getValues?: UseFormGetValues<ISetting>;
 
@@ -41,10 +47,20 @@ class Game {
     this.socketInit();
   }
 
-  setRoom({ setChats, setResponse, setIsPlaying }: ISetRoom) {
+  setRoom({
+    setChats,
+    setResponse,
+    setIsPlaying,
+    setTime,
+    setTurn,
+    setDay,
+  }: ISetRoom) {
     this.setChats = setChats;
     this.setResponse = setResponse;
     this.setIsPlaying = setIsPlaying;
+    this.setTime = setTime;
+    this.setTurn = setTurn;
+    this.setDay = setDay;
   }
 
   setPlayer(setPlayers: React.Dispatch<React.SetStateAction<IPlayers[]>>) {
@@ -103,9 +119,12 @@ class Game {
 
       this.setPlayers((prev) =>
         prev.map((player) =>
-          player.name === this.name ? { ...player, role } : player
+          player.name === this.name ? { ...player, role, isDie: false } : player
         )
       );
+      this.setTime("night");
+      this.setTurn("kill");
+      this.setDay((prev) => prev + 1);
     });
 
     this.setIsPlaying(true);

@@ -10,6 +10,9 @@ const useGame = () => {
     players,
     chats,
     response,
+    time,
+    turn,
+    day,
     //
     form,
     //
@@ -30,6 +33,9 @@ const useGame = () => {
     players,
     chats,
     response,
+    time,
+    turn,
+    day,
     //
     form,
     //

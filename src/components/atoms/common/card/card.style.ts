@@ -1,6 +1,6 @@
 import toRem from "@/styles/utils/toRem";
 import Image from "next/image";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const Card = styled.div`
   position: relative;
@@ -56,10 +56,26 @@ const Back = styled(CardScreen)`
   transform: rotateY(180deg);
 `;
 
+const showAnimation = keyframes`
+  from {
+    transform: rotateY(180deg);
+  }
+
+  to {
+    transform: rotateY(0deg);
+  }
+`;
+
 const Container = styled.div`
   width: ${toRem(150)};
   height: auto;
   aspect-ratio: 63/88;
+
+  &.animation {
+    ${Card} {
+      animation: ${showAnimation} 2s;
+    }
+  }
 
   &:hover ${Card} {
     transform: rotateY(180deg);

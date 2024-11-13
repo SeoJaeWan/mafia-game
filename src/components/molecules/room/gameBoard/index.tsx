@@ -59,22 +59,16 @@ const GameBoard = () => {
       <Layout>
         <GameBoardStyle.Text>생존자</GameBoardStyle.Text>
         <Layout position={"relative"}>
-          <GameBoardStyle.CardAnimation $length={list.length}>
-            {list.map(({ id, color }) => (
-              <Card key={id} color={color} />
-            ))}
-          </GameBoardStyle.CardAnimation>
-
           <GameBoardStyle.CardList>
             {list.map(({ id, color }) => (
-              <Card key={id} color={color} />
+              <Card key={id} color={color} showAnimation />
             ))}
           </GameBoardStyle.CardList>
         </Layout>
       </Layout>
       <Layout>
         <GameBoardStyle.Text>사망자</GameBoardStyle.Text>
-        <GameBoardStyle.CardList $length={list.length}>
+        <GameBoardStyle.CardList>
           {list.map(({ id, color }) => (
             <Card key={id} color={color} />
           ))}

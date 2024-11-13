@@ -21,6 +21,9 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     isPlaying,
     chats,
     response,
+    time,
+    turn,
+    day,
     //
   } = useRoom(game);
   const { form, resetPlayable, gameStart } = useGameModeForm(players, game);
@@ -56,6 +59,9 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         chats,
         response,
         form,
+        time,
+        turn,
+        day,
         //
         createRoom: (roomId, name) => game.createRoom(roomId, name),
         joinRoom: (roomId, name) => game.joinRoom(roomId, name),

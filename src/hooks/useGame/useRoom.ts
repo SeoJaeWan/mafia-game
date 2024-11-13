@@ -22,7 +22,13 @@ export interface IUseRoom {
   isPlaying: boolean;
   chats: IChats[];
   response: IResponse;
+  time: Time;
+  turn: Turn;
+  day: number;
 }
+
+export type Time = "night" | "morning";
+export type Turn = "intro" | "kill" | "heal" | "check" | "discussion";
 
 const useRoom = (game: Game): IUseRoom => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -31,6 +37,9 @@ const useRoom = (game: Game): IUseRoom => {
     name: "",
     res: false,
   });
+  const [time, setTime] = useState<Time>("night");
+  const [turn, setTurn] = useState<Turn>("intro");
+  const [day, setDay] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -39,6 +48,9 @@ const useRoom = (game: Game): IUseRoom => {
       setChats,
       setResponse,
       setIsPlaying,
+      setTime,
+      setTurn,
+      setDay,
     });
   }, []);
 
@@ -54,6 +66,9 @@ const useRoom = (game: Game): IUseRoom => {
     isPlaying,
     chats,
     response,
+    turn,
+    time,
+    day,
   };
 };
 

@@ -1,11 +1,15 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import CardStyle, { CardStyleProps } from "./card.style";
 
-const Card: React.FC<StripDollar<CardStyleProps>> = (props) => {
-  const { color } = props;
+interface ICardProps extends StripDollar<CardStyleProps> {
+  showAnimation?: boolean;
+}
+
+const Card: React.FC<ICardProps> = (props) => {
+  const { color, showAnimation } = props;
 
   return (
-    <CardStyle.Container>
+    <CardStyle.Container className={showAnimation ? "animation" : ""}>
       <CardStyle.Card>
         <CardStyle.Front $color={color}>여섯글자에요</CardStyle.Front>
         <CardStyle.Back $color={color}>
