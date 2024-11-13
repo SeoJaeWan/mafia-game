@@ -3,13 +3,14 @@ import styled, { css } from "styled-components";
 
 export interface IButtonStyleProps {
   $isSmall?: boolean;
-  width?: number;
-  height?: number;
+  $isDisable?: boolean;
+  $width?: number;
+  $height?: number;
 }
 
 const ButtonStyle = styled.button<IButtonStyleProps>`
-  ${(props) => props.width && `width: ${toRem(props.width)};`}
-  ${(props) => props.height && `height: ${toRem(props.height)};`}
+  ${(props) => props.$width && `width: ${toRem(props.$width)};`}
+  ${(props) => props.$height && `height: ${toRem(props.$height)};`}
 
   padding: ${toRem(10)} ${toRem(20)};
 

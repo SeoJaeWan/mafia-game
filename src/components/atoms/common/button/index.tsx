@@ -16,6 +16,7 @@ const Button: React.FC<IButtonProps> = (props) => {
     height,
     //
     isSmall,
+    isDisable,
     children,
     //
     type = "button",
@@ -24,8 +25,8 @@ const Button: React.FC<IButtonProps> = (props) => {
 
   return (
     <ButtonStyle
-      width={width}
-      height={height}
+      $width={width}
+      $height={height}
       //
       $isSmall={isSmall}
       //

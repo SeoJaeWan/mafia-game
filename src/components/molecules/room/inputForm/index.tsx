@@ -39,7 +39,7 @@ const InputForm = () => {
           height={25}
         />
       </InputFormStyle.EmojiButton> */}
-      <Button width={48} height={30} isSmall>
+      <Button width={48} height={30} isSmall type={"submit"}>
         전송
       </Button>
     </InputFormStyle.Container>

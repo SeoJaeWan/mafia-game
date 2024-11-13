@@ -56,12 +56,8 @@ const Back = styled(CardScreen)`
   transform: rotateY(180deg);
 `;
 
-interface IContainerProps {
-  $width: number;
-}
-
-const Container = styled.div<IContainerProps>`
-  width: ${(props) => toRem(props.$width)};
+const Container = styled.div`
+  width: ${toRem(150)};
   height: auto;
   aspect-ratio: 63/88;
 
@@ -70,7 +66,7 @@ const Container = styled.div<IContainerProps>`
   }
 `;
 
-export type CardStyleProps = IContainerProps & ICardScreenProps;
+export type CardStyleProps = ICardScreenProps;
 
 const CardStyle = {
   Container,

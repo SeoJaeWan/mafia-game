@@ -4,7 +4,6 @@ import Layout from "@/styles/layout";
 import WaitingBoardStyle from "./waitingBoard.style";
 import Title from "@/components/atoms/common/title";
 import Button from "@/components/atoms/common/button";
-import { IoPeople } from "react-icons/io5";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useGame from "@/hooks/useGame";
@@ -15,10 +14,12 @@ const WaitingBoard = () => {
   const { id } = useParams();
   const [isGameSetting, setIsGameSetting] = useState(false);
   const [copyUrl, setCopyUrl] = useState("");
-  const { me, isAdmin, players, readyPlayer } = useGame();
+  const { me, isAdmin, players, gameStart, readyPlayer } = useGame();
 
-  const totalLength = players.length;
+  const totalLength = players.length - 1;
   const readyLength = players.filter((player) => player.isReady).length;
+
+  const playable = totalLength === readyLength && totalLength > 0 && isAdmin;
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(copyUrl);
@@ -26,6 +27,16 @@ const WaitingBoard = () => {
 
   const handleGameSetting = () => {
     setIsGameSetting((prev) => !prev);
+  };
+
+  const handlePlaying = () => {
+    if (isAdmin) {
+      if (playable) {
+        gameStart();
+      }
+    } else {
+      readyPlayer();
+    }
   };
 
   useEffect(() => {
@@ -42,10 +53,6 @@ const WaitingBoard = () => {
           width={"100%"}
         >
           <Title>접속 링크</Title>
-          <WaitingBoardStyle.WaitingPeople>
-            <IoPeople size={24} />
-            {readyLength}/{totalLength}
-          </WaitingBoardStyle.WaitingPeople>
         </Layout>
         <WaitingBoardStyle.Url onClick={handleCopyUrl}>
           {copyUrl}
@@ -59,7 +66,13 @@ const WaitingBoard = () => {
         >
           {isAdmin && <Button onClick={handleGameSetting}>게임 설정</Button>}
           <WaitingBoardStyle.ButtonCover $isActive={me?.isReady}>
-            <Button onClick={readyPlayer}>준비 완료</Button>
+            <Button onClick={handlePlaying}>
+              {playable
+                ? "시작하기"
+                : `준비 ${
+                    me?.isReady ? "취소" : "완료"
+                  } ${readyLength}/${totalLength}`}
+            </Button>
           </WaitingBoardStyle.ButtonCover>
         </Layout>
       </WaitingBoardStyle.Box>

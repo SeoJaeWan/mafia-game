@@ -25,18 +25,18 @@ const GameTemplate = () => {
     }
   };
 
-  useEffect(() => {
-    history.pushState(null, "", "");
+  // useEffect(() => {
+  //   history.pushState(null, "", "");
 
-    window.addEventListener("beforeunload", beforeUnloadListener);
-    window.addEventListener("popstate", handlePopState);
+  //   window.addEventListener("beforeunload", beforeUnloadListener);
+  //   window.addEventListener("popstate", handlePopState);
 
-    return () => {
-      window.removeEventListener("beforeunload", beforeUnloadListener);
-      window.removeEventListener("popstate", handlePopState);
-      leaveRoom();
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", beforeUnloadListener);
+  //     window.removeEventListener("popstate", handlePopState);
+  //     leaveRoom();
+  //   };
+  // }, []);
 
   return (
     <Layout
@@ -49,7 +49,8 @@ const GameTemplate = () => {
       paddingTop={headerHeight}
     >
       <Layout width={"70%"} height={"100%"}>
-        {isPlaying ? <GameBoard /> : <WaitingBoard />}
+        {/* {isPlaying ? <GameBoard /> : <WaitingBoard />} */}
+        <GameBoard />
       </Layout>
       <Layout width={"30%"} height={"100%"}>
         <Chat />

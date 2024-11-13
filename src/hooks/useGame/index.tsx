@@ -19,6 +19,7 @@ const useGame = () => {
     chat,
     readyPlayer,
     resetPlayable,
+    gameStart,
   } = useContext(GameContext);
 
   return {
@@ -38,6 +39,7 @@ const useGame = () => {
     chat,
     readyPlayer,
     resetPlayable,
+    gameStart,
   };
 };
 

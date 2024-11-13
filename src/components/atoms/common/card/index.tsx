@@ -2,10 +2,10 @@ import StripDollar from "@/styles/utils/stripDollar";
 import CardStyle, { CardStyleProps } from "./card.style";
 
 const Card: React.FC<StripDollar<CardStyleProps>> = (props) => {
-  const { width, color } = props;
+  const { color } = props;
 
   return (
-    <CardStyle.Container $width={width}>
+    <CardStyle.Container>
       <CardStyle.Card>
         <CardStyle.Front $color={color}>여섯글자에요</CardStyle.Front>
         <CardStyle.Back $color={color}>

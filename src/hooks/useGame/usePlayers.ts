@@ -5,6 +5,7 @@ export interface IPlayers {
   name: string;
   color?: string;
   isReady?: boolean;
+  role?: string;
 }
 
 export interface IUsePlayers {

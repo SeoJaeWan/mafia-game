@@ -1,11 +1,12 @@
 "use client";
-import React, { createContext, useRef } from "react";
-import Game from "./game";
+import React, { createContext, useEffect, useRef } from "react";
+import Game, { IGame } from "./game";
 import usePlayers, { IUsePlayers } from "./usePlayers";
 import useRoom, { IUseRoom } from "./useRoom";
 import useGameModeForm, { IUseGameModeForm } from "./useGameModeForm";
+import { useRouter } from "next/navigation";
 
-type TGameContext = IUseRoom & IUsePlayers & IUseGameModeForm & Game;
+type TGameContext = IUseRoom & IUsePlayers & IUseGameModeForm & IGame;
 
 export const GameContext = createContext<TGameContext>({} as TGameContext);
 
@@ -22,7 +23,28 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     response,
     //
   } = useRoom(game);
-  const { form, resetPlayable } = useGameModeForm(players);
+  const { form, resetPlayable, gameStart } = useGameModeForm(players, game);
+  const router = useRouter();
+
+  useEffect(() => {
+    const id = game.roomId;
+
+    if (response.name === "join") {
+      if (response.res) {
+        router.push(`/room/${id}`);
+      } else {
+        alert("방 참가에 실패했습니다.");
+      }
+    }
+
+    if (response.name === "create") {
+      if (response.res) {
+        router.push(`/room/${id}`);
+      } else {
+        alert("방 생성에 실패했습니다.");
+      }
+    }
+  }, [response]);
 
   return (
     <GameContext.Provider
@@ -41,6 +63,7 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         chat: (message) => game.chat(message),
         readyPlayer: () => game.readyPlayer(),
         resetPlayable,
+        gameStart,
       }}
     >
       {children}

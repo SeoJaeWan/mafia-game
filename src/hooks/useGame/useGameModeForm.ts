@@ -1,5 +1,6 @@
 import { useForm, UseFormReturn } from "react-hook-form";
 import { IPlayers } from "./usePlayers";
+import Game from "./game";
 
 export const playableRoles = Object.freeze([
   {
@@ -32,7 +33,11 @@ export const playMode = Object.freeze([
 type PlayableRoleNames = (typeof playableRoles)[number]["name"];
 type PlayModeValues = (typeof playMode)[number];
 
-interface IMode extends Record<PlayableRoleNames, number> {
+export interface IRole {
+  role: PlayableRoleNames;
+}
+
+export interface ISetting extends Record<PlayableRoleNames, number> {
   mode: PlayModeValues;
   time: number;
 }
@@ -46,13 +51,14 @@ const defaultPlayerRoles = playableRoles.reduce(
 ) as Record<PlayableRoleNames, number>;
 
 export interface IUseGameModeForm {
-  form: UseFormReturn<IMode, any, undefined>;
+  form: UseFormReturn<ISetting, any, undefined>;
   //
   resetPlayable: () => void;
+  gameStart: () => void;
 }
 
-const useGameModeForm = (players: IPlayers[]): IUseGameModeForm => {
-  const form = useForm<IMode>({
+const useGameModeForm = (players: IPlayers[], game: Game): IUseGameModeForm => {
+  const form = useForm<ISetting>({
     defaultValues: {
       ...defaultPlayerRoles,
       mode: playMode[0],
@@ -60,7 +66,7 @@ const useGameModeForm = (players: IPlayers[]): IUseGameModeForm => {
     },
   });
 
-  const resetPlayable = () => {
+  const calculatePlayable = () => {
     const totalPlayers = players.length;
 
     const politician = totalPlayers >= 6 ? 1 : 0;
@@ -70,6 +76,18 @@ const useGameModeForm = (players: IPlayers[]): IUseGameModeForm => {
     const mafia = Math.ceil(totalPlayers / 6);
     const citizen = totalPlayers - mafia - politician - police - doctor;
 
+    return {
+      mafia,
+      citizen,
+      police,
+      doctor,
+      politician,
+    };
+  };
+
+  const resetPlayable = () => {
+    const { mafia, citizen, police, doctor, politician } = calculatePlayable();
+
     form.setValue("mafia", mafia);
     form.setValue("citizen", citizen);
     form.setValue("police", police);
@@ -77,7 +95,30 @@ const useGameModeForm = (players: IPlayers[]): IUseGameModeForm => {
     form.setValue("politician", politician);
   };
 
-  return { form, resetPlayable };
+  const gameStart = () => {
+    const { time, mode, ...roles } = form.getValues();
+    let curRoles = roles;
+
+    const total = players.length;
+    const totalRoles = Object.values(roles).reduce((acc, cur) => acc + cur, 0);
+
+    if (total !== totalRoles) {
+      curRoles = calculatePlayable();
+      form.reset({
+        ...curRoles,
+        mode,
+        time,
+      });
+    }
+
+    game.gameStart({
+      ...curRoles,
+      mode,
+      time,
+    });
+  };
+
+  return { form, resetPlayable, gameStart };
 };
 
 export default useGameModeForm;
