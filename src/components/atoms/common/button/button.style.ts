@@ -23,9 +23,13 @@ const ButtonStyle = styled.button<IButtonStyleProps>`
 
   cursor: pointer;
 
-  &:hover {
-    background: var(--gray-background-active-rgba);
-  }
+  ${(props) =>
+    !props.$isDisable &&
+    css`
+      &:hover {
+        background: var(--gray-background-active-rgba);
+      }
+    `}
 
   ${(props) =>
     props.$isSmall &&

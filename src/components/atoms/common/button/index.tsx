@@ -29,6 +29,7 @@ const Button: React.FC<IButtonProps> = (props) => {
       $height={height}
       //
       $isSmall={isSmall}
+      $isDisable={isDisable}
       //
       type={type}
       onClick={onClick}

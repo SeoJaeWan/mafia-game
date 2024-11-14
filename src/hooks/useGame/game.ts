@@ -53,7 +53,7 @@ export interface IGame {
   leaveRoom: () => void;
   createRoom: (roomId: string, name: string) => void;
   joinRoom: (roomId: string, name: string) => void;
-  chat: (message: string) => void;
+  chat: (message: string, turn: Turn) => void;
   readyPlayer: () => void;
   animationFinish: (turn: Turn, day: number) => void;
 }
@@ -162,8 +162,8 @@ class Game {
         )
       );
       this.setTime("night");
-      this.setTurn("kill");
-      this.setDay((prev) => prev + 1);
+      this.setTurn("intro");
+      this.setDay(1);
 
       this.setIsPlaying(true);
       this.setChats((prev) => [
@@ -184,12 +184,11 @@ class Game {
       ({ turn, day }: { turn: Turn; day: number }) => {
         const dayObj = day === 1 ? day1 : day2;
 
-        const nextTurn = dayObj[turn];
+        const nextTurn = dayObj[turn] as Turn;
 
         this.setIsLoadingFinish(true);
-        this.setTurn(turn);
-
-        this.systemMessage(nextTurn as Turn);
+        this.setTurn(nextTurn);
+        this.systemMessage(nextTurn);
       }
     );
   }
@@ -251,10 +250,10 @@ class Game {
     }
   }
 
-  chat(message: string) {
+  chat(message: string, turn: Turn) {
     if (this.roomId && this.name) {
       this.socket.emit("chat", {
-        roomId: this.roomId,
+        turn,
         message,
       });
 

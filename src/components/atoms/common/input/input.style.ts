@@ -1,11 +1,13 @@
 import toRem from "@/styles/utils/toRem";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export interface IInputStyleProps {
   $flex?: string;
   //
   $width?: string;
   $height?: string;
+  //
+  $isDisable?: boolean;
 }
 
 const InputStyle = styled.input<IInputStyleProps>`
@@ -28,14 +30,18 @@ const InputStyle = styled.input<IInputStyleProps>`
     color: var(--gray-text);
   }
 
-  &:hover {
-    border: 3px solid var(--gray-background-active-rgba);
-  }
+  ${(props) =>
+    !props.$isDisable &&
+    css`
+      &:hover {
+        border: 3px solid var(--gray-background-active-rgba);
+      }
 
-  &:focus {
-    background-color: var(--gray-background-active-rgba);
-    border: 3px solid var(--gray-background-active-rgba);
-  }
+      &:focus {
+        background-color: var(--gray-background-active-rgba);
+        border: 3px solid var(--gray-background-active-rgba);
+      }
+    `}
 `;
 
 export default InputStyle;

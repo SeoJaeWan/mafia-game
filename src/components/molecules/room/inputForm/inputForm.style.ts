@@ -1,7 +1,11 @@
 import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
-const Container = styled.form`
+interface IContainer {
+  $isChatAble: boolean;
+}
+
+const Container = styled.form<IContainer>`
   position: relative;
 
   display: flex;
@@ -11,8 +15,14 @@ const Container = styled.form`
   gap: ${toRem(5)};
 
   width: 100%;
+  height: 100%;
 
   padding: 0 ${toRem(10)};
+
+  background-color: ${(props) =>
+    props.$isChatAble
+      ? "var(--gray-background)"
+      : "var(--gray-background-active-rgba)"};
 `;
 
 const EmojiButton = styled.button`

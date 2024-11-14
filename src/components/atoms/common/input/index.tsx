@@ -6,6 +6,7 @@ interface IInputProps extends StripDollar<IInputStyleProps> {
   value: string;
   placeholder?: string;
   maxLength?: number;
+  isDisable?: boolean;
   //
   onChange: (value: string) => void;
 }
@@ -20,11 +21,12 @@ const Input: React.FC<IInputProps> = (props) => {
     maxLength,
     value,
     placeholder,
+    isDisable,
     onChange,
   } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (maxLength && e.target.value.length > maxLength) return;
+    if (isDisable || (maxLength && e.target.value.length > maxLength)) return;
 
     onChange(e.target.value);
   };
@@ -36,6 +38,7 @@ const Input: React.FC<IInputProps> = (props) => {
       $width={width}
       $height={height}
       //
+      $isDisable={isDisable}
       value={value}
       placeholder={placeholder}
       onChange={handleChange}

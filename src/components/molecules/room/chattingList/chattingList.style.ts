@@ -6,7 +6,7 @@ const Container = styled.ul`
   flex-direction: column;
   gap: ${toRem(10)};
 
-  padding: 0 ${toRem(10)};
+  padding: ${toRem(10)};
 
   overflow-y: auto;
 `;

@@ -38,9 +38,13 @@ const PlayHelper = () => {
 
     const delay = (firstDay ? JobInfo : 0) + Animation;
 
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       animationFinish(turn, day);
     }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [time, day]);
 
   return (

@@ -55,7 +55,7 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         createRoom: (roomId, name) => game.createRoom(roomId, name),
         joinRoom: (roomId, name) => game.joinRoom(roomId, name),
         leaveRoom: () => game.leaveRoom(),
-        chat: (message) => game.chat(message),
+        chat: (message, turn) => game.chat(message, turn),
         readyPlayer: () => game.readyPlayer(),
         animationFinish: (turn, day) => game.animationFinish(turn, day),
       }}
