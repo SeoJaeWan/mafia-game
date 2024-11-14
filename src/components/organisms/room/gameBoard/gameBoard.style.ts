@@ -1,7 +1,12 @@
+import { Time } from "@/hooks/useGame/useRoom";
 import toRem from "@/styles/utils/toRem";
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 
-const Container = styled.div`
+interface IContainer {
+  $time: Time;
+}
+
+const Container = styled.div<IContainer>`
   position: relative;
 
   display: flex;
@@ -14,6 +19,11 @@ const Container = styled.div`
   padding: ${toRem(20)};
 
   overflow-y: auto;
+
+  background-color: ${(props) =>
+    props.$time === "night"
+      ? "var(--day-background-night)"
+      : "var(--day-background-morning)"};
 `;
 
 const Text = styled.p`
@@ -21,25 +31,6 @@ const Text = styled.p`
 
   font-size: ${toRem(20)};
   font-weight: 800;
-`;
-
-const cardAnimation = (length: number, total: number) => keyframes`
-  0% {
-    transform: translate3d(-50%, ${`calc(-50% - ${
-      total * 10 - length * 10
-    }px)`}, ${length * 10}px);
-  }
-
-  10% {
-
-  }
-
-  100% {
-  position: relative;
-  top: initial;
-  left: initial;
-  transform: none;
-  }
 `;
 
 const CardList = styled.div`

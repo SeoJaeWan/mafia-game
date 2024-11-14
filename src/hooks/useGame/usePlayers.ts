@@ -3,7 +3,7 @@ import Game from "./game";
 
 export interface IPlayers {
   name: string;
-  color?: string;
+  color: string;
   isReady?: boolean;
   isDie?: boolean;
   role?: string;

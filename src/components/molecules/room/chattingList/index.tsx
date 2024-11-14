@@ -12,6 +12,7 @@ const ChattingList: React.FC = () => {
           name={item.name}
           message={item.message}
           isMe={item.isMe}
+          isSystem={item.isSystem}
           key={index}
         />
       ))}

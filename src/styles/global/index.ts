@@ -9,6 +9,9 @@ const Global = styled.createGlobalStyle`
     --gray-text: #84929c;
     --gray-background-rgba: rgba(236, 241, 247, 1);
     --gray-background-active-rgba: rgba(223, 228, 234, 1);
+
+    --day-background-night: #2d3436;
+    --day-background-morning: #dfe6e9;
   }
 
   @media (prefers-color-scheme: dark) {

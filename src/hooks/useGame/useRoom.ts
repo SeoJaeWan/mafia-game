@@ -6,6 +6,7 @@ export interface IChats {
   name: string;
   message: string;
   isMe?: boolean;
+  isSystem?: boolean;
 }
 
 export interface IOptions {
@@ -20,6 +21,7 @@ export interface IResponse {
 
 export interface IUseRoom {
   isPlaying: boolean;
+  isLoadingFinish: boolean;
   chats: IChats[];
   response: IResponse;
   time: Time;
@@ -28,10 +30,18 @@ export interface IUseRoom {
 }
 
 export type Time = "night" | "morning";
-export type Turn = "intro" | "kill" | "heal" | "check" | "discussion";
+export type Turn =
+  | "intro"
+  | "kill" // 채팅 설명
+  | "heal" // 채팅 설명
+  | "check" // 채팅 설명
+  | "discussion" // 채팅 설명
+  | "마피아 투표" // 채팅 설명
+  | "마피아 사망";
 
 const useRoom = (game: Game): IUseRoom => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoadingFinish, setIsLoadingFinish] = useState(false);
   const [chats, setChats] = useState<IChats[]>([]);
   const [response, setResponse] = useState<IResponse>({
     name: "",
@@ -51,19 +61,22 @@ const useRoom = (game: Game): IUseRoom => {
       setTime,
       setTurn,
       setDay,
+      setIsLoadingFinish,
     });
   }, []);
 
-  // useEffect(() => {
-  //   const isRoom = pathname.includes("room");
+  // 테스트
+  useEffect(() => {
+    const isRoom = pathname.includes("room");
 
-  //   if (isRoom && !game.roomId) {
-  //     router.push("/");
-  //   }
-  // }, []);
+    if (isRoom && !game.roomId) {
+      router.push("/");
+    }
+  }, []);
 
   return {
     isPlaying,
+    isLoadingFinish,
     chats,
     response,
     turn,

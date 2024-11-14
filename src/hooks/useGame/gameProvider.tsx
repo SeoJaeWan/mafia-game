@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useEffect, useRef } from "react";
+import React, { createContext, useEffect } from "react";
 import Game, { IGame } from "./game";
 import usePlayers, { IUsePlayers } from "./usePlayers";
 import useRoom, { IUseRoom } from "./useRoom";
@@ -15,19 +15,15 @@ interface IGameProviderProps {
 }
 
 const game = new Game();
+
 const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
-  const { players, me, isAdmin } = usePlayers(game);
-  const {
-    isPlaying,
-    chats,
-    response,
-    time,
-    turn,
-    day,
-    //
-  } = useRoom(game);
-  const { form, resetPlayable, gameStart } = useGameModeForm(players, game);
+  const playerData = usePlayers(game);
+  const { players } = playerData;
+  const room = useRoom(game);
+  const gameForm = useGameModeForm(players, game);
   const router = useRouter();
+
+  const { response } = room;
 
   useEffect(() => {
     const id = game.roomId;
@@ -52,24 +48,16 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
   return (
     <GameContext.Provider
       value={{
-        isPlaying,
-        isAdmin,
-        me,
-        players,
-        chats,
-        response,
-        form,
-        time,
-        turn,
-        day,
+        ...room,
+        ...playerData,
+        ...gameForm,
         //
         createRoom: (roomId, name) => game.createRoom(roomId, name),
         joinRoom: (roomId, name) => game.joinRoom(roomId, name),
         leaveRoom: () => game.leaveRoom(),
         chat: (message) => game.chat(message),
         readyPlayer: () => game.readyPlayer(),
-        resetPlayable,
-        gameStart,
+        animationFinish: (turn, day) => game.animationFinish(turn, day),
       }}
     >
       {children}

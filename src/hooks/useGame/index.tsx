@@ -2,51 +2,9 @@ import { useContext } from "react";
 import { GameContext } from "./gameProvider";
 
 const useGame = () => {
-  const {
-    isPlaying,
-    isAdmin,
-    //
-    me,
-    players,
-    chats,
-    response,
-    time,
-    turn,
-    day,
-    //
-    form,
-    //
-    createRoom,
-    joinRoom,
-    leaveRoom,
-    chat,
-    readyPlayer,
-    resetPlayable,
-    gameStart,
-  } = useContext(GameContext);
+  const game = useContext(GameContext);
 
-  return {
-    isPlaying,
-    isAdmin,
-    //
-    me,
-    players,
-    chats,
-    response,
-    time,
-    turn,
-    day,
-    //
-    form,
-    //
-    createRoom,
-    joinRoom,
-    leaveRoom,
-    chat,
-    readyPlayer,
-    resetPlayable,
-    gameStart,
-  };
+  return game;
 };
 
 export default useGame;

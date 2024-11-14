@@ -5,7 +5,21 @@ interface IChatItemStyleProps {
   $isMe?: boolean;
 }
 
-const Container = styled.li<IChatItemStyleProps>`
+const SystemChatting = styled.li`
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+
+  width: 80%;
+
+  padding: ${toRem(8)} ${toRem(10)};
+  border-radius: ${toRem(20)};
+
+  background-color: var(--gray-background-rgba);
+`;
+
+const PlayerChatting = styled.li<IChatItemStyleProps>`
   display: flex;
   flex-direction: column;
   align-items: ${(props) => (props.$isMe ? "flex-end" : "flex-start")};
@@ -26,7 +40,8 @@ const Chat = styled.p`
 export type ChatItemStyleType = IChatItemStyleProps;
 
 const ChatItemStyle = {
-  Container,
+  SystemChatting,
+  PlayerChatting,
   NickName,
   Chat,
 };
