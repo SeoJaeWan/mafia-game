@@ -55,9 +55,11 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         createRoom: (roomId, name) => game.createRoom(roomId, name),
         joinRoom: (roomId, name) => game.joinRoom(roomId, name),
         leaveRoom: () => game.leaveRoom(),
-        chat: (message, turn) => game.chat(message, turn),
+        chat: (message) => game.chat(message),
         readyPlayer: () => game.readyPlayer(),
-        animationFinish: (turn, day) => game.animationFinish(turn, day),
+        animationFinish: () => game.animationFinish(),
+        selectUser: (name) => game.selectUser(name),
+        submitUser: (selectedUser) => game.submitUser(selectedUser),
       }}
     >
       {children}

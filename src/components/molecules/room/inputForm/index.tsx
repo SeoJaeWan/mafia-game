@@ -32,7 +32,7 @@ const InputForm = () => {
 
     if (!isChatAble || input.trim().length === 0) return;
 
-    chat(input, turn);
+    chat(input);
     setInput("");
   };
 

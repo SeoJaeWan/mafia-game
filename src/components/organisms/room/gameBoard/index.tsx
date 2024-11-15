@@ -4,6 +4,7 @@ import Card from "@/components/atoms/common/card";
 import useGame from "@/hooks/useGame";
 import { IPlayers } from "@/hooks/useGame/usePlayers";
 import PlayHelper from "@/components/molecules/room/playHelper";
+import Submit from "@/components/atoms/room/submit";
 
 type Reduce = [IPlayers[], IPlayers[]];
 
@@ -31,7 +32,13 @@ const GameBoard = () => {
         <Layout position={"relative"}>
           <GameBoardStyle.CardList>
             {survivors.map(({ name, color }, idx) => (
-              <Card key={idx} name={name} color={color} showAnimation />
+              <Card
+                key={idx}
+                name={name}
+                color={color}
+                showAnimation
+                isButton
+              />
             ))}
           </GameBoardStyle.CardList>
         </Layout>
@@ -46,6 +53,8 @@ const GameBoard = () => {
           </GameBoardStyle.CardList>
         </Layout>
       )}
+
+      <Submit />
     </GameBoardStyle.Container>
   );
 };

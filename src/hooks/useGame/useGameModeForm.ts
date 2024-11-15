@@ -30,7 +30,7 @@ export const playMode = Object.freeze([
   { label: "난장판", value: "chaos" },
 ] as const);
 
-type PlayableRoleNames = (typeof playableRoles)[number]["name"];
+export type PlayableRoleNames = (typeof playableRoles)[number]["name"];
 type PlayModeValues = (typeof playMode)[number];
 
 export interface IRole {

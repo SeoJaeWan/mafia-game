@@ -19,10 +19,10 @@ import { useEffect, useState } from "react";
 // max : 25초
 
 export const Animation = 5 * 1000;
-export const JobInfo = 20 * 1000;
+export const JobInfo = 10 * 1000;
 
 const PlayHelper = () => {
-  const { isLoadingFinish, turn, time, day, animationFinish } = useGame();
+  const { isLoadingFinish, time, day, animationFinish } = useGame();
   const [isShow, setIsShow] = useState(false);
 
   const firstDay = day === 1;
@@ -39,7 +39,7 @@ const PlayHelper = () => {
     const delay = (firstDay ? JobInfo : 0) + Animation;
 
     const timeout = setTimeout(() => {
-      animationFinish(turn, day);
+      animationFinish();
     }, delay);
 
     return () => {

@@ -27,17 +27,20 @@ export interface IUseRoom {
   time: Time;
   turn: Turn;
   day: number;
+  selectedUser: Map<string, string>;
 }
 
 export type Time = "night" | "morning";
 export type Turn =
+  | ""
   | "intro"
   | "kill" // 채팅 설명
   | "heal" // 채팅 설명
   | "check" // 채팅 설명
   | "discussion" // 채팅 설명
   | "마피아 투표" // 채팅 설명
-  | "마피아 사망";
+  | "마피아 사망"
+  | "일반인 사망";
 
 const useRoom = (game: Game): IUseRoom => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -48,8 +51,9 @@ const useRoom = (game: Game): IUseRoom => {
     res: false,
   });
   const [time, setTime] = useState<Time>("night");
-  const [turn, setTurn] = useState<Turn>("intro");
+  const [turn, setTurn] = useState<Turn>("");
   const [day, setDay] = useState(0);
+  const [selectedUser, setSelectedUser] = useState(new Map<string, string>());
   const router = useRouter();
   const pathname = usePathname();
 
@@ -62,6 +66,7 @@ const useRoom = (game: Game): IUseRoom => {
       setTurn,
       setDay,
       setIsLoadingFinish,
+      setSelectedUser,
     });
   }, []);
 
@@ -82,6 +87,7 @@ const useRoom = (game: Game): IUseRoom => {
     turn,
     time,
     day,
+    selectedUser,
   };
 };
 

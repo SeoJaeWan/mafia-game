@@ -1,6 +1,6 @@
 import toRem from "@/styles/utils/toRem";
 import Image from "next/image";
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 const Card = styled.div`
   position: relative;
@@ -66,10 +66,23 @@ const showAnimation = keyframes`
   }
 `;
 
-const Container = styled.div`
+interface IContainerProps {
+  $isClick: boolean;
+}
+
+const Container = styled.div<IContainerProps>`
   width: ${toRem(150)};
   height: auto;
   aspect-ratio: 63/88;
+
+  background-color: transparent;
+  border: none;
+
+  ${(props) =>
+    props.$isClick &&
+    css`
+      transform: scale(1.1);
+    `}
 
   &.animation {
     ${Card} {
