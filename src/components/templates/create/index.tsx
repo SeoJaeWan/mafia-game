@@ -17,13 +17,13 @@ const CreateTemplate = () => {
       name: "",
     },
   });
-  const { createRoom } = useGame();
+  const { enterRoom } = useGame();
 
   const handleCreateRoom = (data: { name: string }) => {
     const { name } = data;
     const roomId = createRoomId();
 
-    createRoom(roomId, name);
+    enterRoom(roomId, name);
   };
 
   return (

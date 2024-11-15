@@ -14,13 +14,13 @@ const JoinTemplate = () => {
       name: "",
     },
   });
-  const { joinRoom } = useGame();
+  const { enterRoom } = useGame();
   const { id } = useParams<{ id: string }>();
 
   const handleJoinRoom = (data: { name: string }) => {
     const { name } = data;
 
-    joinRoom(id, name);
+    enterRoom(id, name);
   };
 
   return (

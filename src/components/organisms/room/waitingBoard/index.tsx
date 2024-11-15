@@ -14,7 +14,9 @@ const WaitingBoard = () => {
   const { id } = useParams();
   const [isGameSetting, setIsGameSetting] = useState(false);
   const [copyUrl, setCopyUrl] = useState("");
-  const { me, isAdmin, players, gameStart, readyPlayer } = useGame();
+  const { me, players, gameStart, readyPlayer } = useGame();
+
+  const isAdmin = players[0]?.name === me?.name;
 
   const totalLength = players.length - 1;
   const readyLength = players.filter((player) => player.isReady).length;
