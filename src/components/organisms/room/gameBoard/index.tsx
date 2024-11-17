@@ -2,11 +2,12 @@ import Layout from "@/styles/layout";
 import GameBoardStyle from "./gameBoard.style";
 import Card from "@/components/atoms/common/card";
 import useGame from "@/hooks/useGame";
-import { IPlayers } from "@/hooks/useGame/usePlayers";
-import PlayHelper from "@/components/molecules/room/playHelper";
+import AnimationHelper from "@/components/molecules/room/animationHelper";
 import Submit from "@/components/atoms/room/submit";
+import { IPlayer } from "@/hooks/useGame/useRoom";
+import Timer from "@/components/atoms/room/timer";
 
-type Reduce = [IPlayers[], IPlayers[]];
+type Reduce = [IPlayer[], IPlayer[]];
 
 const GameBoard = () => {
   const { players, time } = useGame();
@@ -26,7 +27,8 @@ const GameBoard = () => {
 
   return (
     <GameBoardStyle.Container $time={time}>
-      <PlayHelper />
+      <AnimationHelper />
+      <Timer />
       <Layout>
         <GameBoardStyle.Text>생존자</GameBoardStyle.Text>
         <Layout position={"relative"}>

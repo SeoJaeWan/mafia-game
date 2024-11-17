@@ -19,9 +19,9 @@ import { useEffect, useState } from "react";
 // max : 25초
 
 export const Animation = 5 * 1000;
-export const JobInfo = 10 * 1000;
+export const JobInfo = 2 * 1000;
 
-const PlayHelper = () => {
+const AnimationHelper = () => {
   const { isLoadingFinish, time, day, animationFinish } = useGame();
   const [isShow, setIsShow] = useState(false);
 
@@ -55,4 +55,4 @@ const PlayHelper = () => {
   );
 };
 
-export default PlayHelper;
+export default AnimationHelper;

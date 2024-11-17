@@ -12,11 +12,12 @@ const InputForm = () => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
 
-  const { isPlaying, me, turn, chat } = useGame();
+  const { isPlaying, isDie, me, turn, chat } = useGame();
 
   const getIsChatAble = () => {
-    if (!isPlaying) return true;
-    if (turn === "kill" && me && me.role === "mafia") return true;
+    if (!isPlaying || isDie) return true;
+    if ((turn === "kill" && me.role === "mafia") || turn === "discussion")
+      return true;
 
     return false;
   };
@@ -30,7 +31,7 @@ const InputForm = () => {
   const handleSendChat = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isChatAble || input.trim().length === 0) return;
+    if (!isChatAble || input.trim().length === 0 || isDie) return;
 
     chat(input);
     setInput("");

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Game from "./game";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { PlayableRoleNames } from "./useGameModeForm";
 
 export interface IPlayer {
@@ -26,9 +26,23 @@ export interface IOptions {
   name: string;
 }
 
-export interface IResponse {
+export type ResponseMap = {
+  enterRoom: { name: string; players: IPlayer[] };
+  ready: { players: IPlayer[] };
+  gameStart: { role: PlayableRoleNames; players: IPlayer[] };
+  animationFinish: {};
+  selectUser: { selector: string; name: string };
+  message: { name: string; message: string };
+  "마피아 투표": { name: string; players: IPlayer[] };
+  heal: { name: string };
+  check: { role: PlayableRoleNames };
+  kill: { name: string; players: IPlayer[] };
+  discussion: {};
+};
+
+export interface IResponse<T extends keyof ResponseMap> {
   name: string;
-  res: Record<string, string>;
+  res: ResponseMap[T];
 }
 
 type TurnSequence = Partial<Record<Turn, Turn>>;
@@ -48,19 +62,6 @@ const day2: TurnSequence = {
   check: "kill",
   kill: "discussion",
 };
-
-const colors = [
-  "#f82d39",
-  "#2d5165",
-  "#b9ab6c",
-  "#0c3fb5",
-  "#900599",
-  "#b57731",
-  "#56e616",
-  "#913353",
-  "#f1d65d",
-  "#3e2528",
-];
 
 export type Time = "night" | "morning";
 export type Turn =
@@ -86,21 +87,20 @@ const useRoom = (game: Game) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoadingFinish, setIsLoadingFinish] = useState(false);
   const [chats, setChats] = useState<IChats[]>([]);
-  const [response, setResponse] = useState<IResponse>({
-    name: "",
-    res: {},
-  });
+  const [response, setResponse] = useState<IResponse<keyof ResponseMap> | null>(
+    null
+  );
   const [time, setTime] = useState<Time>("night");
   const [turn, setTurn] = useState<Turn>("");
   const [day, setDay] = useState(0);
-  const [selectedUser, setSelectedUser] = useState(new Map<string, string>());
+  const [selectedUsers, setSelectedUsers] = useState(new Map<string, string>());
+  const [selected, setSelected] = useState<string>("");
   const router = useRouter();
   const pathname = usePathname();
 
-  const healPlayer = useRef("");
+  const isDie = players.find((player) => player.name === me.name)?.isDie;
 
   const initGame = () => {
-    setPlayers((prev) => prev.map((player) => ({ ...player, isDie: false })));
     setTime("night");
     setTurn("intro");
     setDay(1);
@@ -121,8 +121,8 @@ const useRoom = (game: Game) => {
     });
   };
 
-  const systemMessage = () => {
-    if (turn === "kill") {
+  const systemMessage = (nextTurn: Turn) => {
+    if (nextTurn === "kill") {
       setChats((prev) => [
         ...prev,
         {
@@ -133,7 +133,7 @@ const useRoom = (game: Game) => {
       ]);
     }
 
-    if (turn === "discussion") {
+    if (nextTurn === "discussion") {
       setChats((prev) => [
         ...prev,
         {
@@ -144,7 +144,7 @@ const useRoom = (game: Game) => {
       ]);
     }
 
-    if (turn === "heal") {
+    if (nextTurn === "heal") {
       setChats((prev) => [
         ...prev,
         {
@@ -155,7 +155,7 @@ const useRoom = (game: Game) => {
       ]);
     }
 
-    if (turn === "check") {
+    if (nextTurn === "check") {
       setChats((prev) => [
         ...prev,
         {
@@ -166,7 +166,7 @@ const useRoom = (game: Game) => {
       ]);
     }
 
-    if (turn === "마피아 투표") {
+    if (nextTurn === "마피아 투표") {
       setChats((prev) => [
         ...prev,
         {
@@ -192,84 +192,9 @@ const useRoom = (game: Game) => {
     }
 
     setTurn(nextTurn);
-
-    systemMessage();
+    systemMessage(nextTurn);
   };
 
-  const submitResult = (selectedUser: Map<string, string>) => {
-    const mostSelected = selectedUser.entries().reduce((acc, [, value]) => {
-      acc[value] = (acc[value] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
-
-    const [user, votes] = Object.entries(mostSelected).reduce(
-      (max, entry) => (entry[1] > max[1] ? entry : max),
-      ["", -1]
-    );
-
-    if (turn === "마피아 투표") {
-      if (players.length / 2 < votes) {
-        setChats((prev) => [
-          ...prev,
-          {
-            name: "알림",
-            message: `${user}님이 투표로 사망하였습니다.`,
-            isSystem: true,
-          },
-        ]);
-
-        setPlayers((prev) =>
-          prev.map((player) =>
-            player.name === user ? { ...player, isDie: true } : player
-          )
-        );
-      } else {
-        setChats((prev) => [
-          ...prev,
-          {
-            name: "알림",
-            message: "투표 결과로 아무도 사망하지 않았습니다.",
-            isSystem: true,
-          },
-        ]);
-      }
-    }
-
-    if (turn === "heal") {
-      healPlayer.current = user;
-    }
-
-    if (turn === "kill") {
-      if (healPlayer.current === user) {
-        setChats((prev) => [
-          ...prev,
-          {
-            name: "알림",
-            message: "아무 일도 일어나지 않았습니다.",
-            isSystem: true,
-          },
-        ]);
-      } else {
-        setChats((prev) => [
-          ...prev,
-          {
-            name: "알림",
-            message: `${user}님이 마피아에 의해 사망하였습니다.`,
-            isSystem: true,
-          },
-        ]);
-
-        setPlayers((prev) =>
-          prev.map((player) =>
-            player.name === user ? { ...player, isDie: true } : player
-          )
-        );
-      }
-
-      healPlayer.current = "";
-    }
-  };
-  //
   const animationFinish = () => {
     setIsLoadingFinish(false);
     game.animationFinish();
@@ -277,6 +202,7 @@ const useRoom = (game: Game) => {
 
   const selectUser = (name: string) => {
     type SpecificTurns = "kill" | "heal" | "check";
+    if (isDie) return;
 
     const allowedRolesByTurn: Record<SpecificTurns, PlayableRoleNames[]> = {
       kill: ["mafia"],
@@ -287,12 +213,8 @@ const useRoom = (game: Game) => {
     const allowedRoles = allowedRolesByTurn[turn as SpecificTurns];
 
     if (allowedRoles.includes(me.role) || turn === "마피아 투표") {
-      game.selectUser(name, me.role);
+      game.selectUser(name, turn);
     }
-  };
-
-  const submitUser = () => {
-    game.submitUser(selectedUser);
   };
 
   const chat = (message: string) => {
@@ -317,42 +239,128 @@ const useRoom = (game: Game) => {
   useEffect(() => {
     const id = game.roomId;
 
-    if (response.name === "enterRoom") {
+    const isResponseOfType = <T extends keyof ResponseMap>(
+      response: IResponse<keyof ResponseMap> | null,
+      name: T
+    ): response is IResponse<T> => response?.name === name;
+
+    if (isResponseOfType(response, "enterRoom")) {
       router.push(`/room/${id}`);
-      const { name } = response.res;
+      const { name, players } = response.res;
       setMe((prev) => ({ ...prev, name }));
+      setPlayers(players);
     }
 
-    if (response.name === "gameStart") {
-      const { role } = response.res as { role: PlayableRoleNames };
+    if (isResponseOfType(response, "ready")) {
+      const { players } = response.res;
+      setPlayers(players);
+    }
+
+    if (isResponseOfType(response, "gameStart")) {
+      const { role, players } = response.res;
       setMe((prev) => ({ ...prev, role }));
+      setPlayers(players);
       initGame();
     }
 
-    if (response.name === "animationFinish") {
+    if (isResponseOfType(response, "animationFinish")) {
       setIsLoadingFinish(true);
       updateTurn();
     }
 
-    if (response.name === "selectUser") {
+    if (isResponseOfType(response, "selectUser")) {
       const { selector, name } = response.res;
-      setSelectedUser((prev) => new Map([...prev, [selector, name]]));
+      setSelectedUsers((prev) => new Map([...prev, [selector, name]]));
     }
 
-    if (response.name === "submitUser") {
-      const { selectedUserRaw } = response.res;
+    if (isResponseOfType(response, "마피아 투표")) {
+      const { name, players } = response.res;
 
-      const selectedUser = new Map(JSON.parse(selectedUserRaw)) as Map<
-        string,
-        string
-      >;
+      if (name) {
+        setPlayers(players);
+        setChats((prev) => [
+          ...prev,
+          {
+            name: "알림",
+            message: `${name}님이 마피아로 투표되었습니다.`,
+            isSystem: true,
+          },
+        ]);
+      } else {
+        setChats((prev) => [
+          ...prev,
+          {
+            name: "알림",
+            message: `투표가 과반수를 넘지 못해 종료되었습니다.`,
+            isSystem: true,
+          },
+        ]);
+      }
 
       updateTurn();
-      setSelectedUser(new Map());
-      submitResult(selectedUser);
+      setSelectedUsers(new Map());
+      setSelected("");
     }
 
-    if (response.name === "message") {
+    if (isResponseOfType(response, "heal")) {
+      const { name } = response.res;
+
+      updateTurn();
+      setSelectedUsers(new Map());
+      setSelected("");
+    }
+
+    if (isResponseOfType(response, "check")) {
+      const { role } = response.res;
+
+      setChats((prev) => [
+        ...prev,
+        {
+          name: "알림",
+          message: `조사 결과 ${role}입니다.`,
+          isSystem: true,
+        },
+      ]);
+
+      updateTurn();
+      setSelectedUsers(new Map());
+      setSelected("");
+    }
+
+    if (isResponseOfType(response, "kill")) {
+      const { name, players } = response.res;
+
+      if (name) {
+        setPlayers(players);
+        setChats((prev) => [
+          ...prev,
+          {
+            name: "알림",
+            message: `${name}님이 마피아에 의해 살해되었습니다.`,
+            isSystem: true,
+          },
+        ]);
+      } else {
+        setChats((prev) => [
+          ...prev,
+          {
+            name: "알림",
+            message: `의사의 치료로 죽어가는 시민이 살았습니다..`,
+            isSystem: true,
+          },
+        ]);
+      }
+
+      updateTurn();
+      setSelectedUsers(new Map());
+      setSelected("");
+    }
+
+    if (isResponseOfType(response, "discussion")) {
+      updateTurn();
+    }
+
+    if (isResponseOfType(response, "message")) {
       const { name, message } = response.res;
 
       const chat = {
@@ -363,30 +371,6 @@ const useRoom = (game: Game) => {
 
       setChats((prev) => [...prev, chat]);
     }
-
-    if (response.name === "ready") {
-      const { name } = response.res;
-
-      setPlayers((prev) =>
-        prev.map((player) =>
-          player.name === name
-            ? { ...player, isReady: !player.isReady }
-            : player
-        )
-      );
-    }
-
-    if (response.name === "players") {
-      const { playersRaw } = response.res;
-      const players = JSON.parse(playersRaw) as string[];
-
-      setPlayers((prev) => [
-        ...players.map((name, index) => ({
-          name,
-          color: colors[index],
-        })),
-      ]);
-    }
   }, [response]);
 
   return {
@@ -394,18 +378,22 @@ const useRoom = (game: Game) => {
     me,
     isPlaying,
     isLoadingFinish,
+    isDie,
     chats,
     response,
     turn,
     time,
     day,
-    selectedUser,
+    selectedUsers,
+    selected,
     //
     animationFinish,
     selectUser,
-    submitUser,
     chat,
+    setSelected,
   };
 };
+
+export type RoomType = ReturnType<typeof useRoom>;
 
 export default useRoom;

@@ -1,12 +1,14 @@
 "use client";
 import React, { createContext } from "react";
 import Game, { IGame } from "./game";
-import useRoom from "./useRoom";
+import useRoom, { RoomType } from "./useRoom";
 import useGameModeForm, { IUseGameModeForm } from "./useGameModeForm";
 
-type TGameContext = IUseGameModeForm & IGame;
+type GameContextType = RoomType & IUseGameModeForm & IGame;
 
-export const GameContext = createContext<TGameContext>({} as TGameContext);
+export const GameContext = createContext<GameContextType>(
+  {} as GameContextType
+);
 
 interface IGameProviderProps {
   children: React.ReactNode;
@@ -27,6 +29,7 @@ const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         enterRoom: (roomId, name) => game.enterRoom(roomId, name),
         leaveRoom: () => game.leaveRoom(),
         readyPlayer: () => game.readyPlayer(),
+        discussionFinish: () => game.discussionFinish(),
       }}
     >
       {children}

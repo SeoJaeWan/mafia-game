@@ -1,6 +1,6 @@
 import { useForm, UseFormReturn } from "react-hook-form";
-import { IPlayers } from "./usePlayers";
 import Game from "./game";
+import { IPlayer } from "./useRoom";
 
 export const playableRoles = Object.freeze([
   {
@@ -57,7 +57,7 @@ export interface IUseGameModeForm {
   gameStart: () => void;
 }
 
-const useGameModeForm = (players: IPlayers[], game: Game): IUseGameModeForm => {
+const useGameModeForm = (players: IPlayer[], game: Game): IUseGameModeForm => {
   const form = useForm<ISetting>({
     defaultValues: {
       ...defaultPlayerRoles,

@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 interface SubmitStyleProps {
   $isShow: boolean;
-  $isActive: boolean;
 }
 
 const SubmitStyle = styled.button<SubmitStyleProps>`
@@ -19,8 +18,7 @@ const SubmitStyle = styled.button<SubmitStyleProps>`
 
   border: none;
   border-radius: ${toRem(25)};
-  background-color: ${(props) =>
-    props.$isActive ? "var(--black)" : "var(--gray)"};
+  background-color: var(--black);
   color: var(--white);
 
   font-size: ${toRem(18)};

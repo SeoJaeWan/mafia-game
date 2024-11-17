@@ -1,31 +1,34 @@
 import { io, Socket } from "socket.io-client";
 import React from "react";
-import { IChats, IResponse, Turn } from "./useRoom";
-import { IRole, ISetting } from "./useGameModeForm";
+import { IChats, IPlayer, IResponse, ResponseMap, Turn } from "./useRoom";
+import { IRole, ISetting, PlayableRoleNames } from "./useGameModeForm";
 import { UseFormGetValues } from "react-hook-form";
 
 const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 
 interface ISetRoom {
-  setResponse: React.Dispatch<React.SetStateAction<IResponse>>;
+  setResponse: React.Dispatch<
+    React.SetStateAction<IResponse<keyof ResponseMap> | null>
+  >;
 }
 
 // intro => kill => 일반인 사망 => discussion => 마피아 투표 => 마피아 사망 => heal => check => kill
 // day1          // day 2 ~
 
-type TurnSequence = Partial<Record<Turn, Turn>>;
-
 export interface IGame {
   leaveRoom: () => void;
   enterRoom: (roomId: string, name: string) => void;
   readyPlayer: () => void;
+  discussionFinish: () => void;
 }
 
 class Game {
   socket: Socket;
   roomId: string | undefined;
 
-  setResponse: React.Dispatch<React.SetStateAction<IResponse>> = () => {};
+  setResponse: React.Dispatch<
+    React.SetStateAction<IResponse<keyof ResponseMap> | null>
+  > = () => {};
   getValues?: UseFormGetValues<ISetting>;
 
   constructor() {
@@ -46,11 +49,14 @@ class Game {
     this.getMessages();
     this.enterRoomRes();
     this.readyPlayerRes();
-    this.getPlayers();
     this.gameStartRes();
     this.animationFinishRes();
     this.selectUserRes();
-    this.submitUserRes();
+    this.마피아투표Result();
+    this.healResult();
+    this.checkResult();
+    this.killResult();
+    this.discussionFinishRes();
   }
 
   enterRoom(roomId: string, name: string) {
@@ -60,9 +66,12 @@ class Game {
   }
 
   enterRoomRes() {
-    this.socket.on("enterRoomRes", (name) => {
-      this.setResponse({ name: "enterRoom", res: { name } });
-    });
+    this.socket.on(
+      "enterRoomRes",
+      ({ name, players }: { name: string; players: IPlayer[] }) => {
+        this.setResponse({ name: "enterRoom", res: { name, players } });
+      }
+    );
   }
 
   leaveRoom() {
@@ -75,15 +84,18 @@ class Game {
   }
 
   gameStartRes() {
-    this.socket.on("gameStartRes", (data: IRole) => {
-      const { role } = data;
-      this.setResponse({
-        name: "gameStart",
-        res: {
-          role,
-        },
-      });
-    });
+    this.socket.on(
+      "gameStartRes",
+      ({ role, players }: { role: PlayableRoleNames; players: IPlayer[] }) => {
+        this.setResponse({
+          name: "gameStart",
+          res: {
+            role,
+            players,
+          },
+        });
+      }
+    );
   }
 
   animationFinish() {
@@ -96,8 +108,8 @@ class Game {
     });
   }
 
-  selectUser(name: string, role: string) {
-    this.socket.emit("selectUser", { name, role });
+  selectUser(name: string, turn: Turn) {
+    this.socket.emit("selectUser", { name, turn });
   }
 
   selectUserRes() {
@@ -109,13 +121,43 @@ class Game {
     );
   }
 
-  submitUser(selectedUser: Map<string, string>) {
-    this.socket.emit("submitUser", JSON.stringify(Array.from(selectedUser)));
+  마피아투표Result() {
+    this.socket.on(
+      "마피아 투표 result",
+      ({ name, players }: { name: string; players: IPlayer[] }) => {
+        this.setResponse({ name: "마피아 투표", res: { name, players } });
+      }
+    );
   }
 
-  submitUserRes() {
-    this.socket.on("submitUserRes", (data: string) => {
-      this.setResponse({ name: "submitUser", res: { selectedUserRaw: data } });
+  healResult() {
+    this.socket.on("heal result", (name: string) => {
+      this.setResponse({ name: "heal", res: { name } });
+    });
+  }
+
+  checkResult() {
+    this.socket.on("check result", (role: PlayableRoleNames) => {
+      this.setResponse({ name: "check", res: { role } });
+    });
+  }
+
+  killResult() {
+    this.socket.on(
+      "kill result",
+      ({ name, players }: { name: string; players: IPlayer[] }) => {
+        this.setResponse({ name: "kill", res: { name, players } });
+      }
+    );
+  }
+
+  discussionFinish() {
+    this.socket.emit("discussionFinish");
+  }
+
+  discussionFinishRes() {
+    this.socket.on("discussionFinishRes", () => {
+      this.setResponse({ name: "discussion", res: {} });
     });
   }
 
@@ -133,8 +175,8 @@ class Game {
   }
 
   readyPlayerRes() {
-    this.socket.on("readyRes", (name) => {
-      this.setResponse({ name: "ready", res: { name } });
+    this.socket.on("readyRes", (players: IPlayer[]) => {
+      this.setResponse({ name: "ready", res: { players } });
     });
   }
 
@@ -147,11 +189,11 @@ class Game {
   }
 
   getPlayers() {
-    this.socket.on("players", (players: string[]) => {
+    this.socket.on("players", (players: IPlayer[]) => {
       this.setResponse({
         name: "players",
         res: {
-          playersRaw: JSON.stringify(players),
+          players,
         },
       });
     });

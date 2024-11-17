@@ -1,6 +1,6 @@
 "use client";
 
-import { Animation } from "@/components/molecules/room/playHelper";
+import { Animation } from "@/components/molecules/room/animationHelper";
 import JobInformationStyle from "./jobInformation.style";
 
 const JobInformation = () => {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import DayAnimationStyle from "./dayAnimation.style";
-import { Animation } from "@/components/molecules/room/playHelper";
+import { Animation } from "@/components/molecules/room/animationHelper";
 import useGame from "@/hooks/useGame";
 
 const DayAnimation = () => {
