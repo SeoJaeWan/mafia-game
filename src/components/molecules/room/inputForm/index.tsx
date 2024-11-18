@@ -15,7 +15,9 @@ const InputForm = () => {
   const { isPlaying, isDie, me, turn, chat } = useGame();
 
   const getIsChatAble = () => {
-    if (!isPlaying || isDie) return true;
+    if (isDie) return false;
+
+    if (!isPlaying) return true;
     if ((turn === "kill" && me.role === "mafia") || turn === "discussion")
       return true;
 
@@ -31,7 +33,9 @@ const InputForm = () => {
   const handleSendChat = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isChatAble || input.trim().length === 0 || isDie) return;
+    console.log(!isChatAble || input.trim().length === 0);
+
+    if (!isChatAble || input.trim().length === 0) return;
 
     chat(input);
     setInput("");

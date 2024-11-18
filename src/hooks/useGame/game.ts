@@ -1,6 +1,13 @@
 import { io, Socket } from "socket.io-client";
 import React from "react";
-import { IChats, IPlayer, IResponse, ResponseMap, Turn } from "./useRoom";
+import {
+  GameFinish,
+  IChats,
+  IPlayer,
+  IResponse,
+  ResponseMap,
+  Turn,
+} from "./useRoom";
 import { IRole, ISetting, PlayableRoleNames } from "./useGameModeForm";
 import { UseFormGetValues } from "react-hook-form";
 
@@ -12,7 +19,7 @@ interface ISetRoom {
   >;
 }
 
-// intro => kill => 일반인 사망 => discussion => 마피아 투표 => 마피아 사망 => heal => check => kill
+// intro => kill => 일반인 사망 => discussion => vote => 마피아 사망 => heal => check => kill
 // day1          // day 2 ~
 
 export interface IGame {
@@ -52,10 +59,11 @@ class Game {
     this.gameStartRes();
     this.animationFinishRes();
     this.selectUserRes();
-    this.마피아투표Result();
+    this.voteResult();
     this.healResult();
     this.checkResult();
     this.killResult();
+    this.gameFinish();
     this.discussionFinishRes();
   }
 
@@ -121,11 +129,11 @@ class Game {
     );
   }
 
-  마피아투표Result() {
+  voteResult() {
     this.socket.on(
-      "마피아 투표 result",
+      "vote result",
       ({ name, players }: { name: string; players: IPlayer[] }) => {
-        this.setResponse({ name: "마피아 투표", res: { name, players } });
+        this.setResponse({ name: "vote", res: { name, players } });
       }
     );
   }
@@ -177,6 +185,12 @@ class Game {
   readyPlayerRes() {
     this.socket.on("readyRes", (players: IPlayer[]) => {
       this.setResponse({ name: "ready", res: { players } });
+    });
+  }
+
+  gameFinish() {
+    this.socket.on("gameFinish", (state: GameFinish) => {
+      this.setResponse({ name: "gameFinish", res: { state } });
     });
   }
 

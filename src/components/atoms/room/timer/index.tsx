@@ -6,8 +6,10 @@ const Timer = () => {
   const { form, turn, discussionFinish } = useGame();
   const [time, setTime] = useState(0);
 
+  const isActive = turn === "discussion";
+
   useEffect(() => {
-    if (turn === "discussion") {
+    if (isActive) {
       let time = form.getValues("time");
 
       const interval = setInterval(() => {
@@ -20,9 +22,9 @@ const Timer = () => {
         }
       }, 1000);
     }
-  }, [turn]);
+  }, [isActive]);
 
-  return <TimerStyle>{time}</TimerStyle>;
+  return <TimerStyle $isActive={isActive}>{time}</TimerStyle>;
 };
 
 export default Timer;

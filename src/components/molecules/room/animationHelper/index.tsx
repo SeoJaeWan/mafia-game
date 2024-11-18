@@ -6,14 +6,14 @@ import { useEffect, useState } from "react";
 
 // day1 => night : 밤으로 변경 => 애니메이션 & Background 출력 => 애니메이션 5초
 //         night : 직업 안내 => 20초 => intro
-//         night : 마피아 투표 => Background 사라짐 => day 변경 => kill
+//         night : vote => Background 사라짐 => day 변경 => kill
 // day2 => morning : 아침으로 변경 => 애니메이션 & Background 출력 => discussion
-//         morning : 마피아 투표 결과 => background 사라짐 => ?
+//         morning : vote 결과 => background 사라짐 => ?
 //         morning : 마피아 죽이는 애니메이션 => ?
 //         night : 밤으로 변경 => 애니메이션 & Background 출력
 //         night : 의사 선택 => heal
 //         night : 경찰 선택 => check
-//         night : 마피아 투표 => kill
+//         night : vote => kill
 // 반복
 
 // max : 25초

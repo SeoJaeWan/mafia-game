@@ -11,7 +11,7 @@ interface ICardProps extends StripDollar<CardStyleProps> {
 
 const Card: React.FC<ICardProps> = (props) => {
   const { name, color, showAnimation, isButton } = props;
-  const { isDie, selected, selectedUsers, setSelected } = useGame();
+  const { isDie, selected, selectedUsers, isSelect, setSelected } = useGame();
 
   const isClick =
     selected === name ||
@@ -19,7 +19,7 @@ const Card: React.FC<ICardProps> = (props) => {
 
   const handleClickCard = () => {
     if (isButton) {
-      if (isDie) return;
+      if (!isSelect) return;
 
       const select = name === selected ? "" : name;
       setSelected(select);

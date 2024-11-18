@@ -79,20 +79,20 @@ const PlayerChatting = styled.li<IChatItemStyleProps>`
   }
 `;
 
-const NickName = styled.p`
-  font-size: ${toRem(12)};
-  color: var(--white);
-`;
-
 interface IChat {
-  $isSystem?: boolean;
+  $isBlack?: boolean;
 }
+
+const NickName = styled.p<IChat>`
+  font-size: ${toRem(12)};
+  color: ${(props) => (props.$isBlack ? "var(--black)" : "var(--white)")};
+`;
 
 const Chat = styled.p<IChat>`
   font-size: ${toRem(16)};
   font-weight: 500;
 
-  color: ${(props) => (props.$isSystem ? "var(--black)" : "var(--white)")};
+  color: ${(props) => (props.$isBlack ? "var(--black)" : "var(--white)")};
 `;
 
 export type ChatItemStyleType = IChatItemStyleProps;

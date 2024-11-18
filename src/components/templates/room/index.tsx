@@ -26,18 +26,18 @@ const GameTemplate = () => {
   };
 
   // 테스트
-  useEffect(() => {
-    history.pushState(null, "", "");
+  // useEffect(() => {
+  //   history.pushState(null, "", "");
 
-    window.addEventListener("beforeunload", beforeUnloadListener);
-    window.addEventListener("popstate", handlePopState);
+  //   window.addEventListener("beforeunload", beforeUnloadListener);
+  //   window.addEventListener("popstate", handlePopState);
 
-    return () => {
-      window.removeEventListener("beforeunload", beforeUnloadListener);
-      window.removeEventListener("popstate", handlePopState);
-      leaveRoom();
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", beforeUnloadListener);
+  //     window.removeEventListener("popstate", handlePopState);
+  //     leaveRoom();
+  //   };
+  // }, []);
 
   return (
     <Layout

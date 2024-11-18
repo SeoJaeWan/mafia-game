@@ -33,10 +33,11 @@ export type ResponseMap = {
   animationFinish: {};
   selectUser: { selector: string; name: string };
   message: { name: string; message: string };
-  "마피아 투표": { name: string; players: IPlayer[] };
+  vote: { name: string; players: IPlayer[] };
   heal: { name: string };
   check: { role: PlayableRoleNames };
   kill: { name: string; players: IPlayer[] };
+  gameFinish: { name: string; state: GameFinish };
   discussion: {};
 };
 
@@ -55,8 +56,8 @@ const day1: TurnSequence = {
 
 const day2: TurnSequence = {
   "일반인 사망": "discussion",
-  discussion: "마피아 투표",
-  "마피아 투표": "마피아 사망",
+  discussion: "vote",
+  vote: "마피아 사망",
   "마피아 사망": "heal",
   heal: "check",
   check: "kill",
@@ -71,9 +72,14 @@ export type Turn =
   | "heal" // 채팅 설명
   | "check" // 채팅 설명
   | "discussion" // 채팅 설명
-  | "마피아 투표" // 채팅 설명
+  | "vote" // 채팅 설명
   | "마피아 사망"
-  | "일반인 사망";
+  | "일반인 사망"
+  | "mafiaWin"
+  | "citizenWin"
+  | "politicianWin";
+
+export type GameFinish = "0" | "1" | "2";
 
 const useRoom = (game: Game) => {
   const [players, setPlayers] = useState<IPlayer[]>([]);
@@ -98,7 +104,26 @@ const useRoom = (game: Game) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const getIsSelect = () => {
+    type SpecificTurns = "kill" | "heal" | "check";
+
+    const allowedRolesByTurn: Record<SpecificTurns, PlayableRoleNames[]> = {
+      kill: ["mafia"],
+      heal: ["doctor"],
+      check: ["police"],
+    };
+
+    const allowedRoles = allowedRolesByTurn[turn as SpecificTurns] || [];
+
+    if ((!isDie && turn === "vote") || allowedRoles.includes(me.role)) {
+      return true;
+    }
+
+    return false;
+  };
+
   const isDie = players.find((player) => player.name === me.name)?.isDie;
+  const isSelect = getIsSelect();
 
   const initGame = () => {
     setTime("night");
@@ -166,7 +191,7 @@ const useRoom = (game: Game) => {
       ]);
     }
 
-    if (nextTurn === "마피아 투표") {
+    if (nextTurn === "vote") {
       setChats((prev) => [
         ...prev,
         {
@@ -201,20 +226,7 @@ const useRoom = (game: Game) => {
   };
 
   const selectUser = (name: string) => {
-    type SpecificTurns = "kill" | "heal" | "check";
-    if (isDie) return;
-
-    const allowedRolesByTurn: Record<SpecificTurns, PlayableRoleNames[]> = {
-      kill: ["mafia"],
-      heal: ["doctor"],
-      check: ["police"],
-    };
-
-    const allowedRoles = allowedRolesByTurn[turn as SpecificTurns];
-
-    if (allowedRoles.includes(me.role) || turn === "마피아 투표") {
-      game.selectUser(name, turn);
-    }
+    game.selectUser(name, turn);
   };
 
   const chat = (message: string) => {
@@ -226,6 +238,8 @@ const useRoom = (game: Game) => {
       setResponse,
     });
   }, []);
+
+  console.log(turn);
 
   // 테스트
   useEffect(() => {
@@ -273,7 +287,7 @@ const useRoom = (game: Game) => {
       setSelectedUsers((prev) => new Map([...prev, [selector, name]]));
     }
 
-    if (isResponseOfType(response, "마피아 투표")) {
+    if (isResponseOfType(response, "vote")) {
       const { name, players } = response.res;
 
       if (name) {
@@ -360,6 +374,18 @@ const useRoom = (game: Game) => {
       updateTurn();
     }
 
+    if (isResponseOfType(response, "gameFinish")) {
+      const { state } = response.res;
+
+      const stateTurn = {
+        "0": "politicianWin",
+        "1": "citizenWin",
+        "2": "mafiaWin",
+      } as const;
+
+      setTurn(stateTurn[state]);
+    }
+
     if (isResponseOfType(response, "message")) {
       const { name, message } = response.res;
 
@@ -376,6 +402,7 @@ const useRoom = (game: Game) => {
   return {
     players,
     me,
+    isSelect,
     isPlaying,
     isLoadingFinish,
     isDie,

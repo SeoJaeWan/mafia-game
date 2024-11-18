@@ -7,9 +7,10 @@ interface IChatItemProps extends StripDollar<ChatItemStyleType>, IChats {}
 
 const ChatItem: React.FC<IChatItemProps> = (props) => {
   const { name, message, isMe, isSystem } = props;
-  const { players } = useGame();
+  const { players, isPlaying } = useGame();
 
   const color = players.find((player) => player.name === name)?.color;
+  const isBlack = !isPlaying || isSystem;
 
   const Chatting = isSystem
     ? ChatItemStyle.SystemChatting
@@ -17,8 +18,12 @@ const ChatItem: React.FC<IChatItemProps> = (props) => {
 
   return (
     <Chatting $isMe={isMe} $color={color}>
-      {!isSystem && <ChatItemStyle.NickName>{name}</ChatItemStyle.NickName>}
-      <ChatItemStyle.Chat $isSystem={isSystem}>{message}</ChatItemStyle.Chat>
+      {!isSystem && (
+        <ChatItemStyle.NickName $isBlack={isBlack}>
+          {name}
+        </ChatItemStyle.NickName>
+      )}
+      <ChatItemStyle.Chat $isBlack={isBlack}>{message}</ChatItemStyle.Chat>
     </Chatting>
   );
 };
