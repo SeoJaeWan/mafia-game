@@ -63,8 +63,8 @@ const AnimationBox = styled.div`
   max-width: 100%;
   aspect-ratio: 654/400;
 
-  border-radius: ${toRem(20)};
-  border: ${toRem(5)} solid;
+  border-radius: 20px;
+  border: 5px solid;
 
   img {
     position: absolute;
@@ -130,16 +130,16 @@ const Container = styled.div<IContainer>`
 
 const Info = styled.p`
   position: absolute;
-  bottom: ${toRem(10)};
+  bottom: 10px;
   left: 50%;
 
   transform: translateX(-50%);
 
   background-color: var(--day-background-morning);
-  border: ${toRem(2)} solid var(--day-background-night);
-  border-radius: ${toRem(10)};
+  border: 2px solid var(--day-background-night);
+  border-radius: 10px;
 
-  padding: ${toRem(10)} ${toRem(20)};
+  padding: 10px 20px;
 
   font-size: ${toRem(18)};
   font-weight: 700;

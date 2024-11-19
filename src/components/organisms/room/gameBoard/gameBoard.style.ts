@@ -7,7 +7,7 @@ interface IContainer {
 }
 
 const Text = styled.p`
-  margin-bottom: ${toRem(10)};
+  margin-bottom: 10px;
 
   font-size: ${toRem(20)};
   font-weight: 800;
@@ -16,7 +16,7 @@ const Text = styled.p`
 const CardList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${toRem(10)};
+  gap: 10px;
 `;
 
 interface IPlayBoard {
@@ -35,12 +35,12 @@ const Container = styled.div<IContainer>`
 
   display: flex;
   flex-direction: column;
-  gap: ${toRem(30)};
+  gap: 30px;
 
   width: 100%;
   height: 100%;
 
-  padding: ${toRem(20)};
+  padding: 20px;
 
   overflow-y: auto;
 

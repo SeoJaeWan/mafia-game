@@ -1,7 +1,5 @@
-import Layout from "@/styles/layout";
 import CountStyle, { CountStyleProps } from "./count.style";
 import { FaCheck, FaMinus, FaPlus } from "react-icons/fa6";
-import toRem from "@/styles/utils/toRem";
 import { useEffect, useRef, useState } from "react";
 import StripDollar from "@/styles/utils/stripDollar";
 

@@ -16,7 +16,7 @@ const Box = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: ${toRem(600)};
+  width: 600px;
 `;
 
 const WaitingPeople = styled.p`
@@ -24,7 +24,7 @@ const WaitingPeople = styled.p`
   align-items: center;
   justify-content: center;
 
-  gap: ${toRem(10)};
+  gap: 10px;
 
   font-size: ${toRem(20)};
 `;
@@ -35,13 +35,13 @@ const Url = styled.button`
   justify-content: center;
 
   width: 100%;
-  height: ${toRem(60)};
+  height: 60px;
 
   border: none;
-  border-radius: ${toRem(5)};
+  border-radius: 5px;
   background-color: var(--gray-background-rgba);
 
-  margin: ${toRem(10)} 0 ${toRem(20)};
+  margin: 10px 0 20px;
 
   font-size: ${toRem(30)};
   cursor: pointer;
@@ -52,10 +52,10 @@ interface IButtonCoverProps {
 }
 
 const ButtonCover = styled.div<IButtonCoverProps>`
-  border-radius: ${toRem(5)};
+  border-radius: 5px;
 
-  border: ${toRem(2)} solid
-    ${(props) => (props.$isActive ? "#000" : "transparent")};
+  border: 2px solid
+    ${(props) => (props.$isActive ? "var(--black)" : "transparent")};
 `;
 
 const WaitingBoardStyle = {

@@ -1,12 +1,8 @@
 "use client";
-import { useState } from "react";
 import Input from "@/components/atoms/common/input";
 import Layout from "@/styles/layout";
 import Title from "@/components/atoms/common/title";
-import toRem from "@/styles/utils/toRem";
 import Button from "@/components/atoms/common/button";
-import TextButton from "@/components/atoms/common/textButton/textButton";
-import GameSetting from "@/components/molecules/create/gameSetting";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import createRoomId from "@/utils/createRoomId";
 import useGame from "@/hooks/useGame";
@@ -41,8 +37,8 @@ const CreateTemplate = () => {
           flexDirection={"column"}
           justifyContent={"center"}
           alignItems={"flex-end"}
-          gap={toRem(5)}
-          margin={`${toRem(20)} 0 ${toRem(60)}`}
+          gap={"5px"}
+          margin={`20px 0 60px`}
         >
           <Controller
             name={"name"}
@@ -50,8 +46,8 @@ const CreateTemplate = () => {
             control={control}
             render={({ field: { value, onChange } }) => (
               <Input
-                width={toRem(500)}
-                height={toRem(60)}
+                width={"500px"}
+                height={"60px"}
                 //
                 value={value}
                 maxLength={6}

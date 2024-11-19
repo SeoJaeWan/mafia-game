@@ -13,16 +13,16 @@ const Button = styled.button`
   border: none;
 
   &.increase {
-    border-radius: 0 ${toRem(5)} ${toRem(5)} 0;
+    border-radius: 0 5px 5px 0;
   }
 
   &.decrease {
-    border-radius: ${toRem(5)} 0 0 ${toRem(5)};
+    border-radius: 5px 0 0 5px;
   }
 
   &.confirm {
     display: none;
-    border-radius: 0 ${toRem(5)} ${toRem(5)} 0;
+    border-radius: 0 5px 5px 0;
   }
 
   &:hover {
@@ -35,8 +35,8 @@ const Number = styled.button`
   justify-content: center;
   align-items: center;
 
-  min-width: ${toRem(45)};
-  height: ${toRem(24)};
+  min-width: 45px;
+  height: 24px;
 
   font-size: ${toRem(14)};
   font-weight: 600;
@@ -54,8 +54,8 @@ const Number = styled.button`
 const Input = styled.input`
   display: none;
 
-  width: ${toRem(45)};
-  height: ${toRem(20)};
+  width: 45px;
+  height: 20px;
 
   border: none;
   background-color: var(--background);
@@ -100,7 +100,7 @@ const Container = styled.div<ContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: ${toRem(2)};
+  gap: 2px;
 
   ${(props) =>
     props.$isInput &&
@@ -114,7 +114,7 @@ const Container = styled.div<ContainerProps>`
       }
 
       ${Number} {
-        width: ${toRem(45 + 45 + 2)};
+        width: calc(45px + 45px + 2px);
 
         ${Input} {
           display: block;

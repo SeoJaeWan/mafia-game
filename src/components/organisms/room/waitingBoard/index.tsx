@@ -7,7 +7,6 @@ import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useGame from "@/hooks/useGame";
-import toRem from "@/styles/utils/toRem";
 import GameSetting from "@/components/molecules/create/gameSetting";
 
 const WaitingBoard = () => {
@@ -64,7 +63,7 @@ const WaitingBoard = () => {
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
-          gap={toRem(10)}
+          gap={"10px"}
         >
           {isAdmin && <Button onClick={handleGameSetting}>게임 설정</Button>}
           <WaitingBoardStyle.ButtonCover $isActive={me?.isReady}>

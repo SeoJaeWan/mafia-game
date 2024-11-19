@@ -38,8 +38,8 @@ const CardScreen = styled.div<ICardScreenProps>`
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
-  border: ${toRem(7)} solid black;
-  border-radius: ${toRem(10)};
+  border: 7px solid var(--black);
+  border-radius: 10px;
 
   background-color: ${(props) => props.$color};
 `;
@@ -71,7 +71,7 @@ interface IContainerProps {
 }
 
 const Container = styled.div<IContainerProps>`
-  width: ${toRem(150)};
+  width: 150px;
   height: auto;
   aspect-ratio: 63/88;
 

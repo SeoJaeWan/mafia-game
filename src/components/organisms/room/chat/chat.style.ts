@@ -1,4 +1,3 @@
-import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -12,7 +11,7 @@ const Container = styled.div`
 `;
 
 const UserBox = styled.div`
-  height: ${toRem(35)};
+  height: 35px;
 `;
 
 const ChattingBox = styled.div`
@@ -27,9 +26,9 @@ const InputBox = styled.div`
   align-items: center;
 
   width: 100%;
-  height: ${toRem(60)};
+  height: 60px;
 
-  border-top: ${toRem(2)} solid var(--gray-background-active-rgba);
+  border-top: 2px solid var(--gray-background-active-rgba);
 `;
 
 const ChatStyle = {

@@ -2,7 +2,6 @@
 
 import Button from "@/components/atoms/common/button";
 import Input from "@/components/atoms/common/input";
-import toRem from "@/styles/utils/toRem";
 import InputFormStyle from "./inputForm.style";
 
 import { useState } from "react";
@@ -48,7 +47,7 @@ const InputForm = () => {
     >
       <Input
         flex={"1"}
-        height={toRem(30)}
+        height={"30px"}
         value={input}
         onChange={setInput}
         isDisable={!isChatAble}
@@ -65,8 +64,8 @@ const InputForm = () => {
         />
       </InputFormStyle.EmojiButton> */}
       <Button
-        width={48}
-        height={30}
+        width={"48px"}
+        height={"30px"}
         isSmall
         type={"submit"}
         isDisable={!isChatAble}

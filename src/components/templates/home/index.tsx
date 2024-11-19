@@ -3,7 +3,6 @@ import Button from "@/components/atoms/common/button";
 import A from "@/components/atoms/common/a";
 import MainTitle from "@/components/atoms/home/mainTItle";
 import Layout from "@/styles/layout";
-import toRem from "@/styles/utils/toRem";
 import Link from "next/link";
 
 const HomeTemplate: React.FC = () => {
@@ -23,8 +22,8 @@ const HomeTemplate: React.FC = () => {
         flexDirection={"column"}
         justifyContent={"center"}
         alignItems={"center"}
-        gap={toRem(20)}
-        marginTop={toRem(80)}
+        gap={"20px"}
+        marginTop={"80px"}
       >
         <Link href={"/create"}>
           <Button>방 만들기</Button>

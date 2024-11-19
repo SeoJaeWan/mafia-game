@@ -7,17 +7,17 @@ interface SubmitStyleProps {
 
 const SubmitStyle = styled.button<SubmitStyleProps>`
   position: absolute;
-  bottom: ${toRem(20)};
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
 
   display: ${(props) => (props.$isShow ? "block" : "none")};
 
-  width: ${toRem(200)};
-  height: ${toRem(50)};
+  width: 200px;
+  height: 50px;
 
   border: none;
-  border-radius: ${toRem(25)};
+  border-radius: 25px;
   background-color: var(--black);
   color: var(--white);
 

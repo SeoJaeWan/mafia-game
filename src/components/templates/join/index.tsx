@@ -4,7 +4,6 @@ import Input from "@/components/atoms/common/input";
 import Title from "@/components/atoms/common/title";
 import useGame from "@/hooks/useGame";
 import Layout from "@/styles/layout";
-import toRem from "@/styles/utils/toRem";
 import { useParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 
@@ -38,7 +37,7 @@ const JoinTemplate = () => {
           flexDirection={"column"}
           justifyContent={"center"}
           alignItems={"flex-end"}
-          margin={`${toRem(20)} 0 ${toRem(60)}`}
+          margin={`20px 0 60px`}
         >
           <Controller
             name={"name"}
@@ -48,8 +47,8 @@ const JoinTemplate = () => {
             }}
             render={({ field: { value, onChange } }) => (
               <Input
-                width={toRem(500)}
-                height={toRem(60)}
+                width={"500px"}
+                height={"60px"}
                 //
                 value={value}
                 maxLength={6}

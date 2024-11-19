@@ -1,7 +1,6 @@
 import UsersStyle from "./users.style";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import { useState } from "react";
-import toRem from "@/styles/utils/toRem";
 import useGame from "@/hooks/useGame";
 
 const Users = () => {
@@ -21,7 +20,7 @@ const Users = () => {
         </UsersStyle.Arrow>
       </UsersStyle.Button>
 
-      <UsersStyle.List $height={open ? `calc(${toRem(35)} * 10)` : `0px`}>
+      <UsersStyle.List $height={open ? `calc(35px * 10)` : `0px`}>
         {players.map(({ name }, index) => (
           <UsersStyle.Item key={index}>{name}</UsersStyle.Item>
         ))}

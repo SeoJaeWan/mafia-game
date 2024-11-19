@@ -59,7 +59,7 @@ const Box = styled.div`
   width: 30vw;
   height: 100vh;
 
-  padding: ${toRem(20)} 0;
+  padding: 20px 0;
 
   background-color: var(--background);
 

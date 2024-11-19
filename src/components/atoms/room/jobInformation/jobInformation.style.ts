@@ -41,7 +41,7 @@ const Container = styled.div<ContainerProps>`
 const Playable = styled.div`
   padding: 25px 15px;
 
-  border-radius: ${toRem(10)};
+  border-radius: 10px;
   border: 3px solid var(--black);
 
   background-color: var(--white);
@@ -56,7 +56,7 @@ const Information = styled.div`
 
   padding: 10px;
 
-  border-radius: ${toRem(10)};
+  border-radius: 10px;
   border: 3px solid var(--black);
 
   background-color: var(--white);
