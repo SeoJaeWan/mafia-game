@@ -6,6 +6,30 @@ interface IContainer {
   $time: Time;
 }
 
+const Text = styled.p`
+  margin-bottom: ${toRem(10)};
+
+  font-size: ${toRem(20)};
+  font-weight: 800;
+`;
+
+const CardList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${toRem(10)};
+`;
+
+interface IPlayBoard {
+  $isLoadingFinish: boolean;
+}
+
+const PlayBoard = styled.div<IPlayBoard>`
+  display: ${(props) => (props.$isLoadingFinish ? "block" : "none")};
+
+  width: 100%;
+  height: 100%;
+`;
+
 const Container = styled.div<IContainer>`
   position: relative;
 
@@ -24,25 +48,20 @@ const Container = styled.div<IContainer>`
     props.$time === "night"
       ? "var(--day-background-night)"
       : "var(--day-background-morning)"};
-`;
 
-const Text = styled.p`
-  margin-bottom: ${toRem(10)};
-
-  font-size: ${toRem(20)};
-  font-weight: 800;
-`;
-
-const CardList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${toRem(10)};
+  ${Text} {
+    color: ${(props) =>
+      props.$time === "night"
+        ? "var(--day-background-morning)"
+        : "var(--day-background-night)"};
+  }
 `;
 
 const GameBoardStyle = {
   Container,
   Text,
   CardList,
+  PlayBoard,
 };
 
 export default GameBoardStyle;

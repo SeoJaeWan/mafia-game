@@ -1,6 +1,6 @@
 import Layout from "@/styles/layout";
 import GameBoardStyle from "./gameBoard.style";
-import Card from "@/components/atoms/common/card";
+import Card from "@/components/atoms/room/card";
 import useGame from "@/hooks/useGame";
 import AnimationHelper from "@/components/molecules/room/animationHelper";
 import Submit from "@/components/atoms/room/submit";
@@ -10,7 +10,7 @@ import Timer from "@/components/atoms/room/timer";
 type Reduce = [IPlayer[], IPlayer[]];
 
 const GameBoard = () => {
-  const { players, time } = useGame();
+  const { players, time, isLoadingFinish } = useGame();
 
   const [survivors, dead] = players.reduce(
     (acc: Reduce, player) => {
@@ -29,34 +29,36 @@ const GameBoard = () => {
     <GameBoardStyle.Container $time={time}>
       <AnimationHelper />
       <Timer />
-      <Layout>
-        <GameBoardStyle.Text>생존자</GameBoardStyle.Text>
-        <Layout position={"relative"}>
-          <GameBoardStyle.CardList>
-            {survivors.map(({ name, color }, idx) => (
-              <Card
-                key={idx}
-                name={name}
-                color={color}
-                showAnimation
-                isButton
-              />
-            ))}
-          </GameBoardStyle.CardList>
-        </Layout>
-      </Layout>
-      {dead.length !== 0 && (
+      <GameBoardStyle.PlayBoard $isLoadingFinish={isLoadingFinish}>
         <Layout>
-          <GameBoardStyle.Text>사망자</GameBoardStyle.Text>
-          <GameBoardStyle.CardList>
-            {dead.map(({ name, color }, idx) => (
-              <Card key={idx} name={name} color={color} showAnimation />
-            ))}
-          </GameBoardStyle.CardList>
+          <GameBoardStyle.Text>생존자</GameBoardStyle.Text>
+          <Layout position={"relative"}>
+            <GameBoardStyle.CardList>
+              {survivors.map(({ name, color }, idx) => (
+                <Card
+                  key={idx}
+                  name={name}
+                  color={color}
+                  showAnimation
+                  isButton
+                />
+              ))}
+            </GameBoardStyle.CardList>
+          </Layout>
         </Layout>
-      )}
+        {dead.length !== 0 && (
+          <Layout>
+            <GameBoardStyle.Text>사망자</GameBoardStyle.Text>
+            <GameBoardStyle.CardList>
+              {dead.map(({ name, color }, idx) => (
+                <Card key={idx} name={name} color={color} showAnimation />
+              ))}
+            </GameBoardStyle.CardList>
+          </Layout>
+        )}
 
-      <Submit />
+        <Submit />
+      </GameBoardStyle.PlayBoard>
     </GameBoardStyle.Container>
   );
 };

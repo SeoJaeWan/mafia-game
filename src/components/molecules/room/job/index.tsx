@@ -1,4 +1,4 @@
-import Card from "@/components/atoms/common/card";
+import Card from "@/components/atoms/room/card";
 import JobStyle from "./job";
 
 const Job = () => {

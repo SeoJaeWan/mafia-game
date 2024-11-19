@@ -152,7 +152,7 @@ const useRoom = (game: Game) => {
         ...prev,
         {
           name: "알림",
-          message: "마피아가 투표를 시작합니다.",
+          message: "마피아가 살인을 시작합니다.",
           isSystem: true,
         },
       ]);
