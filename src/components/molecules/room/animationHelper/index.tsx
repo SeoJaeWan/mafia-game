@@ -18,8 +18,8 @@ import { useEffect, useState } from "react";
 
 // max : 25초
 
-export const Animation = 5 * 1000;
-export const JobInfo = 2 * 1000;
+export const DayAnimationDuration = 5 * 1000;
+export const JobInfoDuration = 20 * 1000;
 
 const AnimationHelper = () => {
   const { isLoadingFinish, time, day, animationFinish } = useGame();
@@ -36,7 +36,7 @@ const AnimationHelper = () => {
   useEffect(() => {
     setIsShow(true);
 
-    const delay = (firstDay ? JobInfo : 0) + Animation;
+    const delay = (firstDay ? JobInfoDuration : 0) + DayAnimationDuration;
 
     const timeout = setTimeout(() => {
       animationFinish();

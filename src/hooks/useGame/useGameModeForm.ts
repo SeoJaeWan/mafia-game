@@ -6,22 +6,27 @@ export const playableRoles = Object.freeze([
   {
     label: "마피아",
     name: "mafia",
+    info: "마피아는 다른 마피아와 함께 플레이어를 죽이고 살아 남아야 합니다.",
   },
   {
     label: "시민",
     name: "citizen",
+    info: "시민은 아무런 행동을 하지 않아도 되며, 주변의 행동을 주시하여 마피아를 찾아내야 합니다.",
   },
   {
     label: "경찰",
     name: "police",
+    info: "경찰은 밤에 한 명의 플레이어를 조사하여 그 플레이어가 마피아인지 아닌지 알아내야 합니다.",
   },
   {
     label: "의사",
     name: "doctor",
+    info: "의사는 밤에 한 명의 플레이어를 선택하여 그 플레이어가 마피아에게 죽이지 않도록 해야 합니다.",
   },
   {
     label: "정치인",
     name: "politician",
+    info: "정치인은 낮에 투표를 진행할 때 당선되면 게임을 승리합니다.",
   },
 ] as const);
 

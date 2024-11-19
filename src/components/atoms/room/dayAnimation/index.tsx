@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import DayAnimationStyle from "./dayAnimation.style";
-import { Animation } from "@/components/molecules/room/animationHelper";
+import { DayAnimationDuration } from "@/components/molecules/room/animationHelper";
 import useGame from "@/hooks/useGame";
 import Image from "next/image";
 
@@ -15,7 +15,7 @@ const DayAnimation = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsShow(false);
-    }, Animation);
+    }, DayAnimationDuration);
   });
 
   return (
