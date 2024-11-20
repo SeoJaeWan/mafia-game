@@ -1,6 +1,7 @@
 import DayAnimation from "@/components/atoms/room/dayAnimation";
 import DayBackground from "@/components/atoms/room/dayBackground";
 import JobInformation from "@/components/atoms/room/jobInformation";
+import Event from "@/components/atoms/room/event";
 import useGame from "@/hooks/useGame";
 import { useEffect, useState } from "react";
 
@@ -21,11 +22,45 @@ import { useEffect, useState } from "react";
 export const DayAnimationDuration = 5 * 1000;
 export const JobInfoDuration = 20 * 1000;
 
+export const EventAnimation = 4 * 1000;
+
 const AnimationHelper = () => {
-  const { isLoadingFinish, time, day, animationFinish } = useGame();
+  const {
+    isLoadingFinish,
+    time,
+    day,
+    response,
+    animationFinish,
+    isResponseOfType,
+  } = useGame();
   const [isShow, setIsShow] = useState(false);
 
   const firstDay = day === 1;
+
+  const getDelayWithEvent = (): [number, string] => {
+    let delay = DayAnimationDuration;
+    let event = "";
+
+    if (firstDay) {
+      delay += JobInfoDuration;
+    }
+
+    if (isResponseOfType(response, "kill")) {
+      const { name } = response;
+
+      delay += EventAnimation;
+
+      if (name) {
+        event = "mafia";
+      } else {
+        event = "healer";
+      }
+    }
+
+    return [delay, event];
+  };
+
+  const [delay, event] = getDelayWithEvent();
 
   useEffect(() => {
     if (isLoadingFinish) {
@@ -36,8 +71,6 @@ const AnimationHelper = () => {
   useEffect(() => {
     setIsShow(true);
 
-    const delay = (firstDay ? JobInfoDuration : 0) + DayAnimationDuration;
-
     const timeout = setTimeout(() => {
       animationFinish();
     }, delay);
@@ -45,11 +78,12 @@ const AnimationHelper = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [time, day]);
+  }, [time, day, delay]);
 
   return (
     <DayBackground isShow={isShow}>
-      <DayAnimation key={day} />
+      <DayAnimation key={day} event={event} />
+      <Event event={event} key={event} />
       {firstDay && <JobInformation />}
     </DayBackground>
   );

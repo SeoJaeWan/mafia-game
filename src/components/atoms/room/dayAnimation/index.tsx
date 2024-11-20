@@ -2,15 +2,33 @@
 
 import { useEffect, useState } from "react";
 import DayAnimationStyle from "./dayAnimation.style";
-import { DayAnimationDuration } from "@/components/molecules/room/animationHelper";
+import {
+  DayAnimationDuration,
+  EventAnimation,
+} from "@/components/molecules/room/animationHelper";
 import useGame from "@/hooks/useGame";
 import Image from "next/image";
 
-const DayAnimation = () => {
-  const [isShow, setIsShow] = useState(true);
+interface IDayAnimation {
+  event: string;
+}
+
+const DayAnimation: React.FC<IDayAnimation> = (props) => {
+  const { event } = props;
+  const [isShow, setIsShow] = useState(false);
   const { time } = useGame();
 
   const info = time === "night" ? "밤이 되었습니다." : "낮이 되었습니다.";
+
+  useEffect(() => {
+    if (event) {
+      setTimeout(() => {
+        setIsShow(true);
+      }, EventAnimation);
+    } else {
+      setIsShow(true);
+    }
+  }, [event]);
 
   useEffect(() => {
     setTimeout(() => {

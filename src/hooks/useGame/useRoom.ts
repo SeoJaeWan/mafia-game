@@ -233,13 +233,16 @@ const useRoom = (game: Game) => {
     game.chat(message, turn);
   };
 
+  const isResponseOfType = <T extends keyof ResponseMap>(
+    response: IResponse<keyof ResponseMap> | null,
+    name: T
+  ): response is IResponse<T> => response?.name === name;
+
   useEffect(() => {
     game.setRoom({
       setResponse,
     });
   }, []);
-
-  console.log(turn);
 
   // 테스트
   useEffect(() => {
@@ -252,11 +255,6 @@ const useRoom = (game: Game) => {
 
   useEffect(() => {
     const id = game.roomId;
-
-    const isResponseOfType = <T extends keyof ResponseMap>(
-      response: IResponse<keyof ResponseMap> | null,
-      name: T
-    ): response is IResponse<T> => response?.name === name;
 
     if (isResponseOfType(response, "enterRoom")) {
       router.push(`/room/${id}`);
@@ -359,7 +357,7 @@ const useRoom = (game: Game) => {
           ...prev,
           {
             name: "알림",
-            message: `의사의 치료로 죽어가는 시민이 살았습니다..`,
+            message: `의사의 치료로 죽어가는 시민이 살았습니다.`,
             isSystem: true,
           },
         ]);
@@ -418,6 +416,7 @@ const useRoom = (game: Game) => {
     selectUser,
     chat,
     setSelected,
+    isResponseOfType,
   };
 };
 

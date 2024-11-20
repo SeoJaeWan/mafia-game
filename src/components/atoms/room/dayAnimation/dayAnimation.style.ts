@@ -70,7 +70,7 @@ const AnimationBox = styled.div`
     position: absolute;
 
     offset-rotate: 0deg;
-    /* offset-distance: 0%; */
+    offset-distance: 0%;
     offset-path: path("M80,268c136-263,320.21-262.37,445,3");
   }
 `;
