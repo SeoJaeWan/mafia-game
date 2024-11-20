@@ -19,7 +19,7 @@ interface ISetRoom {
   >;
 }
 
-// intro => kill => 일반인 사망 => discussion => vote => 마피아 사망 => heal => check => kill
+// intro => kill => citizenKill => discussion => vote => mafiaKill => heal => check => kill
 // day1          // day 2 ~
 
 export interface IGame {

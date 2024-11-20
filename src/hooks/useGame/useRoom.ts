@@ -51,14 +51,14 @@ type TurnSequence = Partial<Record<Turn, Turn>>;
 const day1: TurnSequence = {
   "": "intro",
   intro: "kill",
-  kill: "일반인 사망",
+  kill: "citizenKill",
 };
 
 const day2: TurnSequence = {
-  "일반인 사망": "discussion",
+  citizenKill: "discussion",
   discussion: "vote",
-  vote: "마피아 사망",
-  "마피아 사망": "heal",
+  vote: "mafiaKill",
+  mafiaKill: "heal",
   heal: "check",
   check: "kill",
   kill: "discussion",
@@ -73,8 +73,8 @@ export type Turn =
   | "check" // 채팅 설명
   | "discussion" // 채팅 설명
   | "vote" // 채팅 설명
-  | "마피아 사망"
-  | "일반인 사망"
+  | "mafiaKill"
+  | "citizenKill"
   | "mafiaWin"
   | "citizenWin"
   | "politicianWin";
@@ -207,8 +207,8 @@ const useRoom = (game: Game) => {
     const dayObj = day === 1 ? day1 : day2;
     const nextTurn = dayObj[turn] as Turn;
 
-    // 마피아가 살인 후 일반인 사망으로 넘어갈 때 day 변경
-    if (nextTurn === "일반인 사망") {
+    // 마피아가 살인 후 citizenKill으로 넘어갈 때 day 변경
+    if (nextTurn === "citizenKill") {
       updateDay();
 
       // night 변경되는 시간 Turn = heal
