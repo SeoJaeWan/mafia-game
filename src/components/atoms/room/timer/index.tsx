@@ -1,4 +1,4 @@
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import { useEffect, useState } from "react";
 import TimerStyle from "./timer.style";
 

@@ -1,4 +1,4 @@
-import { Time } from "@/hooks/useGame/useRoom";
+import { Time } from "@/hooks/game/hooks/usePlaying";
 import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 

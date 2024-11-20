@@ -1,6 +1,6 @@
 import { useForm, UseFormReturn } from "react-hook-form";
-import Game from "./game";
-import { IPlayer } from "./useRoom";
+import Game from "../game";
+import { IPlayer } from "./usePlaying";
 
 export const playableRoles = Object.freeze([
   {

@@ -1,4 +1,4 @@
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import SubmitStyle from "./submit.style";
 
 const Submit = () => {

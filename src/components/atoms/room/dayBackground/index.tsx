@@ -1,4 +1,4 @@
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import DayBackgroundStyle, {
   IDayBackgroundStyleProps,
 } from "./dayBackground.style";

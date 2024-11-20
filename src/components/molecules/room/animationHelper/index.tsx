@@ -2,7 +2,7 @@ import DayAnimation from "@/components/atoms/room/dayAnimation";
 import DayBackground from "@/components/atoms/room/dayBackground";
 import JobInformation from "@/components/atoms/room/jobInformation";
 import Event from "@/components/atoms/room/event";
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import { useEffect, useState } from "react";
 
 // day1 => night : 밤으로 변경 => 애니메이션 & Background 출력 => 애니메이션 5초

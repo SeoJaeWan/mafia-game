@@ -4,7 +4,7 @@ import Layout from "@/styles/layout";
 import { headerHeight } from "../header";
 import Chat from "@/components/organisms/room/chat";
 import { useEffect } from "react";
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import GameBoard from "@/components/organisms/room/gameBoard";
 import WaitingBoard from "@/components/organisms/room/waitingBoard";
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import StyledComponentsRegistry from "@/styles/lib/registry";
-import GameProvider from "@/hooks/useGame/gameProvider";
+import GameProvider from "@/hooks/game/gameProvider";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",

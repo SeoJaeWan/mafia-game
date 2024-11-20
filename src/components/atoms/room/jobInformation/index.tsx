@@ -5,9 +5,9 @@ import {
   JobInfoDuration,
 } from "@/components/molecules/room/animationHelper";
 import JobInformationStyle from "./jobInformation.style";
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import Image from "next/image";
-import { playableRoles } from "@/hooks/useGame/useGameModeForm";
+import { playableRoles } from "@/hooks/game/hooks/useGameModeForm";
 
 const JobInformation = () => {
   const { me } = useGame();

@@ -1,7 +1,7 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import ChatItemStyle, { ChatItemStyleType } from "./chatItem.style";
-import { IChats } from "@/hooks/useGame/useRoom";
-import useGame from "@/hooks/useGame";
+import { IChats } from "@/hooks/game/hooks/usePlaying";
+import useGame from "@/hooks/game/useGame";
 
 interface IChatItemProps extends StripDollar<ChatItemStyleType>, IChats {}
 

@@ -5,7 +5,7 @@ import Input from "@/components/atoms/common/input";
 import InputFormStyle from "./inputForm.style";
 
 import { useState } from "react";
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 
 const InputForm = () => {
   const [showEmoji, setShowEmoji] = useState(false);

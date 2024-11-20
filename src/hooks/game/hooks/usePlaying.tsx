@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Game from "./game";
+import Game from "../game";
 import { usePathname, useRouter } from "next/navigation";
-import { PlayableRoleNames } from "./useGameModeForm";
+import { PlayableRoleNames } from "../useGameModeForm";
 
 export interface IPlayer {
   name: string;
@@ -12,13 +12,6 @@ export interface IPlayer {
 
 interface IMe extends IPlayer {
   role: PlayableRoleNames;
-}
-
-export interface IChats {
-  name: string;
-  message: string;
-  isMe?: boolean;
-  isSystem?: boolean;
 }
 
 export interface IOptions {
@@ -91,8 +84,6 @@ const useRoom = (game: Game) => {
     role: "citizen",
   });
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoadingFinish, setIsLoadingFinish] = useState(false);
-  const [chats, setChats] = useState<IChats[]>([]);
   const [response, setResponse] = useState<IResponse<keyof ResponseMap> | null>(
     null
   );
@@ -103,6 +94,8 @@ const useRoom = (game: Game) => {
   const [selected, setSelected] = useState<string>("");
   const router = useRouter();
   const pathname = usePathname();
+
+  const isAdmin = me.name === players[0].name;
 
   const getIsSelect = () => {
     type SpecificTurns = "kill" | "heal" | "check";
@@ -131,10 +124,6 @@ const useRoom = (game: Game) => {
     setDay(1);
 
     setIsPlaying(true);
-    setChats((prev) => [
-      ...prev,
-      { name: "알림", message: "게임이 시작되었습니다.", isSystem: true },
-    ]);
   };
 
   const updateDay = () => {
@@ -147,60 +136,29 @@ const useRoom = (game: Game) => {
   };
 
   const systemMessage = (nextTurn: Turn) => {
+    let message = "";
+
     if (nextTurn === "kill") {
-      setChats((prev) => [
-        ...prev,
-        {
-          name: "알림",
-          message: "마피아가 살인을 시작합니다.",
-          isSystem: true,
-        },
-      ]);
+      message = "마피아가 살인을 시작합니다.";
     }
 
     if (nextTurn === "discussion") {
-      setChats((prev) => [
-        ...prev,
-        {
-          name: "알림",
-          message: "낮이 되었습니다. 토론을 시작합니다.",
-          isSystem: true,
-        },
-      ]);
+      message = "낮이 되었습니다. 토론을 시작합니다.";
     }
 
     if (nextTurn === "heal") {
-      setChats((prev) => [
-        ...prev,
-        {
-          name: "알림",
-          message: "의사가 마피아로부터 한 명을 치료합니다.",
-          isSystem: true,
-        },
-      ]);
+      message = "의사가 마피아로부터 한 명을 치료합니다.";
     }
 
     if (nextTurn === "check") {
-      setChats((prev) => [
-        ...prev,
-        {
-          name: "알림",
-          message: "경찰이 마피아로 의심되는 인원을 조사합니다.",
-          isSystem: true,
-        },
-      ]);
+      message = "경찰이 마피아로 의심되는 인원을 조사합니다.";
     }
 
     if (nextTurn === "vote") {
-      setChats((prev) => [
-        ...prev,
-        {
-          name: "알림",
-          message: "마피아로 의심되는 인원 투표를 시작합니다.",
-          isSystem: true,
-        },
-      ]);
+      message = "마피아로 의심되는 인원 투표를 시작합니다.";
     }
+
+    sendSystemMessage(message);
   };
 
   const updateTurn = () => {
@@ -220,11 +178,6 @@ const useRoom = (game: Game) => {
     systemMessage(nextTurn);
   };
 
-  const animationFinish = () => {
-    setIsLoadingFinish(false);
-    game.animationFinish();
-  };
-
   const selectUser = (name: string) => {
     game.selectUser(name, turn);
   };
@@ -238,10 +191,13 @@ const useRoom = (game: Game) => {
     name: T
   ): response is IResponse<T> => response?.name === name;
 
+  const sendSystemMessage = (message?: string) => {
+    if (!message || !isAdmin) return;
+    game.chat(message, turn, true);
+  };
+
   useEffect(() => {
-    game.setRoom({
-      setResponse,
-    });
+    game.setStatePlaying(setResponse);
   }, []);
 
   // 테스트
@@ -276,7 +232,6 @@ const useRoom = (game: Game) => {
     }
 
     if (isResponseOfType(response, "animationFinish")) {
-      setIsLoadingFinish(true);
       updateTurn();
     }
 
@@ -288,26 +243,16 @@ const useRoom = (game: Game) => {
     if (isResponseOfType(response, "vote")) {
       const { name, players } = response.res;
 
+      let message = "";
+
       if (name) {
         setPlayers(players);
-        setChats((prev) => [
-          ...prev,
-          {
-            name: "알림",
-            message: `${name}님이 마피아로 투표되었습니다.`,
-            isSystem: true,
-          },
-        ]);
+        message = `${name}님이 마피아로 투표되었습니다.`;
       } else {
-        setChats((prev) => [
-          ...prev,
-          {
-            name: "알림",
-            message: `투표가 과반수를 넘지 못해 종료되었습니다.`,
-            isSystem: true,
-          },
-        ]);
+        message = `투표가 과반수를 넘지 못해 종료되었습니다.`;
       }
+
+      sendSystemMessage(message);
 
       updateTurn();
       setSelectedUsers(new Map());
@@ -325,14 +270,7 @@ const useRoom = (game: Game) => {
     if (isResponseOfType(response, "check")) {
       const { role } = response.res;
 
-      setChats((prev) => [
-        ...prev,
-        {
-          name: "알림",
-          message: `조사 결과 ${role}입니다.`,
-          isSystem: true,
-        },
-      ]);
+      sendSystemMessage(`조사 결과 ${role}입니다.`);
 
       updateTurn();
       setSelectedUsers(new Map());
@@ -341,27 +279,16 @@ const useRoom = (game: Game) => {
 
     if (isResponseOfType(response, "kill")) {
       const { name, players } = response.res;
+      let message = "";
 
       if (name) {
         setPlayers(players);
-        setChats((prev) => [
-          ...prev,
-          {
-            name: "알림",
-            message: `${name}님이 마피아에 의해 살해되었습니다.`,
-            isSystem: true,
-          },
-        ]);
+        message = `${name}님이 마피아에 의해 살해되었습니다.`;
       } else {
-        setChats((prev) => [
-          ...prev,
-          {
-            name: "알림",
-            message: `의사의 치료로 죽어가는 시민이 살았습니다.`,
-            isSystem: true,
-          },
-        ]);
+        message = `의사의 치료로 죽어가는 시민이 살았습니다.`;
       }
+
+      sendSystemMessage();
 
       updateTurn();
       setSelectedUsers(new Map());
@@ -383,18 +310,6 @@ const useRoom = (game: Game) => {
 
       setTurn(stateTurn[state]);
     }
-
-    if (isResponseOfType(response, "message")) {
-      const { name, message } = response.res;
-
-      const chat = {
-        name,
-        message,
-        isMe: name === me.name,
-      };
-
-      setChats((prev) => [...prev, chat]);
-    }
   }, [response]);
 
   return {
@@ -402,9 +317,7 @@ const useRoom = (game: Game) => {
     me,
     isSelect,
     isPlaying,
-    isLoadingFinish,
     isDie,
-    chats,
     response,
     turn,
     time,
@@ -412,7 +325,6 @@ const useRoom = (game: Game) => {
     selectedUsers,
     selected,
     //
-    animationFinish,
     selectUser,
     chat,
     setSelected,

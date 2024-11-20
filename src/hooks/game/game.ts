@@ -2,22 +2,23 @@ import { io, Socket } from "socket.io-client";
 import React from "react";
 import {
   GameFinish,
-  IChats,
   IPlayer,
   IResponse,
   ResponseMap,
   Turn,
-} from "./useRoom";
-import { IRole, ISetting, PlayableRoleNames } from "./useGameModeForm";
+} from "./hooks/usePlaying";
+import { IRole, ISetting, PlayableRoleNames } from "./hooks/useGameModeForm";
 import { UseFormGetValues } from "react-hook-form";
+import { IChats } from "./hooks/useChat";
+import { Events } from "./hooks/useEvent";
 
 const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 
-interface ISetRoom {
-  setResponse: React.Dispatch<
-    React.SetStateAction<IResponse<keyof ResponseMap> | null>
-  >;
-}
+type AddChat = (chat: IChats) => void;
+type SetEvents = React.Dispatch<React.SetStateAction<Events>>;
+type SetResponse = React.Dispatch<
+  React.SetStateAction<IResponse<keyof ResponseMap> | null>
+>;
 
 // intro => kill => citizenKill => discussion => vote => mafiaKill => heal => check => kill
 // day1          // day 2 ~
@@ -33,9 +34,9 @@ class Game {
   socket: Socket;
   roomId: string | undefined;
 
-  setResponse: React.Dispatch<
-    React.SetStateAction<IResponse<keyof ResponseMap> | null>
-  > = () => {};
+  setResponse: SetResponse = () => {};
+  addChat: AddChat = () => {};
+  setEvents: SetEvents = () => {};
   getValues?: UseFormGetValues<ISetting>;
 
   constructor() {
@@ -44,8 +45,16 @@ class Game {
     this.socketInit();
   }
 
-  setRoom({ setResponse }: ISetRoom) {
+  setStatePlaying(setResponse: SetResponse) {
     this.setResponse = setResponse;
+  }
+
+  setStateChat(addChat: AddChat) {
+    this.addChat = addChat;
+  }
+
+  setStateEvent(setEvents: SetEvents) {
+    this.setEvents = setEvents;
   }
 
   socketInit() {
@@ -53,7 +62,7 @@ class Game {
       console.log("Connected to server");
     });
 
-    this.getMessages();
+    this.chatRss();
     this.enterRoomRes();
     this.readyPlayerRes();
     this.gameStartRes();
@@ -95,6 +104,11 @@ class Game {
     this.socket.on(
       "gameStartRes",
       ({ role, players }: { role: PlayableRoleNames; players: IPlayer[] }) => {
+        this.addChat({
+          name: "알림",
+          message: "게임이 시작되었습니다.",
+          isSystem: true,
+        });
         this.setResponse({
           name: "gameStart",
           res: {
@@ -169,13 +183,20 @@ class Game {
     });
   }
 
-  chat(message: string, turn: Turn) {
+  chat(message: string, turn: Turn, isSystem?: boolean) {
     if (this.roomId) {
       this.socket.emit("chat", {
         turn,
         message,
+        isSystem,
       });
     }
+  }
+
+  chatRss() {
+    this.socket.on("chatRss", (data: IChats) => {
+      this.addChat(data);
+    });
   }
 
   readyPlayer() {
@@ -191,14 +212,6 @@ class Game {
   gameFinish() {
     this.socket.on("gameFinish", (state: GameFinish) => {
       this.setResponse({ name: "gameFinish", res: { state } });
-    });
-  }
-
-  getMessages() {
-    this.socket.on("messages", (data: IChats) => {
-      const { name, message } = data;
-
-      this.setResponse({ name: "message", res: { name, message } });
     });
   }
 

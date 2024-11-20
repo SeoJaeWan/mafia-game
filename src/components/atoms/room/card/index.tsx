@@ -1,6 +1,6 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import CardStyle, { CardStyleProps } from "./card.style";
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 
 interface ICardProps extends StripDollar<CardStyleProps> {
   name: string;

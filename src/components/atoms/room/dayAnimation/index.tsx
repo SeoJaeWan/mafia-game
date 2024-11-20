@@ -6,7 +6,7 @@ import {
   DayAnimationDuration,
   EventAnimation,
 } from "@/components/molecules/room/animationHelper";
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import Image from "next/image";
 
 interface IDayAnimation {

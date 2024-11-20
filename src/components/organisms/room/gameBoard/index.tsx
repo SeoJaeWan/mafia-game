@@ -1,10 +1,10 @@
 import Layout from "@/styles/layout";
 import GameBoardStyle from "./gameBoard.style";
 import Card from "@/components/atoms/room/card";
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import AnimationHelper from "@/components/molecules/room/animationHelper";
 import Submit from "@/components/atoms/room/submit";
-import { IPlayer } from "@/hooks/useGame/useRoom";
+import { IPlayer } from "@/hooks/game/hooks/usePlaying";
 import Timer from "@/components/atoms/room/timer";
 
 type Reduce = [IPlayer[], IPlayer[]];

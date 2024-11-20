@@ -2,7 +2,7 @@
 import Button from "@/components/atoms/common/button";
 import Input from "@/components/atoms/common/input";
 import Title from "@/components/atoms/common/title";
-import useGame from "@/hooks/useGame";
+import useGame from "@/hooks/game/useGame";
 import Layout from "@/styles/layout";
 import { useParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";

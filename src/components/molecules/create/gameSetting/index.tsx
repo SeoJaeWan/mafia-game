@@ -7,8 +7,8 @@ import { useState } from "react";
 import { Controller } from "react-hook-form";
 import Select from "@/components/atoms/create/select";
 import Label from "@/components/atoms/create/label";
-import { playableRoles, playMode } from "@/hooks/useGame/useGameModeForm";
-import useGame from "@/hooks/useGame";
+import { playableRoles, playMode } from "@/hooks/game/hooks/useGameModeForm";
+import useGame from "@/hooks/game/useGame";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
   handleGameSetting: () => void;
