@@ -2,8 +2,9 @@ import DayAnimation from "@/components/atoms/room/dayAnimation";
 import DayBackground from "@/components/atoms/room/dayBackground";
 import JobInformation from "@/components/atoms/room/jobInformation";
 import Event from "@/components/atoms/room/event";
-import useGame from "@/hooks/game/useGame";
 import { useEffect, useState } from "react";
+import useEvent from "@/hooks/game/hooks/room/useEvent";
+import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 
 // day1 => night : 밤으로 변경 => 애니메이션 & Background 출력 => 애니메이션 5초
 //         night : 직업 안내 => 20초 => intro
@@ -25,66 +26,17 @@ export const JobInfoDuration = 20 * 1000;
 export const EventAnimation = 4 * 1000;
 
 const AnimationHelper = () => {
-  const {
-    isLoadingFinish,
-    time,
-    day,
-    response,
-    animationFinish,
-    isResponseOfType,
-  } = useGame();
-  const [isShow, setIsShow] = useState(false);
+  const { events } = useRoom();
 
-  const firstDay = day === 1;
+  console.log(events);
 
-  const getDelayWithEvent = (): [number, string] => {
-    let delay = DayAnimationDuration;
-    let event = "";
-
-    if (firstDay) {
-      delay += JobInfoDuration;
-    }
-
-    if (isResponseOfType(response, "kill")) {
-      const { name } = response;
-
-      delay += EventAnimation;
-
-      if (name) {
-        event = "mafia";
-      } else {
-        event = "healer";
-      }
-    }
-
-    return [delay, event];
-  };
-
-  const [delay, event] = getDelayWithEvent();
-
-  useEffect(() => {
-    if (isLoadingFinish) {
-      setIsShow(false);
-    }
-  }, [isLoadingFinish]);
-
-  useEffect(() => {
-    setIsShow(true);
-
-    const timeout = setTimeout(() => {
-      animationFinish();
-    }, delay);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [time, day, delay]);
+  const isShow = events.length !== 0;
 
   return (
     <DayBackground isShow={isShow}>
-      <DayAnimation key={day} event={event} />
-      <Event event={event} key={event} />
-      {firstDay && <JobInformation />}
+      <DayAnimation />
+      <Event />
+      <JobInformation />
     </DayBackground>
   );
 };

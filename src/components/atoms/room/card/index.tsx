@@ -1,6 +1,6 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import CardStyle, { CardStyleProps } from "./card.style";
-import useGame from "@/hooks/game/useGame";
+import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 
 interface ICardProps extends StripDollar<CardStyleProps> {
   name: string;
@@ -11,7 +11,7 @@ interface ICardProps extends StripDollar<CardStyleProps> {
 
 const Card: React.FC<ICardProps> = (props) => {
   const { name, color, showAnimation, isButton } = props;
-  const { selected, selectedUsers, isSelect, setSelected } = useGame();
+  const { selected, selectedUsers, isSelect, setSelected } = useRoom();
 
   const isClick =
     selected === name ||

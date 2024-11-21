@@ -1,8 +1,8 @@
-import useGame from "@/hooks/game/useGame";
 import SubmitStyle from "./submit.style";
+import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 
 const Submit = () => {
-  const { selected, selectUser } = useGame();
+  const { selected, selectUser } = useRoom();
 
   const isShow = !!selected;
 

@@ -1,24 +1,21 @@
 import { io, Socket } from "socket.io-client";
 import React from "react";
-import {
-  GameFinish,
-  IPlayer,
-  IResponse,
-  ResponseMap,
-  Turn,
-} from "./hooks/usePlaying";
-import { IRole, ISetting, PlayableRoleNames } from "./hooks/useGameModeForm";
+import { GameFinish, IResponse, ResponseMap } from "./hooks/room/useRoom";
 import { UseFormGetValues } from "react-hook-form";
-import { IChats } from "./hooks/useChat";
-import { Events } from "./hooks/useEvent";
+import { IChat } from "./hooks/useChat";
+import { Events } from "./hooks/room/useEvent";
+import { Players } from "./useGame";
+import { PlayerStatus, Turn } from "./hooks/room/useGameState";
+import { ISetting, PlayableRoleNames } from "./hooks/room/useGameForm";
 
 const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 
-type AddChat = (chat: IChats) => void;
+type AddChat = (chat: IChat) => void;
 type SetEvents = React.Dispatch<React.SetStateAction<Events>>;
 type SetResponse = React.Dispatch<
   React.SetStateAction<IResponse<keyof ResponseMap> | null>
 >;
+type SetPlayers = React.Dispatch<React.SetStateAction<Players>>;
 
 // intro => kill => citizenKill => discussion => vote => mafiaKill => heal => check => kill
 // day1          // day 2 ~
@@ -32,15 +29,41 @@ export interface IGame {
 
 class Game {
   socket: Socket;
-  roomId: string | undefined;
 
+  setPlayers: SetPlayers = () => {};
   setResponse: SetResponse = () => {};
   addChat: AddChat = () => {};
   setEvents: SetEvents = () => {};
   getValues?: UseFormGetValues<ISetting>;
 
-  constructor() {
+  enterRoomCallback: ({
+    roomId,
+    name,
+    players,
+  }: {
+    roomId: string;
+    name: string;
+    players: Players;
+  }) => void = () => {};
+
+  constructor({
+    setPlayers,
+    enterRoomCallback,
+  }: {
+    setPlayers: SetPlayers;
+    enterRoomCallback: ({
+      roomId,
+      name,
+      players,
+    }: {
+      roomId: string;
+      name: string;
+      players: Players;
+    }) => void;
+  }) {
     this.socket = io(socketUrl);
+    this.setPlayers = setPlayers;
+    this.enterRoomCallback = enterRoomCallback;
 
     this.socketInit();
   }
@@ -77,22 +100,14 @@ class Game {
   }
 
   enterRoom(roomId: string, name: string) {
-    this.roomId = roomId;
-
     this.socket.emit("enterRoom", { roomId, name });
   }
 
   enterRoomRes() {
-    this.socket.on(
-      "enterRoomRes",
-      ({ name, players }: { name: string; players: IPlayer[] }) => {
-        this.setResponse({ name: "enterRoom", res: { name, players } });
-      }
-    );
+    this.socket.on("enterRoomRes", this.enterRoomCallback);
   }
 
   leaveRoom() {
-    this.roomId = undefined;
     this.socket.emit("leaveRoom");
   }
 
@@ -103,17 +118,24 @@ class Game {
   gameStartRes() {
     this.socket.on(
       "gameStartRes",
-      ({ role, players }: { role: PlayableRoleNames; players: IPlayer[] }) => {
+      ({
+        role,
+        playerStatuses,
+      }: {
+        role: PlayableRoleNames;
+        playerStatuses: PlayerStatus[];
+      }) => {
         this.addChat({
           name: "알림",
           message: "게임이 시작되었습니다.",
           isSystem: true,
         });
+
         this.setResponse({
           name: "gameStart",
           res: {
             role,
-            players,
+            playerStatuses,
           },
         });
       }
@@ -146,7 +168,7 @@ class Game {
   voteResult() {
     this.socket.on(
       "vote result",
-      ({ name, players }: { name: string; players: IPlayer[] }) => {
+      ({ name, players }: { name: string; players: PlayerStatus[] }) => {
         this.setResponse({ name: "vote", res: { name, players } });
       }
     );
@@ -167,7 +189,7 @@ class Game {
   killResult() {
     this.socket.on(
       "kill result",
-      ({ name, players }: { name: string; players: IPlayer[] }) => {
+      ({ name, players }: { name: string; players: PlayerStatus[] }) => {
         this.setResponse({ name: "kill", res: { name, players } });
       }
     );
@@ -183,18 +205,16 @@ class Game {
     });
   }
 
-  chat(message: string, turn: Turn, isSystem?: boolean) {
-    if (this.roomId) {
-      this.socket.emit("chat", {
-        turn,
-        message,
-        isSystem,
-      });
-    }
+  chat(message: string, roomId: string, turn: Turn, isSystem?: boolean) {
+    this.socket.emit("chat", {
+      turn,
+      message,
+      isSystem,
+    });
   }
 
   chatRss() {
-    this.socket.on("chatRss", (data: IChats) => {
+    this.socket.on("chatRss", (data: IChat) => {
       this.addChat(data);
     });
   }
@@ -204,8 +224,8 @@ class Game {
   }
 
   readyPlayerRes() {
-    this.socket.on("readyRes", (players: IPlayer[]) => {
-      this.setResponse({ name: "ready", res: { players } });
+    this.socket.on("readyRes", (players: Players) => {
+      this.setPlayers(players);
     });
   }
 
@@ -216,7 +236,7 @@ class Game {
   }
 
   getPlayers() {
-    this.socket.on("players", (players: IPlayer[]) => {
+    this.socket.on("players", (players: PlayerStatus[]) => {
       this.setResponse({
         name: "players",
         res: {

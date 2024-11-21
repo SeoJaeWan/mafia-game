@@ -1,6 +1,7 @@
+"use client";
+
 import { useForm, UseFormReturn } from "react-hook-form";
-import Game from "../game";
-import { IPlayer } from "./usePlaying";
+import useGame from "../../useGame";
 
 export const playableRoles = Object.freeze([
   {
@@ -38,10 +39,6 @@ export const playMode = Object.freeze([
 export type PlayableRoleNames = (typeof playableRoles)[number]["name"];
 type PlayModeValues = (typeof playMode)[number];
 
-export interface IRole {
-  role: PlayableRoleNames;
-}
-
 export interface ISetting extends Record<PlayableRoleNames, number> {
   mode: PlayModeValues;
   time: number;
@@ -55,14 +52,9 @@ const defaultPlayerRoles = playableRoles.reduce(
   {}
 ) as Record<PlayableRoleNames, number>;
 
-export interface IUseGameModeForm {
-  form: UseFormReturn<ISetting, any, undefined>;
-  //
-  resetPlayable: () => void;
-  gameStart: () => void;
-}
+export type IForm = UseFormReturn<ISetting, any, undefined>;
 
-const useGameModeForm = (players: IPlayer[], game: Game): IUseGameModeForm => {
+const useGameForm = () => {
   const form = useForm<ISetting>({
     defaultValues: {
       ...defaultPlayerRoles,
@@ -70,6 +62,8 @@ const useGameModeForm = (players: IPlayer[], game: Game): IUseGameModeForm => {
       time: 40,
     },
   });
+
+  const { players } = useGame();
 
   const calculatePlayable = () => {
     const totalPlayers = players.length;
@@ -100,30 +94,11 @@ const useGameModeForm = (players: IPlayer[], game: Game): IUseGameModeForm => {
     form.setValue("politician", politician);
   };
 
-  const gameStart = () => {
-    const { time, mode, ...roles } = form.getValues();
-    let curRoles = roles;
-
-    const total = players.length;
-    const totalRoles = Object.values(roles).reduce((acc, cur) => acc + cur, 0);
-
-    if (total !== totalRoles) {
-      curRoles = calculatePlayable();
-      form.reset({
-        ...curRoles,
-        mode,
-        time,
-      });
-    }
-
-    game.gameStart({
-      ...curRoles,
-      mode,
-      time,
-    });
+  return {
+    form,
+    resetPlayable,
+    calculatePlayable,
   };
-
-  return { form, resetPlayable, gameStart };
 };
 
-export default useGameModeForm;
+export default useGameForm;

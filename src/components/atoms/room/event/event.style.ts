@@ -1,11 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
-interface IContainer {
-  $isShow: boolean;
-}
-
-const Container = styled.div<IContainer>`
-  display: ${(props) => (props.$isShow ? "block" : "none")};
+const Container = styled.div`
+  display: block;
 
   padding: 20px;
 

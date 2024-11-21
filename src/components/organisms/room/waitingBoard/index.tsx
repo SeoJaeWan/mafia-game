@@ -6,16 +6,20 @@ import Title from "@/components/atoms/common/title";
 import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import useGame from "@/hooks/game/useGame";
 import GameSetting from "@/components/molecules/create/gameSetting";
+import { useRoom } from "@/hooks/game/hooks/room/useRoom";
+import useGame from "@/hooks/game/useGame";
 
 const WaitingBoard = () => {
   const { id } = useParams();
   const [isGameSetting, setIsGameSetting] = useState(false);
   const [copyUrl, setCopyUrl] = useState("");
-  const { me, players, gameStart, readyPlayer } = useGame();
+  const { game, players, isAdmin, playerNumber } = useGame();
+  const { gameStart } = useRoom();
 
-  const isAdmin = players[0]?.name === me?.name;
+  console.log(players);
+
+  const isReady = players[playerNumber].isReady;
 
   const totalLength = players.length - 1;
   const readyLength = players.filter((player) => player.isReady).length;
@@ -36,7 +40,7 @@ const WaitingBoard = () => {
         gameStart();
       }
     } else {
-      readyPlayer();
+      game.readyPlayer();
     }
   };
 
@@ -66,15 +70,17 @@ const WaitingBoard = () => {
           gap={"10px"}
         >
           {isAdmin && <Button onClick={handleGameSetting}>게임 설정</Button>}
-          <WaitingBoardStyle.ButtonCover $isActive={me?.isReady}>
-            <Button onClick={handlePlaying}>
-              {playable
-                ? "시작하기"
-                : `준비 ${
-                    me?.isReady ? "취소" : "완료"
-                  } ${readyLength}/${totalLength}`}
-            </Button>
-          </WaitingBoardStyle.ButtonCover>
+          {players.length > 2 && (
+            <WaitingBoardStyle.ButtonCover $isActive={isReady}>
+              <Button onClick={handlePlaying}>
+                {playable
+                  ? "시작하기"
+                  : `준비 ${
+                      isReady ? "취소" : "완료"
+                    } ${readyLength}/${totalLength}`}
+              </Button>
+            </WaitingBoardStyle.ButtonCover>
+          )}
         </Layout>
       </WaitingBoardStyle.Box>
 

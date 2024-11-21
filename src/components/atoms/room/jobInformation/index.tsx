@@ -5,13 +5,15 @@ import {
   JobInfoDuration,
 } from "@/components/molecules/room/animationHelper";
 import JobInformationStyle from "./jobInformation.style";
-import useGame from "@/hooks/game/useGame";
 import Image from "next/image";
-import { playableRoles } from "@/hooks/game/hooks/useGameModeForm";
+import { useRoom } from "@/hooks/game/hooks/room/useRoom";
+import { playableRoles } from "@/hooks/game/hooks/room/useGameForm";
+import useAnimationEnd from "@/hooks/game/hooks/room/useAnimationEnd";
 
 const JobInformation = () => {
-  const { me } = useGame();
+  const { me } = useRoom();
   const { role } = me;
+  const animationRef = useAnimationEnd<HTMLDivElement>();
 
   const myRole = playableRoles.find((r) => r.name === role);
 
@@ -21,6 +23,7 @@ const JobInformation = () => {
     <JobInformationStyle.Container
       $delay={DayAnimationDuration}
       $duration={JobInfoDuration}
+      ref={animationRef}
     >
       <JobInformationStyle.Playable>
         <Image src={src} alt={""} width={150} height={150} />

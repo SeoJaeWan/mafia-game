@@ -4,6 +4,7 @@ import Users from "@/components/atoms/room/users";
 import ChatStyle from "./chat.style";
 import InputForm from "@/components/molecules/room/inputForm";
 import ChattingList from "@/components/molecules/room/chattingList";
+import { ChatProvider } from "@/hooks/game/hooks/useChat";
 
 const Chat = () => {
   return (
@@ -12,9 +13,11 @@ const Chat = () => {
         <Users />
       </ChatStyle.UserBox>
 
-      <ChatStyle.ChattingBox>
-        <ChattingList />
-      </ChatStyle.ChattingBox>
+      <ChatProvider>
+        <ChatStyle.ChattingBox>
+          <ChattingList />
+        </ChatStyle.ChattingBox>
+      </ChatProvider>
 
       <ChatStyle.InputBox>
         <InputForm />

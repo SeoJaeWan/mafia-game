@@ -1,10 +1,6 @@
 import toRem from "@/styles/utils/toRem";
 import styled, { keyframes } from "styled-components";
 
-interface IContainer {
-  $isShow: boolean;
-}
-
 const backgroundAnimation = (isNight: boolean) => keyframes`
   from {
     background-color: ${
@@ -75,6 +71,11 @@ const AnimationBox = styled.div`
   }
 `;
 
+interface IContainer {
+  $isShow: boolean;
+  $delay: number;
+}
+
 const Container = styled.div<IContainer>`
   position: absolute;
   top: 0;
@@ -89,41 +90,45 @@ const Container = styled.div<IContainer>`
 
   &.night {
     background-color: var(--day-background-morning);
-    animation: ${backgroundAnimation(true)} 3s linear forwards;
+    animation: ${backgroundAnimation(true)} ${(props) => props.$delay}ms linear
+      forwards;
 
     ${AnimationBox} {
       border-color: var(--day-background-night);
       background-color: var(--day-background-morning);
 
-      animation: ${backgroundAnimation(true)} 3s linear forwards;
+      animation: ${backgroundAnimation(true)} ${(props) => props.$delay}ms
+        linear forwards;
     }
 
     .moon {
-      animation: ${openAnimation} 3s linear forwards;
+      animation: ${openAnimation} ${(props) => props.$delay}ms linear forwards;
     }
 
     .sun {
-      animation: ${closeAnimation} 3s linear forwards;
+      animation: ${closeAnimation} ${(props) => props.$delay}ms linear forwards;
     }
   }
 
   &.morning {
     background-color: var(--day-background-night);
-    animation: ${backgroundAnimation(false)} 3s linear forwards;
+    animation: ${backgroundAnimation(false)} ${(props) => props.$delay}ms linear
+      forwards;
 
     ${AnimationBox} {
       border-color: var(--day-background-morning);
       background-color: var(--day-background-night);
 
-      animation: ${backgroundAnimation(false)} 3s linear forwards;
+      animation: ${backgroundAnimation(false)} ${(props) => props.$delay}ms
+        linear forwards;
     }
 
     .moon {
-      animation: ${closeAnimation} 3s linear forwards;
+      animation: ${closeAnimation} ${(props) => props.$delay}ms linear forwards;
     }
 
     .sun {
-      animation: ${openAnimation} 3s linear forwards;
+      animation: ${openAnimation} ${(props) => props.$delay}ms linear forwards;
     }
   }
 `;

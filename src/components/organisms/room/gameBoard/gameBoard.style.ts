@@ -1,4 +1,4 @@
-import { Time } from "@/hooks/game/hooks/usePlaying";
+import { Time } from "@/hooks/game/hooks/room/useGameState";
 import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
@@ -20,11 +20,11 @@ const CardList = styled.div`
 `;
 
 interface IPlayBoard {
-  $isLoadingFinish: boolean;
+  $isAnimationFinish: boolean;
 }
 
 const PlayBoard = styled.div<IPlayBoard>`
-  display: ${(props) => (props.$isLoadingFinish ? "block" : "none")};
+  display: ${(props) => (props.$isAnimationFinish ? "block" : "none")};
 
   width: 100%;
   height: 100%;

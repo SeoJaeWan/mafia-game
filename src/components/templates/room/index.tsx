@@ -3,13 +3,14 @@
 import Layout from "@/styles/layout";
 import { headerHeight } from "../header";
 import Chat from "@/components/organisms/room/chat";
-import { useEffect } from "react";
-import useGame from "@/hooks/game/useGame";
 import GameBoard from "@/components/organisms/room/gameBoard";
 import WaitingBoard from "@/components/organisms/room/waitingBoard";
+import useGame from "@/hooks/game/useGame";
+import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 
 const GameTemplate = () => {
-  const { isPlaying, leaveRoom } = useGame();
+  const { isPlaying } = useRoom();
+  const { game } = useGame();
 
   const beforeUnloadListener = (e: BeforeUnloadEvent) => {
     e.preventDefault();
@@ -35,7 +36,7 @@ const GameTemplate = () => {
   //   return () => {
   //     window.removeEventListener("beforeunload", beforeUnloadListener);
   //     window.removeEventListener("popstate", handlePopState);
-  //     leaveRoom();
+  //     game.leaveRoom();
   //   };
   // }, []);
 

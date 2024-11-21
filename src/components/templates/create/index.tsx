@@ -3,7 +3,7 @@ import Input from "@/components/atoms/common/input";
 import Layout from "@/styles/layout";
 import Title from "@/components/atoms/common/title";
 import Button from "@/components/atoms/common/button";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import createRoomId from "@/utils/createRoomId";
 import useGame from "@/hooks/game/useGame";
 

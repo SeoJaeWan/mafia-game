@@ -1,22 +1,25 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import useGame from "../gameProvider";
+"use client";
 
-export interface IChats {
+import { createContext, useContext, useEffect, useState } from "react";
+import useGame from "../useGame";
+
+export interface IChat {
   name: string;
   message: string;
-  isMe?: boolean;
   isSystem?: boolean;
 }
 
-const ChatContext = createContext<{ chats: IChats[] }>({
-  chats: [],
-});
+type ChatContextType = {
+  chats: IChat[];
+};
+
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
-  const [chats, setChats] = useState<IChats[]>([]);
+  const [chats, setChats] = useState<IChat[]>([]);
   const { game } = useGame();
 
-  const addChat = (chat: IChats) => {
+  const addChat = (chat: IChat) => {
     setChats((prev) => [...prev, chat]);
   };
 
@@ -31,6 +34,10 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
 const useChat = () => {
   const chats = useContext(ChatContext);
+
+  if (!chats) {
+    throw new Error("useChat must be used within a ChatProvider");
+  }
 
   return chats;
 };
