@@ -4,7 +4,7 @@ import { GameFinish, IResponse, ResponseMap } from "./hooks/room/useRoom";
 import { UseFormGetValues } from "react-hook-form";
 import { IChat } from "./hooks/useChat";
 import { Events } from "./hooks/room/useEvent";
-import { Players } from "./useGame";
+import { EnterCallbackType, EnterGameType, Player } from "./useGame";
 import { PlayerStatus, Turn } from "./hooks/room/useGameState";
 import { ISetting, PlayableRoleNames } from "./hooks/room/useGameForm";
 
@@ -15,17 +15,10 @@ type SetEvents = React.Dispatch<React.SetStateAction<Events>>;
 type SetResponse = React.Dispatch<
   React.SetStateAction<IResponse<keyof ResponseMap> | null>
 >;
-type SetPlayers = React.Dispatch<React.SetStateAction<Players>>;
+type SetPlayers = React.Dispatch<React.SetStateAction<Player[]>>;
 
 // intro => kill => citizenKill => discussion => vote => mafiaKill => heal => check => kill
 // day1          // day 2 ~
-
-export interface IGame {
-  leaveRoom: () => void;
-  enterRoom: (roomId: string, name: string) => void;
-  readyPlayer: () => void;
-  discussionFinish: () => void;
-}
 
 class Game {
   socket: Socket;
@@ -37,29 +30,19 @@ class Game {
   getValues?: UseFormGetValues<ISetting>;
 
   enterRoomCallback: ({
+    type,
+    success,
     roomId,
     name,
     players,
-  }: {
-    roomId: string;
-    name: string;
-    players: Players;
-  }) => void = () => {};
+  }: EnterCallbackType) => void = () => {};
 
   constructor({
     setPlayers,
     enterRoomCallback,
   }: {
     setPlayers: SetPlayers;
-    enterRoomCallback: ({
-      roomId,
-      name,
-      players,
-    }: {
-      roomId: string;
-      name: string;
-      players: Players;
-    }) => void;
+    enterRoomCallback: ({ roomId, name, players }: EnterCallbackType) => void;
   }) {
     this.socket = io(socketUrl);
     this.setPlayers = setPlayers;
@@ -99,8 +82,8 @@ class Game {
     this.discussionFinishRes();
   }
 
-  enterRoom(roomId: string, name: string) {
-    this.socket.emit("enterRoom", { roomId, name });
+  enterRoom(roomId: string, name: string, type: EnterGameType) {
+    this.socket.emit("enterRoom", { roomId, name, type });
   }
 
   enterRoomRes() {
@@ -168,8 +151,14 @@ class Game {
   voteResult() {
     this.socket.on(
       "vote result",
-      ({ name, players }: { name: string; players: PlayerStatus[] }) => {
-        this.setResponse({ name: "vote", res: { name, players } });
+      ({
+        name,
+        playerStatuses,
+      }: {
+        name: string;
+        playerStatuses: PlayerStatus[];
+      }) => {
+        this.setResponse({ name: "vote", res: { name, playerStatuses } });
       }
     );
   }
@@ -189,8 +178,14 @@ class Game {
   killResult() {
     this.socket.on(
       "kill result",
-      ({ name, players }: { name: string; players: PlayerStatus[] }) => {
-        this.setResponse({ name: "kill", res: { name, players } });
+      ({
+        name,
+        playerStatuses,
+      }: {
+        name: string;
+        playerStatuses: PlayerStatus[];
+      }) => {
+        this.setResponse({ name: "kill", res: { name, playerStatuses } });
       }
     );
   }
@@ -205,11 +200,16 @@ class Game {
     });
   }
 
-  chat(message: string, roomId: string, turn: Turn, isSystem?: boolean) {
+  systemChat(message: string) {
+    this.socket.emit("systemChat", {
+      message,
+    });
+  }
+
+  chat(message: string, turn: Turn) {
     this.socket.emit("chat", {
       turn,
       message,
-      isSystem,
     });
   }
 
@@ -224,13 +224,14 @@ class Game {
   }
 
   readyPlayerRes() {
-    this.socket.on("readyRes", (players: Players) => {
+    this.socket.on("readyRes", (players: Player[]) => {
       this.setPlayers(players);
     });
   }
 
   gameFinish() {
     this.socket.on("gameFinish", (state: GameFinish) => {
+      console.log(state);
       this.setResponse({ name: "gameFinish", res: { state } });
     });
   }

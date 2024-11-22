@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import useGame, { Players } from "../../useGame";
+import useGame, { Player } from "../../useGame";
 import { PlayableRoleNames } from "./useGameForm";
 
 export interface PlayerStatus {
@@ -9,26 +9,26 @@ export interface PlayerStatus {
   role?: PlayableRoleNames;
 }
 
-export interface IMe extends Players, PlayerStatus {
+export interface IMe extends Player, PlayerStatus {
   role: PlayableRoleNames;
 }
 
 export type Time = "night" | "morning";
 export type Turn =
-  | "intro"
-  | "kill" // 채팅 설명
-  | "heal" // 채팅 설명
-  | "check" // 채팅 설명
-  | "discussion" // 채팅 설명
-  | "vote" // 채팅 설명
-  | "mafiaKill"
-  | "citizenKill"
-  | "mafiaWin"
-  | "citizenWin"
-  | "politicianWin";
+  | "intro" // 시작
+  | "kill" // 마피아 살인 투표
+  | "heal" // 의사 회복
+  | "check" // 경찰 조사
+  | "discussion" // 토론
+  | "vote" // 투표
+  | "mafiaKill" // 투표 결과 애니메이션
+  | "citizenKill" // 마피아 살인 애니메이션
+  | "mafiaWin" // 마피아 승리
+  | "citizenWin" // 시민 승리
+  | "politicianWin" // 정치인 승리
+  | "gameFinish"; // 게임 종료
 
 const useGameState = () => {
-  const { playerNumber, players } = useGame();
   const [playerStatuses, setPlayerStatuses] = useState<PlayerStatus[]>([]);
   const [myRole, setMyRole] = useState<PlayableRoleNames>("citizen");
   const [isPlaying, setIsPlaying] = useState(false);
@@ -37,43 +37,14 @@ const useGameState = () => {
   const [selectedUsers, setSelectedUsers] = useState(new Map<string, string>());
   const [selected, setSelected] = useState<string>("");
 
-  const me = players.reduce((acc, player, index) => {
-    if (index === playerNumber) {
-      return { ...acc, ...player, ...players[index], role: myRole };
-    }
-    return acc;
-  }, {} as IMe);
-
-  const getIsSelect = () => {
-    type SpecificTurns = "kill" | "heal" | "check";
-
-    const allowedRolesByTurn: Record<SpecificTurns, PlayableRoleNames[]> = {
-      kill: ["mafia"],
-      heal: ["doctor"],
-      check: ["police"],
-    };
-
-    const allowedRoles = allowedRolesByTurn[turn as SpecificTurns] || [];
-
-    if ((!me.isDie && turn === "vote") || allowedRoles.includes(me.role)) {
-      return true;
-    }
-
-    return false;
-  };
-
-  const isSelect = getIsSelect();
-
   return {
     playerStatuses,
     myRole,
-    me,
     isPlaying,
     time,
     turn,
     selectedUsers,
     selected,
-    isSelect,
     //
     setPlayerStatuses,
     setMyRole,

@@ -17,8 +17,6 @@ const WaitingBoard = () => {
   const { game, players, isAdmin, playerNumber } = useGame();
   const { gameStart } = useRoom();
 
-  console.log(players);
-
   const isReady = players[playerNumber].isReady;
 
   const totalLength = players.length - 1;

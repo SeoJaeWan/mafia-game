@@ -19,7 +19,7 @@ const CreateTemplate = () => {
     const { name } = data;
     const roomId = createRoomId();
 
-    enterRoom(roomId, name);
+    enterRoom(roomId, name, "create");
   };
 
   return (

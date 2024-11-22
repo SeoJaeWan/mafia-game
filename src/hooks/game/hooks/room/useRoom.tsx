@@ -35,27 +35,28 @@ export interface IResponse<T extends keyof ResponseMap> {
 const DayRoutine: Partial<Record<Turn, Turn>> = {
   intro: "kill",
   kill: "citizenKill",
-  citizenKill: "discussion",
+  citizenKill: "discussion", // => 살인 | 회복 애니메이션
   discussion: "vote",
   vote: "mafiaKill",
-  mafiaKill: "heal",
+  mafiaKill: "heal", // => 투표 애니메이션
   heal: "check",
   check: "kill",
+  mafiaWin: "gameFinish",
+  citizenWin: "gameFinish",
+  politicianWin: "gameFinish",
 };
 
-export type GameFinish = "0" | "1" | "2";
+export type GameFinish = "mafiaWin" | "citizenWin" | "politicianWin";
 
 interface RoomContextType {
   playerStatuses: PlayerStatus[];
   myRole: PlayableRoleNames;
-  me: IMe;
   turn: Turn;
   time: "night" | "morning";
   selectedUsers: Map<string, string>;
   selected: string;
   form: IForm;
   isPlaying: boolean;
-  isSelect: boolean;
   events: Events;
   //
   resetPlayable: () => void;
@@ -69,7 +70,6 @@ interface RoomContextType {
 const RoomContext = createContext<RoomContextType | undefined>(undefined);
 
 const RoomProvider = ({ children }: { children: React.ReactNode }) => {
-  const { id } = useParams<{ id: string }>();
   const { players, game, isAdmin } = useGame();
   const {
     form,
@@ -80,13 +80,11 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
   const {
     playerStatuses,
     myRole,
-    me,
     isPlaying,
     time,
     turn,
     selectedUsers,
     selected,
-    isSelect,
     //
     setPlayerStatuses,
     setMyRole,
@@ -100,7 +98,7 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
 
   const sendSystemMessage = (message?: string) => {
     if (!message || !isAdmin) return;
-    game.chat(message, id, turn, true);
+    game.systemChat(message);
   };
 
   const systemMessage = (nextTurn: Turn) => {
@@ -132,6 +130,10 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
   const updateTurn = () => {
     setTurn((turn) => {
       const nextTurn = DayRoutine[turn] as Turn;
+
+      if (nextTurn === "gameFinish") {
+        setIsPlaying(false);
+      }
 
       // 마피아가 살인 후 citizenKill으로 넘어갈 때 day 변경
       if (nextTurn === "citizenKill") {
@@ -173,6 +175,26 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
     setSelected("");
   };
 
+  const gameWinAnimation = (turn: GameFinish) => {
+    let message = "";
+
+    if (turn === "mafiaWin") {
+      message = "마피아가 승리하였습니다.";
+    }
+
+    if (turn === "citizenWin") {
+      message = "시민이 승리하였습니다.";
+    }
+
+    if (turn === "politicianWin") {
+      message = "정치인이 승리하였습니다.";
+    }
+
+    updateEvent(turn);
+    setTurn(turn);
+    sendSystemMessage(message);
+  };
+
   const updateResponse = useResponse({
     updatePlayerStatuses,
     updateMyRole,
@@ -182,6 +204,7 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
     clearSelected,
     sendSystemMessage,
     updateEvent,
+    gameWinAnimation,
   });
 
   const gameStart = () => {
@@ -212,7 +235,7 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const chat = (message: string) => {
-    game.chat(message, id, turn);
+    game.chat(message, turn);
   };
 
   useEffect(() => {
@@ -224,13 +247,11 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         playerStatuses,
         myRole,
-        me,
         turn,
         time,
         selectedUsers,
         selected,
         form,
-        isSelect,
         isPlaying,
         events,
         //

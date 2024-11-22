@@ -6,18 +6,20 @@ import InputFormStyle from "./inputForm.style";
 
 import { useState } from "react";
 import { useRoom } from "@/hooks/game/hooks/room/useRoom";
+import useGame from "@/hooks/game/useGame";
 
 const InputForm = () => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
 
-  const { isPlaying, me, turn, chat } = useRoom();
+  const { playerNumber } = useGame();
+  const { myRole, playerStatuses, isPlaying, turn, chat } = useRoom();
 
   const getIsChatAble = () => {
-    if (me.isDie) return false;
+    if (playerStatuses[playerNumber]?.isDie) return false;
 
     if (!isPlaying) return true;
-    if ((turn === "kill" && me.role === "mafia") || turn === "discussion")
+    if ((turn === "kill" && myRole === "mafia") || turn === "discussion")
       return true;
 
     return false;

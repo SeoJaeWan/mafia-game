@@ -19,7 +19,7 @@ const JoinTemplate = () => {
   const handleJoinRoom = (data: { name: string }) => {
     const { name } = data;
 
-    enterRoom(id, name);
+    enterRoom(id, name, "join");
   };
 
   return (

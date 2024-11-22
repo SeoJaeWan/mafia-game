@@ -5,9 +5,9 @@ import AnimationHelper from "@/components/molecules/room/animationHelper";
 import Submit from "@/components/atoms/room/submit";
 import Timer from "@/components/atoms/room/timer";
 import { useRoom } from "@/hooks/game/hooks/room/useRoom";
-import useGame, { Players } from "@/hooks/game/useGame";
+import useGame, { Player } from "@/hooks/game/useGame";
 
-type Reduce = [Players, Players];
+type Reduce = [Player[], Player[]];
 
 const GameBoard = () => {
   const { playerStatuses, time, events } = useRoom();

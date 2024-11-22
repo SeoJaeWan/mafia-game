@@ -43,7 +43,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           marginTop={"40px"}
           marginBottom={"30px"}
         >
-          {playableRoles.map(({ label, name }) => (
+          {Object.values(playableRoles).map(({ label, name }) => (
             <Controller
               key={label}
               control={control}

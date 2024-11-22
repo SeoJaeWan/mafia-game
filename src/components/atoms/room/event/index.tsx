@@ -2,11 +2,10 @@ import Image from "next/image";
 import EventStyle from "./event.style";
 import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 import { Animation } from "@/hooks/game/hooks/room/useEvent";
-import useAnimationEnd from "@/hooks/game/hooks/room/useAnimationEnd";
 
 const Event: React.FC = () => {
-  const { events } = useRoom();
-  const animationRef = useAnimationEnd<HTMLImageElement>();
+  const { events, clearEvent } = useRoom();
+
   const isShow = Animation.includes(events[0]);
 
   const eventSrc = `/assets/room/event/${events[0]}.png`;
@@ -21,7 +20,8 @@ const Event: React.FC = () => {
           alt={""}
           width={200 * 26}
           height={200}
-          ref={animationRef}
+          // ref={animationRef}
+          onAnimationEnd={clearEvent}
         />
       </EventStyle.AnimationBox>
     </EventStyle.Container>

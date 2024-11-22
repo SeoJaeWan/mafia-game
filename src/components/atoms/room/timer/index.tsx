@@ -1,9 +1,11 @@
-import useGame from "@/hooks/game/useGame";
 import { useEffect, useState } from "react";
 import TimerStyle from "./timer.style";
+import { useRoom } from "@/hooks/game/hooks/room/useRoom";
+import useGame from "@/hooks/game/useGame";
 
 const Timer = () => {
-  const { form, turn, discussionFinish } = useGame();
+  const { game } = useGame();
+  const { form, turn } = useRoom();
   const [time, setTime] = useState(0);
 
   const isActive = turn === "discussion";
@@ -17,7 +19,7 @@ const Timer = () => {
 
         if (time === 0) {
           clearInterval(interval);
-          discussionFinish();
+          game.discussionFinish();
           //
         }
       }, 1000);

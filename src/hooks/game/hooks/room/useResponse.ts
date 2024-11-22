@@ -35,6 +35,7 @@ interface UseResponseProps {
   clearSelected: () => void;
   sendSystemMessage: (message: string) => void;
   updateEvent: (eventCase: EventCase) => void;
+  gameWinAnimation: (state: GameFinish) => void;
 }
 
 const useResponse = (props: UseResponseProps) => {
@@ -47,6 +48,7 @@ const useResponse = (props: UseResponseProps) => {
     clearSelected,
     sendSystemMessage,
     updateEvent,
+    gameWinAnimation,
   } = props;
   const { id } = useParams<{ id: string }>();
 
@@ -120,9 +122,9 @@ const useResponse = (props: UseResponseProps) => {
         let message = "";
 
         if (name) {
-          updatePlayerStatuses(playerStatuses);
           updateEvent("kill");
 
+          updatePlayerStatuses(playerStatuses);
           message = `${name}님이 마피아에 의해 살해되었습니다.`;
         } else {
           updateEvent("heal");
@@ -141,13 +143,7 @@ const useResponse = (props: UseResponseProps) => {
       if (isResponseOfType(response, "gameFinish")) {
         const { state } = response.res;
 
-        const stateTurn = {
-          "0": "politicianWin",
-          "1": "citizenWin",
-          "2": "mafiaWin",
-        } as const;
-
-        // setTurn(stateTurn[state]);
+        gameWinAnimation(state);
       }
     }
   }, [response, id]);

@@ -68,6 +68,7 @@ const useEvent = () => {
       if (updatedEvents.length === 0) {
         game.animationFinish();
       }
+      console.log(updatedEvents, "event");
       return updatedEvents;
     });
   };
