@@ -16,7 +16,7 @@ const FrontCard = styled(Image)`
   width: 70%;
   height: auto;
 
-  aspect-ratio: 299/427;
+  aspect-ratio: 1/1;
 `;
 
 interface ICardScreenProps {

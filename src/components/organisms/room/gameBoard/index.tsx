@@ -10,8 +10,8 @@ import useGame, { Player } from "@/hooks/game/useGame";
 type Reduce = [Player[], Player[]];
 
 const GameBoard = () => {
-  const { playerStatuses, time, events } = useRoom();
-  const { players } = useGame();
+  const { playerStatuses, time, events, myRole } = useRoom();
+  const { players, playerNumber } = useGame();
 
   const isAnimationFinish = events.length === 0;
 
@@ -47,6 +47,7 @@ const GameBoard = () => {
                   color={color}
                   showAnimation
                   isButton
+                  role={idx === playerNumber ? myRole : "unknown"}
                 />
               ))}
             </GameBoardStyle.CardList>
@@ -57,7 +58,13 @@ const GameBoard = () => {
             <GameBoardStyle.Text>사망자</GameBoardStyle.Text>
             <GameBoardStyle.CardList>
               {dead.map(({ name, color }, idx) => (
-                <Card key={idx} name={name} color={color} showAnimation />
+                <Card
+                  key={idx}
+                  name={name}
+                  color={color}
+                  showAnimation
+                  role={"unknown"}
+                />
               ))}
             </GameBoardStyle.CardList>
           </Layout>

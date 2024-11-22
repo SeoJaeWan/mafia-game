@@ -24,6 +24,7 @@ export type ResponseMap = {
   kill: { name: string; playerStatuses: PlayerStatus[] };
   gameFinish: { name: string; state: GameFinish };
   discussion: {};
+  clearGame: {};
 };
 
 interface UseResponseProps {
@@ -36,6 +37,7 @@ interface UseResponseProps {
   sendSystemMessage: (message: string) => void;
   updateEvent: (eventCase: EventCase) => void;
   gameWinAnimation: (state: GameFinish) => void;
+  clearGame: () => void;
 }
 
 const useResponse = (props: UseResponseProps) => {
@@ -49,6 +51,7 @@ const useResponse = (props: UseResponseProps) => {
     sendSystemMessage,
     updateEvent,
     gameWinAnimation,
+    clearGame,
   } = props;
   const { id } = useParams<{ id: string }>();
 
@@ -144,6 +147,10 @@ const useResponse = (props: UseResponseProps) => {
         const { state } = response.res;
 
         gameWinAnimation(state);
+      }
+
+      if (isResponseOfType(response, "clearGame")) {
+        clearGame();
       }
     }
   }, [response, id]);

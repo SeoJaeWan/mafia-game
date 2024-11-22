@@ -80,6 +80,7 @@ class Game {
     this.killResult();
     this.gameFinish();
     this.discussionFinishRes();
+    this.clearGameRes();
   }
 
   enterRoom(roomId: string, name: string, type: EnterGameType) {
@@ -236,14 +237,14 @@ class Game {
     });
   }
 
-  getPlayers() {
-    this.socket.on("players", (players: PlayerStatus[]) => {
-      this.setResponse({
-        name: "players",
-        res: {
-          players,
-        },
-      });
+  clearGame() {
+    this.socket.emit("clearGame");
+  }
+
+  clearGameRes() {
+    this.socket.on("clearGameRes", (players: Player[]) => {
+      this.setPlayers(players);
+      this.setResponse({ name: "clearGame", res: {} });
     });
   }
 }

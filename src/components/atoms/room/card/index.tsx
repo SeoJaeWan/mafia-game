@@ -4,15 +4,17 @@ import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 import useGame from "@/hooks/game/useGame";
 import { PlayableRoleNames } from "@/hooks/game/hooks/room/useGameForm";
 
+type CardRole = PlayableRoleNames | "unknown";
 interface ICardProps extends StripDollar<CardStyleProps> {
   name: string;
   showAnimation?: boolean;
   isButton?: boolean;
+  role: CardRole;
   //
 }
 
 const Card: React.FC<ICardProps> = (props) => {
-  const { name, color, showAnimation, isButton } = props;
+  const { name, color, showAnimation, role, isButton } = props;
   const { playerNumber, players } = useGame();
   const { selected, playerStatuses, selectedUsers, turn, myRole, setSelected } =
     useRoom();
@@ -32,19 +34,10 @@ const Card: React.FC<ICardProps> = (props) => {
 
     const allowedRoles = allowedRolesByTurn[turn as SpecificTurns] || [];
 
-    console.log(
-      (!playerStatuses[playerNumber]?.isDie && turn === "vote") ||
-        allowedRoles.includes(myRole),
-      "playerStatuses[playerNumber]?.isDie",
-      playerStatuses[playerNumber]?.isDie,
-      "turn",
-      turn,
-      "allowedRoles",
-      allowedRoles
-    );
+    console.log(playerStatuses[playerNumber], turn);
 
     if (
-      (!playerStatuses[playerNumber]?.isDie && turn === "vote") ||
+      (!playerStatuses[playerNumber].isDie && turn === "vote") ||
       allowedRoles.includes(myRole)
     ) {
       return true;
@@ -76,9 +69,9 @@ const Card: React.FC<ICardProps> = (props) => {
         <CardStyle.Front $color={color}>{name}</CardStyle.Front>
         <CardStyle.Back $color={color}>
           <CardStyle.FrontCard
-            src={"/assets/playable/unknown.png"}
-            width={299}
-            height={427}
+            src={`/assets/playable/${role}.png`}
+            width={300}
+            height={300}
             alt={"알수 없는 플레이어"}
           />
         </CardStyle.Back>

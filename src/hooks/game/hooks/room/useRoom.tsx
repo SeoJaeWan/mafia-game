@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect } from "react";
-import useGameState, { IMe, PlayerStatus, Turn } from "./useGameState";
+import useGameState, { IMe, PlayerStatus, Time, Turn } from "./useGameState";
 import useResponse from "./useResponse";
 import useGame from "../../useGame";
 import { useParams } from "next/navigation";
@@ -11,25 +11,6 @@ import useEvent, { Events } from "./useEvent";
 export interface IOptions {
   roomId: string;
   name: string;
-}
-
-export type ResponseMap = {
-  ready: { players: PlayerStatus[] };
-  gameStart: { role: PlayableRoleNames; players: PlayerStatus[] };
-  animationFinish: {};
-  selectUser: { selector: string; name: string };
-  message: { name: string; message: string };
-  vote: { name: string; players: PlayerStatus[] };
-  heal: { name: string };
-  check: { role: PlayableRoleNames };
-  kill: { name: string; players: PlayerStatus[] };
-  gameFinish: { name: string; state: GameFinish };
-  discussion: {};
-};
-
-export interface IResponse<T extends keyof ResponseMap> {
-  name: string;
-  res: ResponseMap[T];
 }
 
 const DayRoutine: Partial<Record<Turn, Turn>> = {
@@ -52,7 +33,7 @@ interface RoomContextType {
   playerStatuses: PlayerStatus[];
   myRole: PlayableRoleNames;
   turn: Turn;
-  time: "night" | "morning";
+  time: Time;
   selectedUsers: Map<string, string>;
   selected: string;
   form: IForm;
@@ -132,7 +113,11 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
       const nextTurn = DayRoutine[turn] as Turn;
 
       if (nextTurn === "gameFinish") {
-        setIsPlaying(false);
+        if (isAdmin) {
+          game.clearGame();
+        }
+
+        return turn;
       }
 
       // 마피아가 살인 후 citizenKill으로 넘어갈 때 day 변경
@@ -155,6 +140,16 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
     setTurn("intro");
 
     setIsPlaying(true);
+  };
+
+  const clearGame = () => {
+    setPlayerStatuses([]);
+    setMyRole("citizen");
+    setIsPlaying(false);
+    setTime("night");
+    setTurn("intro");
+    setSelectedUsers(new Map());
+    setSelected("");
   };
 
   const updatePlayerStatuses = (playerStatuses: PlayerStatus[]) => {
@@ -205,6 +200,7 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
     sendSystemMessage,
     updateEvent,
     gameWinAnimation,
+    clearGame,
   });
 
   const gameStart = () => {

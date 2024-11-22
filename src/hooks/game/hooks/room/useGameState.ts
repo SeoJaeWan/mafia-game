@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import useGame, { Player } from "../../useGame";
+import { Player } from "../../useGame";
 import { PlayableRoleNames } from "./useGameForm";
 
 export interface PlayerStatus {
