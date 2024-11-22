@@ -13,10 +13,9 @@ export interface IInputStyleProps {
 const InputStyle = styled.input<IInputStyleProps>`
   flex: ${(props) => props.$flex || "initial"};
 
-  width: ${(props) => props.$width || "100%"};
-  height: ${(props) => props.$height || "100%"};
+  width: 100%;
 
-  padding: 0 10px;
+  padding: 8px 10px;
 
   background-color: var(--gray-background-rgba);
 

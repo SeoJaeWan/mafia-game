@@ -27,7 +27,7 @@ const Header = () => {
         justifyContent={"center"}
         alignItems={"center"}
         //
-        width={"100px"}
+        width={"50px"}
         //
         padding={`0 20px`}
       >

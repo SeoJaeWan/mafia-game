@@ -9,9 +9,6 @@ export interface IButtonStyleProps {
 }
 
 const ButtonStyle = styled.button<IButtonStyleProps>`
-  ${(props) => props.$width && `width: ${props.$width};`}
-  ${(props) => props.$height && `height: ${props.$height};`}
-
   padding: 10px 20px;
 
   border: none;
