@@ -15,7 +15,7 @@ const Header = () => {
       justifyContent={"space-between"}
       //
       width={"100vw"}
-      height={headerHeight}
+      height={"50px"}
       as={"header"}
     >
       <Layout width={"100px"} />

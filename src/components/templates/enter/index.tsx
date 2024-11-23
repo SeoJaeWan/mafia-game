@@ -18,12 +18,12 @@ const EnterTemplate: React.FC<IEnterTemplateProps> = (props) => {
       name: "",
     },
   });
-  const { enterRoom } = useGame();
+  const { game } = useGame();
 
   const handleCreateRoom = (data: { name: string }) => {
     const { name } = data;
 
-    enterRoom(roomId, name, type);
+    game.enterRoom(roomId, name, type);
   };
 
   return (

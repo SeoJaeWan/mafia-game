@@ -1,12 +1,13 @@
 import { io, Socket } from "socket.io-client";
 import React from "react";
-import { GameFinish, IResponse, ResponseMap } from "./hooks/room/useRoom";
+import { GameFinish } from "./hooks/room/useRoom";
 import { UseFormGetValues } from "react-hook-form";
 import { IChat } from "./hooks/useChat";
 import { Events } from "./hooks/room/useEvent";
 import { EnterCallbackType, EnterGameType, Player } from "./useGame";
 import { PlayerStatus, Turn } from "./hooks/room/useGameState";
 import { ISetting, PlayableRoleNames } from "./hooks/room/useGameForm";
+import { IResponse, ResponseMap } from "./hooks/room/useResponse";
 
 const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 

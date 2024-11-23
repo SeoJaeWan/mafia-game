@@ -2,8 +2,6 @@ import StripDollar from "@/styles/utils/stripDollar";
 import ChatItemStyle, { ChatItemStyleType } from "./chatItem.style";
 import { IChat } from "@/hooks/game/hooks/useChat";
 import useGame from "@/hooks/game/useGame";
-import { useRoom } from "@/hooks/game/hooks/room/useRoom";
-
 interface IChatItemProps extends StripDollar<ChatItemStyleType>, IChat {}
 
 const ChatItem: React.FC<IChatItemProps> = (props) => {

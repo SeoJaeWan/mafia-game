@@ -12,8 +12,6 @@ type GameContextType = {
   players: Player[];
   playerNumber: number;
   isAdmin: boolean;
-  //
-  enterRoom: (roomId: string, name: string, type: EnterGameType) => void;
 };
 
 export type EnterCallbackType = {
@@ -71,10 +69,6 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     new Game({ setPlayers, enterRoomCallback })
   ).current;
 
-  const enterRoom = (roomId: string, name: string, type: EnterGameType) => {
-    game.enterRoom(roomId, name, type);
-  };
-
   return (
     <GameContext.Provider
       value={{
@@ -82,8 +76,6 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         playerNumber,
         players,
         isAdmin,
-        //
-        enterRoom,
       }}
     >
       {children}

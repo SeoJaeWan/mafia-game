@@ -1,12 +1,12 @@
 "use client";
 
 import Layout from "@/styles/layout";
-import { headerHeight } from "../header";
 import Chat from "@/components/organisms/room/chat";
 import GameBoard from "@/components/organisms/room/gameBoard";
 import WaitingBoard from "@/components/organisms/room/waitingBoard";
 import useGame from "@/hooks/game/useGame";
 import { useRoom } from "@/hooks/game/hooks/room/useRoom";
+import RoomStyle from "./room.style";
 
 const GameTemplate = () => {
   const { isPlaying } = useRoom();
@@ -41,23 +41,15 @@ const GameTemplate = () => {
   // }, []);
 
   return (
-    <Layout
-      display={"flex"}
-      flexDirection={"row"}
-      //
-      width={"100%"}
-      height={"100%"}
-      //
-      paddingTop={headerHeight}
-    >
-      <Layout width={"70%"} height={"100%"}>
+    <RoomStyle.Container>
+      <RoomStyle.PlayingBoard>
         {/* 테스트 */}
         {isPlaying ? <GameBoard /> : <WaitingBoard />}
-      </Layout>
-      <Layout width={"30%"} height={"100%"}>
+      </RoomStyle.PlayingBoard>
+      <RoomStyle.ChatBoard>
         <Chat />
-      </Layout>
-    </Layout>
+      </RoomStyle.ChatBoard>
+    </RoomStyle.Container>
   );
 };
 

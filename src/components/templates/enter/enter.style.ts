@@ -9,7 +9,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const Form = styled.div`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

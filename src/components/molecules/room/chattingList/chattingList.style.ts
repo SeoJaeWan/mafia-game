@@ -5,6 +5,8 @@ const Container = styled.ul`
   flex-direction: column;
   gap: 10px;
 
+  height: 100%;
+
   padding: 10px;
 
   overflow-y: auto;
