@@ -7,7 +7,7 @@ interface IContainer {
 }
 
 const Text = styled.p`
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 
   font-size: ${toRem(20)};
   font-weight: 800;

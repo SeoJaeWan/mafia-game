@@ -1,3 +1,5 @@
+"use client";
+
 import EnterTemplate from "@/components/templates/enter";
 import { useParams } from "next/navigation";
 

@@ -17,6 +17,11 @@ const Box = styled.div`
   align-items: center;
 
   width: 600px;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 0 10px;
+  }
 `;
 
 const WaitingPeople = styled.p`
@@ -30,21 +35,28 @@ const WaitingPeople = styled.p`
 `;
 
 const Url = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 
   width: 100%;
-  height: 60px;
 
   border: none;
   border-radius: 5px;
   background-color: var(--gray-background-rgba);
 
   margin: 10px 0 20px;
+  padding: 15px 5px;
 
   font-size: ${toRem(30)};
   cursor: pointer;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+
+  @media (max-width: 600px) {
+    font-size: ${toRem(24)};
+  }
 `;
 
 interface IButtonCoverProps {

@@ -4,9 +4,9 @@ import HeaderTitleStyle from "./headerTitle.style";
 
 const HeaderTitle = () => {
   return (
-    <Link href={"/"}>
-      <HeaderTitleStyle>Mafia Game</HeaderTitleStyle>
-    </Link>
+    <HeaderTitleStyle>
+      <Link href={"/"}>Mafia Game</Link>
+    </HeaderTitleStyle>
   );
 };
 

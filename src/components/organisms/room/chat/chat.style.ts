@@ -54,14 +54,15 @@ const ChatBox = styled.div<ChatBoxProps>`
   @media (max-width: 1070px) {
     position: fixed;
     bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 20px;
 
     border-right: 2px solid var(--gray-background-active-rgba);
 
     display: ${({ $open }) => ($open ? "flex" : "none")};
 
     width: calc(100vw - 40px);
+    max-width: 400px;
+
     height: 60vh;
   }
 `;

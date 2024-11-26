@@ -22,7 +22,7 @@ const JobInformation = () => {
       onAnimationEnd={clearEvent}
     >
       <JobInformationStyle.Playable>
-        <Image src={src} alt={""} width={150} height={150} />
+        <Image src={src} alt={""} width={240} height={240} />
       </JobInformationStyle.Playable>
 
       <JobInformationStyle.Information>

@@ -5,10 +5,9 @@ import Count from "@/components/atoms/create/count";
 import Button from "@/components/atoms/common/button";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import Select from "@/components/atoms/create/select";
 import Label from "@/components/atoms/create/label";
 import { useRoom } from "@/hooks/game/hooks/room/useRoom";
-import { playableRoles, playMode } from "@/hooks/game/hooks/room/useGameForm";
+import { playableRoles } from "@/hooks/game/hooks/room/useGameForm";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
   handleGameSetting: () => void;
@@ -85,7 +84,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
               </Label>
             )}
           />
-
+          {/* 
           <Controller
             control={control}
             name={"mode"}
@@ -105,7 +104,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
                 </Select>
               </Label>
             )}
-          />
+          /> */}
         </Layout>
 
         <Layout
@@ -115,7 +114,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           gap={"20px"}
         >
           <Button isSmall onClick={handleCloseSetting}>
-            완료
+            닫기
           </Button>
         </Layout>
       </GameSettingStyle.Box>

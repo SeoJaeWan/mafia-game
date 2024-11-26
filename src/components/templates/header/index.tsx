@@ -18,7 +18,7 @@ const Header = () => {
       height={"50px"}
       as={"header"}
     >
-      <Layout width={"100px"} />
+      <Layout width={"50px"} />
 
       <Title />
 

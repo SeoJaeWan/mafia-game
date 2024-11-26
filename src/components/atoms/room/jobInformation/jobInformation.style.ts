@@ -31,15 +31,24 @@ const Container = styled.div<ContainerProps>`
   display: flex;
   gap: 10px;
 
-  width: 60%;
-
   opacity: 0;
   animation: ${showAnimation} ${(props) => props.$duration}ms
     ${(props) => props.$delay}ms ease-in-out forwards;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Playable = styled.div`
-  padding: 25px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 300px;
+  height: 300px;
+
+  padding: 10px;
 
   border-radius: 10px;
   border: 3px solid var(--black);
@@ -52,9 +61,11 @@ const Information = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   gap: 10px;
-  flex-grow: 1;
 
-  padding: 10px;
+  width: 300px;
+  height: 300px;
+
+  padding: 20px;
 
   border-radius: 10px;
   border: 3px solid var(--black);
@@ -63,13 +74,16 @@ const Information = styled.div`
 `;
 
 const Title = styled.p`
-  font-size: ${toRem(20)};
+  font-size: ${toRem(24)};
   font-weight: bold;
 `;
 
 const Contents = styled.p`
   font-size: ${toRem(18)};
   font-weight: 500;
+
+  white-space: pre-wrap;
+  word-break: break-all;
 `;
 
 const JobInformationStyle = {

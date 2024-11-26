@@ -70,8 +70,8 @@ const Card: React.FC<ICardProps> = (props) => {
         <CardStyle.Back $color={color}>
           <CardStyle.FrontCard
             src={`/assets/playable/${role}.png`}
-            width={300}
-            height={300}
+            width={350}
+            height={350}
             alt={"알수 없는 플레이어"}
           />
         </CardStyle.Back>

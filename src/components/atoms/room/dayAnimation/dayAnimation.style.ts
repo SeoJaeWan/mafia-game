@@ -67,7 +67,11 @@ const AnimationBox = styled.div`
 
     offset-rotate: 0deg;
     offset-distance: 0%;
-    offset-path: path("M80,268c136-263,320.21-262.37,445,3");
+
+    @media (max-width: 768px) {
+      width: 50px;
+      height: 50px;
+    }
   }
 `;
 

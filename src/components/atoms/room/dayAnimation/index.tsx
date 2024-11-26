@@ -4,13 +4,40 @@ import DayAnimationStyle from "./dayAnimation.style";
 import Image from "next/image";
 import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 import { DayAnimationDuration } from "@/components/molecules/room/animationHelper";
+import { useEffect, useRef } from "react";
 
 const DayAnimation: React.FC = () => {
   const { events, time, clearEvent } = useRoom();
+  const moonRef = useRef<HTMLImageElement | null>(null);
+  const sunRef = useRef<HTMLImageElement | null>(null);
 
   const info = time === "night" ? "밤이 되었습니다." : "낮이 되었습니다.";
 
   const isShow = events[0] === "day";
+
+  useEffect(() => {
+    const resize = () => {
+      if (!moonRef.current || !sunRef.current) return;
+
+      const max = 600;
+      const width = window.innerWidth > max ? max : window.innerWidth;
+
+      const ratio = width / max;
+      const path = `M${80 * ratio},${268 * ratio}c${136 * ratio}-${
+        263 * ratio
+      },${320.21 * ratio}-${262.37 * ratio},${445 * ratio},${3 * ratio}`;
+
+      moonRef.current.style.offsetPath = `path("${path}")`;
+      sunRef.current.style.offsetPath = `path("${path}")`;
+    };
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
 
   return (
     // SVG 작업 필요
@@ -21,6 +48,7 @@ const DayAnimation: React.FC = () => {
     >
       <DayAnimationStyle.AnimationBox>
         <Image
+          ref={moonRef}
           className={"moon"}
           src={"/assets/room/moon.png"}
           alt=""
@@ -29,6 +57,7 @@ const DayAnimation: React.FC = () => {
           onAnimationEnd={clearEvent}
         />
         <Image
+          ref={sunRef}
           className={"sun"}
           src={"/assets/room/sun.png"}
           alt=""

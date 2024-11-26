@@ -13,7 +13,7 @@ const Card = styled.div`
 `;
 
 const FrontCard = styled(Image)`
-  width: 70%;
+  width: 80%;
   height: auto;
 
   aspect-ratio: 1/1;
@@ -92,6 +92,10 @@ const Container = styled.div<IContainerProps>`
 
   &:hover ${Card} {
     transform: rotateY(180deg);
+  }
+
+  @media (max-width: 768px) {
+    width: calc((100% - 20px) / 2);
   }
 `;
 
