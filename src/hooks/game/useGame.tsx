@@ -226,6 +226,14 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     socketRef.current!.emit("ready");
   };
 
+  const sendMessage = (message: string) => {
+    socketRef.current!.emit("sendMessage", {
+      name: player!.name,
+      message,
+      color: player!.color,
+    });
+  };
+
   return (
     <GameContext.Provider
       value={{
@@ -240,6 +248,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         createRoom,
         joinRoom,
         ready,
+        sendMessage,
       }}
     >
       {children}

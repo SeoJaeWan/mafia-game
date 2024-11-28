@@ -10,7 +10,7 @@ const InputForm = () => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
 
-  const { isPlaying, player } = useGame();
+  const { player, sendMessage } = useGame();
 
   const getIsChatAble = () => {
     if (!player!.alive) return false;
@@ -30,11 +30,9 @@ const InputForm = () => {
   const handleSendChat = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(!isChatAble || input.trim().length === 0);
-
     if (!isChatAble || input.trim().length === 0) return;
 
-    chat(input);
+    sendMessage(input);
     setInput("");
   };
 
