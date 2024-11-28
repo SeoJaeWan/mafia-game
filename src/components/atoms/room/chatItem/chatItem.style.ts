@@ -93,6 +93,8 @@ const Chat = styled.p<IChat>`
   font-weight: 500;
 
   color: ${(props) => (props.$isSystem ? "var(--black)" : "var(--white)")};
+
+  white-space: pre-wrap;
 `;
 
 export type ChatItemStyleType = IChatItemStyleProps;

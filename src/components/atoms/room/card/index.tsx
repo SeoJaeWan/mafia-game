@@ -1,10 +1,8 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import CardStyle, { CardStyleProps } from "./card.style";
-import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 import useGame from "@/hooks/game/useGame";
 import { PlayableRoleNames } from "@/hooks/game/hooks/room/useGameForm";
 
-type CardRole = PlayableRoleNames | "unknown";
 interface ICardProps extends StripDollar<CardStyleProps> {
   name: string;
   showAnimation?: boolean;

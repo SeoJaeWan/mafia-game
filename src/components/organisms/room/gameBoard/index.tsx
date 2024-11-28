@@ -42,7 +42,7 @@ const GameBoard = () => {
           </Layout>
         )}
 
-        <Submit />
+        {/* <Submit /> */}
       </GameBoardStyle.PlayBoard>
     </GameBoardStyle.Container>
   );

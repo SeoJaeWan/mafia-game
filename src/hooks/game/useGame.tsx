@@ -1,7 +1,12 @@
 "use client";
+import {
+  DayAnimationDuration,
+  EventAnimation,
+  JobInfoDuration,
+} from "@/components/molecules/room/animationHelper";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useRef, useState } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { set, useForm, UseFormReturn } from "react-hook-form";
 import { io, Socket } from "socket.io-client";
 
 // 방 접속
@@ -137,6 +142,7 @@ type GameContextType = {
   form: IForm;
   turn: Turn | null;
   timePeriod: timePeriod;
+  animationLoading: boolean;
   //
   createRoom: (room: EnterRoom) => void;
   joinRoom: (room: EnterRoom) => void;
@@ -144,6 +150,8 @@ type GameContextType = {
   sendMessage: (message: string) => void;
   gameStart: () => void;
   resetPlayable: () => void;
+  animationFinish: () => void;
+  setAnimationLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const GameContext = createContext<GameContextType | undefined>(
@@ -163,10 +171,9 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
   const [selectedList, setSelectedList] = useState<Selected[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [turn, setTurn] = useState<Turn | null>(null);
-  const [timePeriod, setTimePeriod] = useState<timePeriod>("morning");
-  const [animationLoading, setAnimationLoading] = useState(false);
+  const [timePeriod, setTimePeriod] = useState<timePeriod>("night");
 
-  const systemMessageRef = useRef<Message>();
+  const systemMessageRef = useRef("");
 
   const socketRef = useRef<Socket>();
 
@@ -180,7 +187,14 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
 
   const router = useRouter();
 
-  const roomSocket = (socket: Socket) => {
+  const setSystemMessage = (message: string) => {
+    setMessageList((prev) => [
+      ...prev,
+      { name: "시스템", message, isSystem: true },
+    ]);
+  };
+
+  const roomSocket = (socket: Socket, isAdmin: boolean) => {
     socket.on("playerList", (playerList: PlayerList) => {
       setPlayerList(playerList);
     });
@@ -201,6 +215,14 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     socket.on("startGameSuccess", (role: PlayableRoleNames) => {
       setIsPlaying(true);
       setTurn("intro");
+      setSystemMessage("게임이 시작되었습니다.");
+
+      if (isAdmin) {
+        socket.emit("delayStart", DayAnimationDuration + JobInfoDuration);
+      }
+
+      systemMessageRef.current =
+        "밤이 되었습니다. \n마피아는 시민을 살해할 플레이어를 선택해주세요.";
       setPlayer((prev) => ({ ...(prev as Player), role }));
     });
 
@@ -227,11 +249,21 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
       setPlayerList((prev) => prev.filter((item) => item.name !== player.name));
       setDeadPlayerList((prev) => [...prev, player]);
       setTurn("killCitizen");
+
+      systemMessageRef.current = `${player.name}님이 마피아에게 사망하였습니다.\n아침이 되었습니다. 제한시간 동안 토의 후 마피아로 생각되는 플레이어를 선택해주세요.`;
+
+      if (isAdmin) {
+        socket.emit("delayStart", DayAnimationDuration + EventAnimation);
+      }
     });
 
     // 마피아 투표 결과 : 시민 사망 회피 (의사 치료)
     socket.on("citizenHeal", () => {
       setTurn("healCitizen");
+      if (isAdmin) {
+        socket.emit("delayStart", DayAnimationDuration + EventAnimation);
+      }
+      systemMessageRef.current = `의사의 노력으로 아무 일도 일어나지 않았습니다.\n아침이 되었습니다. 제한시간 동안 토의 후 마피아로 생각되는 플레이어를 선택해주세요.`;
     });
 
     // 시민 투표 결과 : 사형
@@ -239,43 +271,80 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
       setPlayerList((prev) => prev.filter((item) => item.name !== player.name));
       setDeadPlayerList((prev) => [...prev, player]);
       setTurn("killMafia");
+      if (isAdmin) {
+        socket.emit("delayStart", DayAnimationDuration + EventAnimation);
+      }
+
+      systemMessageRef.current = `${player.name}님이 시민 투표로 사형되었습니다.\n밤이 되었습니다. 마피아는 살해할 플레이어를 선택해주세요.`;
     });
 
     // 시민 투표 결과 : 사형 회피
     socket.on("voteSafe", () => {
       setTurn("safeMafia");
+      if (isAdmin) {
+        socket.emit("delayStart", DayAnimationDuration + EventAnimation);
+      }
+
+      systemMessageRef.current = `과반수를 넘기지 못해 아무 일도 일어나지 않았습니다.\n밤이 되었습니다. 마피아는 살해할 플레이어를 선택해주세요.`;
     });
 
     // 조사 결과 (경찰)
     socket.on("policeResult", (role: string) => {
-      setMessageList((prev) => [
-        ...prev,
-        {
-          name: "시스템",
-          message: `${role}입니다.`,
-          isSystem: true,
-        },
-      ]);
+      setSystemMessage(`조사 결과 해당 플레이어의 직업은 ${role}입니다.`);
     });
 
     socket.on("mafiaWin", () => {
       setTurn("mafiaWin");
+      if (isAdmin) {
+        socket.emit("delayStart", EventAnimation);
+      }
     });
 
     socket.on("citizenWin", () => {
       setTurn("citizenWin");
+      if (isAdmin) {
+        socket.emit("delayStart", EventAnimation);
+      }
     });
 
-    socket.on("animationFinishSuccess", () => {
+    socket.on("delayFinish", () => {
+      const { getValues } = form;
+
+      const { time } = getValues();
+
+      setSystemMessage(systemMessageRef.current);
+
       setTurn((prev) => {
+        if (prev === "intro") {
+          return "mafiaVote";
+        }
+
+        if (prev === "discussion") {
+          return "citizenVote";
+        }
+
         // 마피아 작업
         if (prev === "killCitizen") {
           setTimePeriod("morning");
+
+          if (isAdmin) {
+            socket.emit("delayFinish", time * 1000);
+            systemMessageRef.current =
+              "토의 시간이 종료되었습니다. 마피아로 생각되는 플레이어를 선택해주세요.";
+          }
+
           return "discussion";
         }
 
         if (prev === "healCitizen") {
           setTimePeriod("morning");
+
+          if (isAdmin) {
+            socket.emit("delayFinish", time * 1000);
+            systemMessageRef.current =
+              "토의 시간이 종료되었습니다. 마피아로 생각되는 플레이어를 선택해주세요.";
+          }
+
           return "discussion";
         }
 
@@ -290,15 +359,6 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
           return "mafiaVote";
         }
 
-        setMessageList((prev) => [
-          ...prev,
-          {
-            name: "시스템",
-            message: systemMessageRef.current!.message,
-          },
-        ]);
-
-        setAnimationLoading(false);
         return prev;
       });
     });
@@ -317,7 +377,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
       setPlayer(player);
       setPlayerList([{ name: player.name, color: player.color }]);
 
-      roomSocket(socket);
+      roomSocket(socket, true);
 
       router.push(`/room/${roomId}`);
     });
@@ -344,7 +404,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         setPlayer(player);
         setPlayerList(playerList);
 
-        roomSocket(socket);
+        roomSocket(socket, false);
 
         router.push(`/room/${roomId}`);
       }
@@ -422,10 +482,6 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     // form.setValue("politician", politician);
   };
 
-  const animationFinish = () => {
-    socketRef.current!.emit("animationFinish");
-  };
-
   return (
     <GameContext.Provider
       value={{
@@ -439,7 +495,6 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         form,
         turn,
         timePeriod,
-        animationLoading,
         //
         createRoom,
         joinRoom,
@@ -447,8 +502,6 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         sendMessage,
         gameStart,
         resetPlayable,
-        animationFinish,
-        setAnimationLoading,
       }}
     >
       {children}
@@ -460,7 +513,7 @@ const useGame = () => {
   const game = useContext(GameContext);
 
   if (!game) {
-    throw new Error("useGame must be used within a GameProvider");
+    throw new Error("useGame must be used within a ");
   }
 
   return game;

@@ -3,7 +3,6 @@ import DayBackgroundStyle, {
   IDayBackgroundStyleProps,
 } from "./dayBackground.style";
 import StripDollar from "@/styles/utils/stripDollar";
-import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 
 interface IDayBackgroundProps extends StripDollar<IDayBackgroundStyleProps> {
   children: React.ReactNode;
@@ -11,10 +10,10 @@ interface IDayBackgroundProps extends StripDollar<IDayBackgroundStyleProps> {
 
 const DayBackground: React.FC<IDayBackgroundProps> = (props) => {
   const { children, isShow } = props;
-  const { time } = useRoom();
+  const { timePeriod } = useGame();
 
   return (
-    <DayBackgroundStyle $isShow={isShow} $time={time}>
+    <DayBackgroundStyle $isShow={isShow} $timePeriod={timePeriod}>
       {children}
     </DayBackgroundStyle>
   );

@@ -1,7 +1,7 @@
 import DayAnimation from "@/components/atoms/room/dayAnimation";
 import DayBackground from "@/components/atoms/room/dayBackground";
 import JobInformation from "@/components/atoms/room/jobInformation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGame from "@/hooks/game/useGame";
 import Animation from "@/components/atoms/room/animation";
 
@@ -17,8 +17,7 @@ export const JobInfoDuration = 20 * 1000;
 export const EventAnimation = 4 * 1000;
 
 const AnimationHelper = () => {
-  const { turn, animationLoading, animationFinish, setAnimationLoading } =
-    useGame();
+  const { turn } = useGame();
 
   const getAnimation = () => {
     switch (turn) {
@@ -45,17 +44,10 @@ const AnimationHelper = () => {
   const isShow = events.length !== 0;
 
   const animationEnd = () => {
-    setEvents((prev) => {
-      const updatedEvents = [...prev];
-      updatedEvents.shift();
+    const updatedEvents = [...events];
+    updatedEvents.shift();
 
-      if (updatedEvents.length === 0) {
-        setAnimationLoading(true);
-        animationFinish();
-      }
-
-      return updatedEvents;
-    });
+    setEvents(updatedEvents);
   };
 
   return (
@@ -63,8 +55,6 @@ const AnimationHelper = () => {
       <DayAnimation events={events} animationEnd={animationEnd} />
       <Animation events={events} animationEnd={animationEnd} />
       <JobInformation events={events} animationEnd={animationEnd} />
-
-      {animationLoading && <div>Loading</div>}
     </DayBackground>
   );
 };
