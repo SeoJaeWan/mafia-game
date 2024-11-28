@@ -1,16 +1,13 @@
 "use client";
 
-import Layout from "@/styles/layout";
 import Chat from "@/components/organisms/room/chat";
 import GameBoard from "@/components/organisms/room/gameBoard";
 import WaitingBoard from "@/components/organisms/room/waitingBoard";
-import useGame from "@/hooks/game/useGame";
-import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 import RoomStyle from "./room.style";
+import useGame from "@/hooks/game/useGame";
 
 const GameTemplate = () => {
-  const { isPlaying } = useRoom();
-  const { game } = useGame();
+  const { isPlaying } = useGame();
 
   const beforeUnloadListener = (e: BeforeUnloadEvent) => {
     e.preventDefault();

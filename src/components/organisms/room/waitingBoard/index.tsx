@@ -6,23 +6,41 @@ import Title from "@/components/atoms/common/title";
 import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import GameSetting from "@/components/molecules/create/gameSetting";
-import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 import useGame from "@/hooks/game/useGame";
+
+const minPlayer = 3;
 
 const WaitingBoard = () => {
   const { id } = useParams();
   const [isGameSetting, setIsGameSetting] = useState(false);
   const [copyUrl, setCopyUrl] = useState("");
-  const { game, players, isAdmin, playerNumber } = useGame();
-  const { gameStart } = useRoom();
+  const { player, playerList, readyPlayerList, ready } = useGame();
 
-  const isReady = players[playerNumber].isReady;
+  const isAdmin = player!.isAdmin;
+  const isReady = readyPlayerList.includes(player!.name);
 
-  const totalLength = players.length - 1;
-  const readyLength = players.filter((player) => player.isReady).length;
+  const totalLength = playerList.length;
+  const readyLength = readyPlayerList.length;
 
-  const playable = totalLength === readyLength && totalLength > 0 && isAdmin;
+  console.log(isAdmin);
+
+  const getShowButton = () => {
+    const ablePlayerLength = totalLength >= minPlayer;
+
+    if (isAdmin) {
+      const playable = totalLength - 1 === readyLength && ablePlayerLength;
+
+      if (playable) {
+        return true;
+      }
+    } else if (ablePlayerLength) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const playable = getShowButton();
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(copyUrl);
@@ -34,11 +52,9 @@ const WaitingBoard = () => {
 
   const handlePlaying = () => {
     if (isAdmin) {
-      if (playable) {
-        gameStart();
-      }
+      gameStart();
     } else {
-      game.readyPlayer();
+      ready();
     }
   };
 
@@ -68,24 +84,20 @@ const WaitingBoard = () => {
           gap={"10px"}
         >
           {isAdmin && <Button onClick={handleGameSetting}>게임 설정</Button>}
-          {players.length > 2 && (
+          {playable && (
             <WaitingBoardStyle.ButtonCover $isActive={isReady}>
               <Button onClick={handlePlaying}>
-                {playable
-                  ? "시작하기"
-                  : `준비 ${
-                      isReady ? "취소" : "완료"
-                    } ${readyLength}/${totalLength}`}
+                {isAdmin ? "시작하기" : "준비"}
               </Button>
             </WaitingBoardStyle.ButtonCover>
           )}
         </Layout>
       </WaitingBoardStyle.Box>
 
-      <GameSetting
+      {/* <GameSetting
         isGameSetting={isGameSetting}
         handleGameSetting={handleGameSetting}
-      />
+      /> */}
     </WaitingBoardStyle.Container>
   );
 };

@@ -4,7 +4,6 @@ import Users from "@/components/atoms/room/users";
 import ChatStyle from "./chat.style";
 import InputForm from "@/components/molecules/room/inputForm";
 import ChattingList from "@/components/molecules/room/chattingList";
-import { ChatProvider } from "@/hooks/game/hooks/useChat";
 import { IoChatboxEllipses, IoClose } from "react-icons/io5";
 import { useState } from "react";
 
@@ -21,11 +20,9 @@ const Chat = () => {
           <Users />
         </ChatStyle.UserBox>
 
-        <ChatProvider>
-          <ChatStyle.ChattingBox>
-            <ChattingList />
-          </ChatStyle.ChattingBox>
-        </ChatProvider>
+        <ChatStyle.ChattingBox>
+          <ChattingList />
+        </ChatStyle.ChattingBox>
 
         <ChatStyle.InputBox>
           <InputForm />

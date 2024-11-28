@@ -3,26 +3,22 @@
 import Button from "@/components/atoms/common/button";
 import Input from "@/components/atoms/common/input";
 import InputFormStyle from "./inputForm.style";
-
 import { useState } from "react";
-import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 import useGame from "@/hooks/game/useGame";
 
 const InputForm = () => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
 
-  const { playerNumber } = useGame();
-  const { myRole, playerStatuses, isPlaying, turn, chat } = useRoom();
+  const { isPlaying, player } = useGame();
 
   const getIsChatAble = () => {
-    if (playerStatuses[playerNumber]?.isDie) return false;
+    if (!player!.alive) return false;
 
-    if (!isPlaying) return true;
-    if ((turn === "kill" && myRole === "mafia") || turn === "discussion")
-      return true;
+    // if ((turn === "kill" && myRole === "mafia") || turn === "discussion")
+    // return true;
 
-    return false;
+    return true;
   };
 
   const isChatAble = getIsChatAble();

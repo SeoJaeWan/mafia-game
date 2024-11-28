@@ -4,7 +4,6 @@ import { createContext, useContext, useEffect } from "react";
 import useGameState, { IMe, PlayerStatus, Time, Turn } from "./useGameState";
 import useResponse from "./useResponse";
 import useGame from "../../useGame";
-import { useParams } from "next/navigation";
 import useGameForm, { IForm, PlayableRoleNames } from "./useGameForm";
 import useEvent, { Events } from "./useEvent";
 
@@ -165,7 +164,6 @@ const RoomProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const clearSelected = () => {
-    updateTurn();
     setSelectedUsers(new Map());
     setSelected("");
   };

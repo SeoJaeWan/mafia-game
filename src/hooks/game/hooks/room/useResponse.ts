@@ -105,11 +105,13 @@ const useResponse = (props: UseResponseProps) => {
         }
 
         sendSystemMessage(message);
+        updateTurn();
         clearSelected();
       }
 
       if (isResponseOfType(response, "heal")) {
         const { name } = response.res;
+        updateTurn();
         clearSelected();
       }
 
@@ -117,6 +119,7 @@ const useResponse = (props: UseResponseProps) => {
         const { role } = response.res;
 
         sendSystemMessage(`조사 결과 ${role}입니다.`);
+        updateTurn();
         clearSelected();
       }
 
@@ -136,6 +139,7 @@ const useResponse = (props: UseResponseProps) => {
         }
 
         sendSystemMessage(message);
+        updateTurn();
         clearSelected();
       }
 

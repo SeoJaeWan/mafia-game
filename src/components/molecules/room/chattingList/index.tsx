@@ -1,24 +1,25 @@
 import ChatItem from "@/components/atoms/room/chatItem";
 import ChattingStyle from "./chattingList.style";
-import useChat from "@/hooks/game/hooks/useChat";
 import { useEffect, useRef } from "react";
+import useGame from "@/hooks/game/useGame";
 
 const ChattingList: React.FC = () => {
-  const { chats } = useChat();
+  const { messageList } = useGame();
   const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
-  }, [chats]);
+  }, [messageList]);
 
   return (
     <ChattingStyle.Container ref={listRef}>
-      {chats.map((item, index) => (
+      {messageList.map((item, index) => (
         <ChatItem
           name={item.name}
           message={item.message}
+          color={item.color}
           isSystem={item.isSystem}
           key={index}
         />

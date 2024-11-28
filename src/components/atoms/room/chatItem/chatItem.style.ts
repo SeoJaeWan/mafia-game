@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface IChatItemStyleProps {
   $isMe?: boolean;
-  $color?: string;
+  $color: string;
 }
 
 const SystemChatting = styled.li`

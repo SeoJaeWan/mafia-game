@@ -3,27 +3,33 @@ import Input from "@/components/atoms/common/input";
 import Title from "@/components/atoms/common/title";
 import Button from "@/components/atoms/common/button";
 import { Controller, useForm } from "react-hook-form";
-import useGame, { EnterGameType } from "@/hooks/game/useGame";
+import useGame, { EnterGameType, EnterRoom } from "@/hooks/game/useGame";
 import EnterTemplateStyle from "./enter.style";
 
 interface IEnterTemplateProps {
   roomId: string;
   type: EnterGameType;
+  //
+  enterRoom: (room: EnterRoom) => void;
 }
 
 const EnterTemplate: React.FC<IEnterTemplateProps> = (props) => {
-  const { roomId, type } = props;
+  const {
+    roomId,
+    type,
+    //
+    enterRoom,
+  } = props;
   const { control, handleSubmit } = useForm({
     defaultValues: {
       name: "",
     },
   });
-  const { game } = useGame();
 
   const handleCreateRoom = (data: { name: string }) => {
     const { name } = data;
 
-    game.enterRoom(roomId, name, type);
+    enterRoom({ roomId, name });
   };
 
   return (
