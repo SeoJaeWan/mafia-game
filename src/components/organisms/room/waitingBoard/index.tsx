@@ -7,6 +7,7 @@ import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useGame from "@/hooks/game/useGame";
+import GameSetting from "@/components/molecules/create/gameSetting";
 
 const minPlayer = 3;
 
@@ -14,15 +15,13 @@ const WaitingBoard = () => {
   const { id } = useParams();
   const [isGameSetting, setIsGameSetting] = useState(false);
   const [copyUrl, setCopyUrl] = useState("");
-  const { player, playerList, readyPlayerList, ready } = useGame();
+  const { player, playerList, readyPlayerList, ready, gameStart } = useGame();
 
   const isAdmin = player!.isAdmin;
   const isReady = readyPlayerList.includes(player!.name);
 
   const totalLength = playerList.length;
   const readyLength = readyPlayerList.length;
-
-  console.log(isAdmin);
 
   const getShowButton = () => {
     const ablePlayerLength = totalLength >= minPlayer;
@@ -94,10 +93,10 @@ const WaitingBoard = () => {
         </Layout>
       </WaitingBoardStyle.Box>
 
-      {/* <GameSetting
+      <GameSetting
         isGameSetting={isGameSetting}
         handleGameSetting={handleGameSetting}
-      /> */}
+      />
     </WaitingBoardStyle.Container>
   );
 };

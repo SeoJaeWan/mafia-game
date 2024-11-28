@@ -2,16 +2,21 @@
 
 import DayAnimationStyle from "./dayAnimation.style";
 import Image from "next/image";
-import { useRoom } from "@/hooks/game/hooks/room/useRoom";
-import { DayAnimationDuration } from "@/components/molecules/room/animationHelper";
+import {
+  DayAnimationDuration,
+  EventProps,
+} from "@/components/molecules/room/animationHelper";
 import { useEffect, useRef } from "react";
+import useGame from "@/hooks/game/useGame";
 
-const DayAnimation: React.FC = () => {
-  const { events, time, clearEvent } = useRoom();
+const DayAnimation = (props: EventProps) => {
+  const { events, animationEnd } = props;
+  const { timePeriod } = useGame();
+
   const moonRef = useRef<HTMLImageElement | null>(null);
   const sunRef = useRef<HTMLImageElement | null>(null);
 
-  const info = time === "night" ? "밤이 되었습니다." : "낮이 되었습니다.";
+  const info = timePeriod === "night" ? "밤이 되었습니다." : "낮이 되었습니다.";
 
   const isShow = events[0] === "day";
 
@@ -44,7 +49,7 @@ const DayAnimation: React.FC = () => {
     <DayAnimationStyle.Container
       $isShow={isShow}
       $delay={DayAnimationDuration}
-      className={time}
+      className={timePeriod}
     >
       <DayAnimationStyle.AnimationBox>
         <Image
@@ -54,7 +59,7 @@ const DayAnimation: React.FC = () => {
           alt=""
           width={80}
           height={80}
-          onAnimationEnd={clearEvent}
+          onAnimationEnd={animationEnd}
         />
         <Image
           ref={sunRef}

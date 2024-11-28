@@ -26,9 +26,9 @@ const AnimationBox = styled.div`
   }
 `;
 
-const EventStyle = {
+const AnimationStyle = {
   Container,
   AnimationBox,
 };
 
-export default EventStyle;
+export default AnimationStyle;

@@ -6,8 +6,8 @@ import Button from "@/components/atoms/common/button";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import Label from "@/components/atoms/create/label";
-import { useRoom } from "@/hooks/game/hooks/room/useRoom";
 import { playableRoles } from "@/hooks/game/hooks/room/useGameForm";
+import useGame from "@/hooks/game/useGame";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
   handleGameSetting: () => void;
@@ -16,7 +16,7 @@ interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
 const GameSetting: React.FC<IGameSettingProps> = (props) => {
   const { isGameSetting, handleGameSetting } = props;
   const [boxClass, setBoxClass] = useState("");
-  const { form, resetPlayable } = useRoom();
+  const { form, resetPlayable } = useGame();
   const control = form.control;
 
   const handleCloseSetting = () => {
