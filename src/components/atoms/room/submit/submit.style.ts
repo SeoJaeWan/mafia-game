@@ -1,18 +1,19 @@
 import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
-interface SubmitStyleProps {
-  $isShow: boolean;
-}
-
-const SubmitStyle = styled.button<SubmitStyleProps>`
+const SubmitContainer = styled.div`
   position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
 
-  display: ${(props) => (props.$isShow ? "block" : "none")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
 
+const SubmitButton = styled.button`
   width: 200px;
   height: 50px;
 
@@ -24,5 +25,10 @@ const SubmitStyle = styled.button<SubmitStyleProps>`
   font-size: ${toRem(18)};
   font-weight: 700;
 `;
+
+const SubmitStyle = {
+  SubmitContainer,
+  SubmitButton,
+};
 
 export default SubmitStyle;

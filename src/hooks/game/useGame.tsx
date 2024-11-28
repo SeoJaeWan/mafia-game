@@ -142,7 +142,6 @@ type GameContextType = {
   form: IForm;
   turn: Turn | null;
   timePeriod: timePeriod;
-  animationLoading: boolean;
   //
   createRoom: (room: EnterRoom) => void;
   joinRoom: (room: EnterRoom) => void;
@@ -150,8 +149,6 @@ type GameContextType = {
   sendMessage: (message: string) => void;
   gameStart: () => void;
   resetPlayable: () => void;
-  animationFinish: () => void;
-  setAnimationLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const GameContext = createContext<GameContextType | undefined>(
@@ -226,8 +223,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
       setPlayer((prev) => ({ ...(prev as Player), role }));
     });
 
-    // 마피아 동료 투표
-    socket.on("selected", (selected: Selected) => {
+    socket.on("selectPlayerSuccess", (selected: Selected) => {
       setSelectedList((prev) => {
         const updated = [...prev];
         const findIndex = updated.findIndex(
@@ -452,6 +448,10 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     socketRef.current!.emit("startGame", curRoles);
   };
 
+  const selectPlayer = (name: string) => {
+    socketRef.current!.emit("selectPlayer", name);
+  };
+
   const calculatePlayable = () => {
     const totalPlayers = playerList.length;
 
@@ -502,6 +502,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         sendMessage,
         gameStart,
         resetPlayable,
+        selectPlayer,
       }}
     >
       {children}

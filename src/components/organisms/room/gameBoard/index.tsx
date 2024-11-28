@@ -5,9 +5,11 @@ import AnimationHelper from "@/components/molecules/room/animationHelper";
 import Submit from "@/components/atoms/room/submit";
 import Timer from "@/components/atoms/room/timer";
 import useGame from "@/hooks/game/useGame";
+import { useState } from "react";
 
 const GameBoard = () => {
   const { turn, playerList, deadPlayerList } = useGame();
+  const [selected, setSelected] = useState("");
 
   return (
     <GameBoardStyle.Container $time={"night"}>
