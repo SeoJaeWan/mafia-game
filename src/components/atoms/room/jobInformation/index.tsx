@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  DayAnimationDuration,
   EventProps,
   JobInfoDuration,
 } from "@/components/molecules/room/animationHelper";
@@ -25,7 +24,6 @@ const JobInformation = (props: EventProps) => {
 
   return (
     <JobInformationStyle.Container
-      $delay={DayAnimationDuration}
       $duration={JobInfoDuration}
       onAnimationEnd={animationEnd}
     >

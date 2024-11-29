@@ -17,7 +17,6 @@ const showAnimation = keyframes`
 `;
 
 interface ContainerProps {
-  $delay: number;
   $duration: number;
 }
 
@@ -32,8 +31,8 @@ const Container = styled.div<ContainerProps>`
   gap: 10px;
 
   opacity: 0;
-  animation: ${showAnimation} ${(props) => props.$duration}ms
-    ${(props) => props.$delay}ms ease-in-out forwards;
+  animation: ${showAnimation} ${(props) => props.$duration}ms ease-in-out
+    forwards;
 
   @media (max-width: 768px) {
     flex-direction: column;

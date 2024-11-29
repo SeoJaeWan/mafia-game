@@ -162,7 +162,7 @@ export interface IGameProviderProps {
 }
 
 export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
-  const [player, setPlayer] = useState<Player>();
+  const [player, setPlayer] = useState<Player>({} as Player);
   const [playerList, setPlayerList] = useState<PlayerList>([]);
   const [deadPlayerList, setDeadPlayerList] = useState<PlayerList>([]);
   const [readyPlayerList, setReadyPlayerList] = useState<string[]>([]);
@@ -227,7 +227,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
 
       systemMessageRef.current =
         "밤이 되었습니다. \n마피아는 시민을 살해할 플레이어를 선택해주세요.";
-      setPlayer((prev) => ({ ...(prev as Player), role }));
+      setPlayer((prev) => ({ ...(prev as Player), role, alive: true }));
     });
 
     socket.on(
@@ -258,6 +258,15 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     socket.on("citizenDie", (player: ShortPlayer) => {
       setPlayerList((prev) => prev.filter((item) => item.name !== player.name));
       setDeadPlayerList((prev) => [...prev, player]);
+
+      setPlayer((prev) => {
+        if (prev.name === player.name) {
+          return { ...prev, alive: false };
+        }
+
+        return prev;
+      });
+
       setTurn("killCitizen");
       setTimePeriod("morning");
 
@@ -284,6 +293,15 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
       setDeadPlayerList((prev) => [...prev, player]);
       setTurn("killMafia");
       setTimePeriod("night");
+
+      setPlayer((prev) => {
+        if (prev.name === player.name) {
+          return { ...prev, alive: false };
+        }
+
+        return prev;
+      });
+
       if (isAdmin) {
         delayStart(DayAnimationDuration + EventAnimation);
       }
@@ -380,6 +398,13 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
           return "check";
         }
 
+        if (prev === "mafiaWin" || prev === "citizenWin") {
+          setIsPlaying(false);
+          setReadyPlayerList([]);
+
+          return "gameFinish";
+        }
+
         return prev;
       });
     });
@@ -445,11 +470,17 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
   };
 
   const sendMessage = (message: string) => {
-    socketRef.current!.emit("sendMessage", {
+    const messageData = {
       name: player!.name,
       message,
       color: player!.color,
-    });
+    };
+
+    if (turn === "mafiaVote") {
+      socketRef.current!.emit("sendMafiaMessage", messageData);
+    } else {
+      socketRef.current!.emit("sendMessage", messageData);
+    }
   };
 
   const gameStart = () => {
@@ -476,6 +507,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
   };
 
   const submitSelect = () => {
+    setSelectedList([]);
     switch (turn) {
       case "mafiaVote":
         socketRef.current!.emit("mafiaVote", selectedList);

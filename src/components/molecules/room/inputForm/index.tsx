@@ -10,15 +10,15 @@ const InputForm = () => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
 
-  const { player, sendMessage } = useGame();
+  const { isPlaying, player, turn, sendMessage } = useGame();
 
   const getIsChatAble = () => {
-    if (!player!.alive) return false;
+    if (!isPlaying) return true;
 
-    // if ((turn === "kill" && myRole === "mafia") || turn === "discussion")
-    // return true;
+    if (turn === "discussion" && player!.alive) return true;
+    if (turn === "mafiaVote" && player!.role === "mafia") return true;
 
-    return true;
+    return false;
   };
 
   const isChatAble = getIsChatAble();

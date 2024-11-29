@@ -47,6 +47,8 @@ const AnimationHelper = () => {
     const updatedEvents = [...events];
     updatedEvents.shift();
 
+    console.log(updatedEvents);
+
     setEvents(updatedEvents);
   };
 
