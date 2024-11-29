@@ -7,9 +7,36 @@ import Timer from "@/components/atoms/room/timer";
 import useGame from "@/hooks/game/useGame";
 import { useState } from "react";
 
+const selectAble = [
+  {
+    turn: "mafiaVote",
+    role: "mafia",
+  },
+  {
+    turn: "check",
+    role: "police",
+  },
+  {
+    turn: "heal",
+    role: "doctor",
+  },
+];
+
 const GameBoard = () => {
-  const { turn, playerList, deadPlayerList } = useGame();
+  const { turn, player, playerList, deadPlayerList } = useGame();
   const [selected, setSelected] = useState("");
+
+  const handleClickCard = (name: string) => {
+    if (name !== player!.name) {
+      const isSelectAble = selectAble.find(
+        (item) => item.turn === turn && item.role === player!.role
+      );
+
+      if (turn === "citizenVote" || isSelectAble) {
+        setSelected!(name);
+      }
+    }
+  };
 
   return (
     <GameBoardStyle.Container $time={"night"}>
@@ -22,13 +49,20 @@ const GameBoard = () => {
           <Layout position={"relative"}>
             <GameBoardStyle.CardList>
               {playerList.map(({ name, color }, idx) => (
-                <Card
+                <GameBoardStyle.Selector
                   key={idx}
-                  name={name}
-                  color={color}
-                  showAnimation
-                  isButton
-                />
+                  onClick={() => handleClickCard(name)}
+                >
+                  <Card
+                    name={name}
+                    color={color}
+                    showAnimation
+                    isButton
+                    selected={selected}
+                    //
+                    setSelected={setSelected}
+                  />
+                </GameBoardStyle.Selector>
               ))}
             </GameBoardStyle.CardList>
           </Layout>
@@ -44,7 +78,7 @@ const GameBoard = () => {
           </Layout>
         )}
 
-        {/* <Submit /> */}
+        <Submit selected={selected} />
       </GameBoardStyle.PlayBoard>
     </GameBoardStyle.Container>
   );

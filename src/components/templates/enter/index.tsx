@@ -3,7 +3,7 @@ import Input from "@/components/atoms/common/input";
 import Title from "@/components/atoms/common/title";
 import Button from "@/components/atoms/common/button";
 import { Controller, useForm } from "react-hook-form";
-import useGame, { EnterGameType, EnterRoom } from "@/hooks/game/useGame";
+import { EnterGameType, EnterRoom } from "@/hooks/game/useGame";
 import EnterTemplateStyle from "./enter.style";
 
 interface IEnterTemplateProps {

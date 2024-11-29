@@ -10,15 +10,18 @@ import Image from "next/image";
 import useGame, { playableRoles } from "@/hooks/game/useGame";
 
 const JobInformation = (props: EventProps) => {
-  const { animationEnd } = props;
+  const { events, animationEnd } = props;
 
   const { player } = useGame();
 
   const role = player!.role;
-
   const roleInfo = playableRoles[role];
 
   const src = `/assets/playable/${roleInfo.name}.png`;
+
+  const isShow = events[0] === "job";
+
+  if (!isShow) return null;
 
   return (
     <JobInformationStyle.Container

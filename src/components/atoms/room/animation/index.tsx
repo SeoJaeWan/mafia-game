@@ -19,7 +19,7 @@ const Animation = (props: EventProps) => {
 
   if (!isShow) return null;
 
-  const AnimationSrc = `/assets/room/${currentShow}.png`;
+  const AnimationSrc = `/assets/room/event/${currentShow}.png`;
 
   return (
     <AnimationStyle.Container>

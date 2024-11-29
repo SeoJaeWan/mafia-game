@@ -1,7 +1,7 @@
 import DayAnimation from "@/components/atoms/room/dayAnimation";
 import DayBackground from "@/components/atoms/room/dayBackground";
 import JobInformation from "@/components/atoms/room/jobInformation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useGame from "@/hooks/game/useGame";
 import Animation from "@/components/atoms/room/animation";
 

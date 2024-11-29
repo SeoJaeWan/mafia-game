@@ -78,10 +78,12 @@ const Container = styled.div<IContainerProps>`
   background-color: transparent;
   border: none;
 
+  transition: transform 0.5s;
+
   ${(props) =>
     props.$isClick &&
     css`
-      transform: scale(1.1);
+      transform: scale(1.05);
     `}
 
   &.animation {
@@ -99,31 +101,6 @@ const Container = styled.div<IContainerProps>`
   }
 `;
 
-const SubmitContainer = styled.div`
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-`;
-
-const SubmitButton = styled.button`
-  width: 200px;
-  height: 50px;
-
-  border: none;
-  border-radius: 25px;
-  background-color: var(--black);
-  color: var(--white);
-
-  font-size: ${toRem(18)};
-  font-weight: 700;
-`;
-
 export type CardStyleProps = ICardScreenProps;
 
 const CardStyle = {
@@ -132,8 +109,6 @@ const CardStyle = {
   Front,
   FrontCard,
   Back,
-  SubmitContainer,
-  SubmitButton,
 };
 
 export default CardStyle;

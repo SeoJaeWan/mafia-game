@@ -1,3 +1,4 @@
+import CardStyle from "@/components/atoms/room/card/card.style";
 import { Time } from "@/hooks/game/hooks/room/useGameState";
 import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
@@ -57,11 +58,34 @@ const Container = styled.div<IContainer>`
   }
 `;
 
+const Selector = styled.button`
+  background-color: transparent;
+  border: none;
+
+  width: 150px;
+  height: auto;
+  aspect-ratio: 63/88;
+
+  @media (max-width: 768px) {
+    width: calc((100% - 20px) / 2);
+  }
+
+  ${CardStyle.Container} {
+    width: 100%;
+    height: 100%;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+`;
+
 const GameBoardStyle = {
   Container,
   Text,
   CardList,
   PlayBoard,
+  Selector,
 };
 
 export default GameBoardStyle;
