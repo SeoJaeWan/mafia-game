@@ -5,7 +5,13 @@ import {
   JobInfoDuration,
 } from "@/components/molecules/room/animationHelper";
 import { useRouter } from "next/navigation";
-import React, { createContext, useContext, useRef, useState } from "react";
+import React, {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { io, Socket } from "socket.io-client";
 
@@ -132,6 +138,7 @@ export interface ISetting extends Record<PlayableRoleNames, number> {
 
 type GameContextType = {
   isPlaying: boolean;
+  socket: Socket | null;
   player: Player | undefined;
   playerList: PlayerList;
   deadPlayerList: PlayerList;
@@ -151,6 +158,7 @@ type GameContextType = {
   resetPlayable: () => void;
   selectPlayer: (name: string) => void;
   submitSelect: () => void;
+  gameLeave: () => void;
 };
 
 export const GameContext = createContext<GameContextType | undefined>(
@@ -161,7 +169,9 @@ export interface IGameProviderProps {
   children: React.ReactNode;
 }
 
-export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
+export const GameProvider = (props: PropsWithChildren) => {
+  const { children } = props;
+
   const [player, setPlayer] = useState<Player>({} as Player);
   const [playerList, setPlayerList] = useState<PlayerList>([]);
   const [deadPlayerList, setDeadPlayerList] = useState<PlayerList>([]);
@@ -175,7 +185,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
 
   const systemMessageRef = useRef("");
 
-  const socketRef = useRef<Socket>();
+  const socketRef = useRef<Socket | null>(null);
 
   const form = useForm<ISetting>({
     defaultValues: {
@@ -408,6 +418,15 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         return prev;
       });
     });
+
+    socket.on("playerLeave", (name: string) => {
+      setIsPlaying(false);
+      setReadyPlayerList([]);
+
+      setPlayerList((prev) => prev.filter((item) => item.name !== name));
+
+      setSystemMessage(`${name}님이 게임을 나갔습니다.`);
+    });
   };
 
   const createRoom = ({ name, roomId }: EnterRoom) => {
@@ -526,6 +545,11 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     }
   };
 
+  const gameLeave = () => {
+    socketRef.current!.disconnect();
+    socketRef.current = null;
+  };
+
   const calculatePlayable = () => {
     const totalPlayers = playerList.length;
 
@@ -560,6 +584,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
     <GameContext.Provider
       value={{
         isPlaying,
+        socket: socketRef.current,
         player,
         playerList,
         deadPlayerList,
@@ -579,6 +604,7 @@ export const GameProvider: React.FC<IGameProviderProps> = ({ children }) => {
         resetPlayable,
         selectPlayer,
         submitSelect,
+        gameLeave,
       }}
     >
       {children}

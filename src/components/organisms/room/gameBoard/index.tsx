@@ -4,7 +4,7 @@ import Card from "@/components/atoms/room/card";
 import AnimationHelper from "@/components/molecules/room/animationHelper";
 import Submit from "@/components/atoms/room/submit";
 import Timer from "@/components/atoms/room/timer";
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 import { useEffect, useState } from "react";
 
 const selectAble = [

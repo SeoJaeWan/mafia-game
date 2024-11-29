@@ -1,4 +1,4 @@
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 import SubmitStyle from "./submit.style";
 
 interface SubmitProps {

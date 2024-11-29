@@ -7,7 +7,7 @@ import {
   EventProps,
 } from "@/components/molecules/room/animationHelper";
 import { useEffect, useRef } from "react";
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 
 const DayAnimation = (props: EventProps) => {
   const { events, animationEnd } = props;

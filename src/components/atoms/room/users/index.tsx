@@ -1,7 +1,7 @@
 import UsersStyle from "./users.style";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import { useState } from "react";
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 
 const Users = () => {
   const { playerList } = useGame();

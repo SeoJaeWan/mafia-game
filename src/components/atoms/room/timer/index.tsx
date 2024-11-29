@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TimerStyle from "./timer.style";
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 
 const Timer = () => {
   const { turn, form } = useGame();

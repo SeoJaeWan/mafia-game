@@ -1,4 +1,4 @@
-import { timePeriod } from "@/hooks/game/useGame";
+import { timePeriod } from "@/hooks/useGame";
 import styled from "styled-components";
 
 export interface IDayBackgroundStyleProps {

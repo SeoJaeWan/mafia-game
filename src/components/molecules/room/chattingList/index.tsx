@@ -1,7 +1,7 @@
 import ChatItem from "@/components/atoms/room/chatItem";
 import ChattingStyle from "./chattingList.style";
 import { useEffect, useRef } from "react";
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 
 const ChattingList: React.FC = () => {
   const { messageList } = useGame();

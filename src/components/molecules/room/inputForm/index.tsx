@@ -4,10 +4,10 @@ import Button from "@/components/atoms/common/button";
 import Input from "@/components/atoms/common/input";
 import InputFormStyle from "./inputForm.style";
 import { useState } from "react";
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 
 const InputForm = () => {
-  const [showEmoji, setShowEmoji] = useState(false);
+  // const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
 
   const { isPlaying, player, turn, sendMessage } = useGame();
@@ -23,9 +23,9 @@ const InputForm = () => {
 
   const isChatAble = getIsChatAble();
 
-  const handleEmojiToggle = () => {
-    setShowEmoji(!showEmoji);
-  };
+  // const handleEmojiToggle = () => {
+  //   setShowEmoji(!showEmoji);
+  // };
 
   const handleSendChat = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,7 +49,7 @@ const InputForm = () => {
         isDisable={!isChatAble}
       />
 
-      <InputFormStyle.EmojiBox $show={showEmoji}></InputFormStyle.EmojiBox>
+      {/* <InputFormStyle.EmojiBox $show={showEmoji}></InputFormStyle.EmojiBox> */}
 
       {/* <InputFormStyle.EmojiButton type={"button"} onClick={handleEmojiToggle}>
         <Image

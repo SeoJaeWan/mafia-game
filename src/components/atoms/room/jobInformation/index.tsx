@@ -6,7 +6,7 @@ import {
 } from "@/components/molecules/room/animationHelper";
 import JobInformationStyle from "./jobInformation.style";
 import Image from "next/image";
-import useGame, { playableRoles } from "@/hooks/game/useGame";
+import useGame, { playableRoles } from "@/hooks/useGame";
 
 const JobInformation = (props: EventProps) => {
   const { events, animationEnd } = props;

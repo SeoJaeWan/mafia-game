@@ -6,8 +6,8 @@ import Button from "@/components/atoms/common/button";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import Label from "@/components/atoms/create/label";
-import { playableRoles } from "@/hooks/game/hooks/room/useGameForm";
-import useGame from "@/hooks/game/useGame";
+import { playableRoles } from "@/hooks/useGame";
+import useGame from "@/hooks/useGame";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
   handleGameSetting: () => void;

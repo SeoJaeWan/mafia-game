@@ -1,6 +1,6 @@
 import Header from "@/components/templates/header";
 import Main from "@/components/templates/main";
-import { GameProvider } from "@/hooks/game/useGame";
+import { GameProvider } from "@/hooks/useGame";
 
 interface LayoutProps {
   children: React.ReactNode;

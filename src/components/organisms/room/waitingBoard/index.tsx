@@ -6,7 +6,7 @@ import Title from "@/components/atoms/common/title";
 import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 import GameSetting from "@/components/molecules/create/gameSetting";
 
 const minPlayer = 3;

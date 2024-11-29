@@ -1,7 +1,7 @@
 "use client";
 
 import EnterTemplate from "@/components/templates/enter";
-import useGame from "@/hooks/game/useGame";
+import useGame from "@/hooks/useGame";
 import createRoomId from "@/utils/createRoomId";
 
 const Create = () => {
