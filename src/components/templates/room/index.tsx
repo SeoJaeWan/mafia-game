@@ -1,62 +1,65 @@
 "use client";
 
-import Layout from "@/styles/layout";
-import { headerHeight } from "../header";
 import Chat from "@/components/organisms/room/chat";
-import { useEffect } from "react";
-import useGame from "@/hooks/useGame";
 import GameBoard from "@/components/organisms/room/gameBoard";
 import WaitingBoard from "@/components/organisms/room/waitingBoard";
+import RoomStyle from "./room.style";
+import useGame from "@/hooks/useGame";
+import { useEffect } from "react";
+import { redirect } from "next/navigation";
 
 const GameTemplate = () => {
-  const { isPlaying, leaveRoom } = useGame();
+  const { socket, isPlaying, gameLeave } = useGame();
 
-  const beforeUnloadListener = (e: BeforeUnloadEvent) => {
-    e.preventDefault();
-    return (e.returnValue = true);
-  };
-
-  const handlePopState = (e: PopStateEvent) => {
-    const confirmation = confirm("게임을 떠나시겠습니까?");
-    if (confirmation) {
-      history.back();
-    } else {
-      history.pushState(null, "", "");
+  useEffect(() => {
+    if (!socket) {
+      alert("잘못된 접근입니다.");
+      redirect("/");
     }
-  };
+  }, [socket]);
 
-  // 테스트
-  // useEffect(() => {
-  //   history.pushState(null, "", "");
+  useEffect(() => {
+    const beforeUnloadListener = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
 
-  //   window.addEventListener("beforeunload", beforeUnloadListener);
-  //   window.addEventListener("popstate", handlePopState);
+      return (e.returnValue = true);
+    };
 
-  //   return () => {
-  //     window.removeEventListener("beforeunload", beforeUnloadListener);
-  //     window.removeEventListener("popstate", handlePopState);
-  //     leaveRoom();
-  //   };
-  // }, []);
+    const handlePopState = () => {
+      const confirmation = confirm("게임을 떠나시겠습니까?");
+      if (confirmation) {
+        history.back();
+        gameLeave();
+      } else {
+        history.pushState(null, "", "");
+      }
+    };
+
+    history.pushState(null, "", "");
+
+    window.addEventListener("beforeunload", beforeUnloadListener);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnloadListener);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [gameLeave]);
+
+  if (!socket) {
+    return null;
+  }
 
   return (
-    <Layout
-      display={"flex"}
-      flexDirection={"row"}
-      //
-      width={"100%"}
-      height={"100%"}
-      //
-      paddingTop={headerHeight}
-    >
-      <Layout width={"70%"} height={"100%"}>
+    <RoomStyle.Container>
+      <RoomStyle.PlayingBoard>
         {/* 테스트 */}
         {isPlaying ? <GameBoard /> : <WaitingBoard />}
-      </Layout>
-      <Layout width={"30%"} height={"100%"}>
+      </RoomStyle.PlayingBoard>
+      <RoomStyle.ChatBoard>
         <Chat />
-      </Layout>
-    </Layout>
+      </RoomStyle.ChatBoard>
+    </RoomStyle.Container>
   );
 };
 

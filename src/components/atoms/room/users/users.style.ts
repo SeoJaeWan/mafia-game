@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   position: relative;
+  z-index: 2;
 
   height: 100%;
 `;
@@ -16,14 +17,14 @@ const Button = styled.button`
   height: 100%;
 
   background-color: var(--gray-background-rgba);
-  border: ${toRem(2)} solid var(--gray-background-active-rgba);
+  border: 2px solid var(--gray-background-active-rgba);
   border-left: none;
 `;
 
 const Label = styled.span`
   display: inline-block;
 
-  padding: 0 ${toRem(10)};
+  padding: 0 10px;
 
   font-size: ${toRem(16)};
   font-weight: 600;
@@ -51,7 +52,7 @@ const List = styled.ul<IListProps>`
 
   width: 100%;
   height: ${(props) => props.$height};
-  max-height: ${`calc(${toRem(35)} * 4)`};
+  max-height: calc(35px * 4);
 
   transition: height 0.3s ease-in-out;
 
@@ -62,13 +63,13 @@ const Item = styled.li`
   display: flex;
   align-items: center;
 
-  height: ${toRem(35)};
+  height: 35px;
 
-  padding: 0 ${toRem(10)};
+  padding: 0 10px;
 
   background-color: var(--gray-background-rgba);
-  border-bottom: ${toRem(2)} solid var(--gray-background-active-rgba);
-  border-right: ${toRem(2)} solid var(--gray-background-active-rgba);
+  border-bottom: 2px solid var(--gray-background-active-rgba);
+  border-right: 2px solid var(--gray-background-active-rgba);
 `;
 
 const UsersStyle = {

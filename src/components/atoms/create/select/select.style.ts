@@ -8,7 +8,7 @@ const Option = styled.button`
 
   width: 100%;
 
-  padding: ${toRem(5)} 0;
+  padding: 5px 0;
 
   font-size: ${toRem(14)};
   font-weight: 600;
@@ -29,11 +29,11 @@ const Value = styled.span`
   font-size: ${toRem(14)};
   font-weight: 600;
 
-  border-radius: ${toRem(5)} 0 0 ${toRem(5)};
+  border-radius: 5px 0 0 5px;
 
-  border-top: ${toRem(2)} solid var(--gray-background-active-rgba);
-  border-bottom: ${toRem(2)} solid var(--gray-background-active-rgba);
-  border-left: ${toRem(2)} solid var(--gray-background-active-rgba);
+  border-top: 2px solid var(--gray-background-active-rgba);
+  border-bottom: 2px solid var(--gray-background-active-rgba);
+  border-left: 2px solid var(--gray-background-active-rgba);
 `;
 
 interface ArrowProps {
@@ -50,8 +50,8 @@ const Arrow = styled.span<ArrowProps>`
 
   background-color: var(--gray-background-active-rgba);
 
-  border-radius: 0 ${toRem(5)} ${toRem(5)} 0;
-  border-top: ${toRem(2)} solid var(--gray-background-active-rgba);
+  border-radius: 0 5px 5px 0;
+  border-top: 2px solid var(--gray-background-active-rgba);
 `;
 
 interface OptionContainerProps {
@@ -60,7 +60,7 @@ interface OptionContainerProps {
 
 const OptionContainer = styled.div<OptionContainerProps>`
   position: absolute;
-  top: ${`calc(100% - ${toRem(2)})`};
+  top: calc(100% - 2px);
   left: 0;
 
   display: ${(props) => (props.$isShow ? "block" : "none")};
@@ -69,9 +69,9 @@ const OptionContainer = styled.div<OptionContainerProps>`
 
   overflow: hidden;
 
-  border: ${toRem(2)} solid var(--gray-background-active-rgba);
+  border: 2px solid var(--gray-background-active-rgba);
 
-  border-radius: ${toRem(5)};
+  border-radius: 5px;
 `;
 
 interface IButtonProps {
@@ -89,7 +89,7 @@ const Button = styled.button<IButtonProps>`
 
   background-color: var(--gray-background-rgba);
 
-  border-radius: ${toRem(5)};
+  border-radius: 5px;
   border: none;
 
   ${Value} {

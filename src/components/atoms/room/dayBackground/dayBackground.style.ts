@@ -1,4 +1,4 @@
-import { Time } from "@/hooks/useGame/useRoom";
+import { timePeriod } from "@/hooks/useGame";
 import styled from "styled-components";
 
 export interface IDayBackgroundStyleProps {
@@ -6,7 +6,7 @@ export interface IDayBackgroundStyleProps {
 }
 
 export interface IDayBackgroundProps extends IDayBackgroundStyleProps {
-  $time: Time;
+  $timePeriod: timePeriod;
 }
 
 const DayBackgroundStyle = styled.div<IDayBackgroundProps>`
@@ -26,7 +26,7 @@ const DayBackgroundStyle = styled.div<IDayBackgroundProps>`
   height: 100%;
 
   background-color: ${(props) =>
-    props.$time === "night"
+    props.$timePeriod === "night"
       ? "var(--day-background-night)"
       : "var(--day-background-morning)"};
 `;

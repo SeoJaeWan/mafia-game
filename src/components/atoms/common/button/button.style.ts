@@ -4,18 +4,15 @@ import styled, { css } from "styled-components";
 export interface IButtonStyleProps {
   $isSmall?: boolean;
   $isDisable?: boolean;
-  $width?: number;
-  $height?: number;
+  $width?: string;
+  $height?: string;
 }
 
 const ButtonStyle = styled.button<IButtonStyleProps>`
-  ${(props) => props.$width && `width: ${toRem(props.$width)};`}
-  ${(props) => props.$height && `height: ${toRem(props.$height)};`}
-
-  padding: ${toRem(10)} ${toRem(20)};
+  padding: 10px 20px;
 
   border: none;
-  border-radius: ${toRem(5)};
+  border-radius: 5px;
   background: var(--gray-background-rgba);
 
   font-size: ${toRem(20)};
@@ -34,7 +31,7 @@ const ButtonStyle = styled.button<IButtonStyleProps>`
   ${(props) =>
     props.$isSmall &&
     css`
-      padding: ${toRem(5)} ${toRem(10)};
+      padding: 5px 10px;
       font-size: ${toRem(16)};
     `}
 `;

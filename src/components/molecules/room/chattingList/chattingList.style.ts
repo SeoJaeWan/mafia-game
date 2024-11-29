@@ -1,12 +1,13 @@
-import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
 const Container = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${toRem(10)};
+  gap: 10px;
 
-  padding: ${toRem(10)};
+  height: 100%;
+
+  padding: 10px;
 
   overflow-y: auto;
 `;

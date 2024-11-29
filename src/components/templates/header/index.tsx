@@ -1,9 +1,8 @@
 import Github from "@/components/atoms/common/github";
 import Title from "@/components/atoms/header/headerTitle";
 import Layout from "@/styles/layout";
-import toRem from "@/styles/utils/toRem";
 
-export const headerHeight = toRem(50);
+export const headerHeight = "50px";
 
 const Header = () => {
   return (
@@ -16,10 +15,10 @@ const Header = () => {
       justifyContent={"space-between"}
       //
       width={"100vw"}
-      height={headerHeight}
+      height={"50px"}
       as={"header"}
     >
-      <Layout width={toRem(100)} />
+      <Layout width={"50px"} />
 
       <Title />
 
@@ -28,9 +27,9 @@ const Header = () => {
         justifyContent={"center"}
         alignItems={"center"}
         //
-        width={toRem(100)}
+        width={"50px"}
         //
-        padding={`0 ${toRem(20)}`}
+        padding={`0 20px`}
       >
         <Github size={24} />
       </Layout>

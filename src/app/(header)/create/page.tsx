@@ -1,7 +1,16 @@
-import CreateTemplate from "@/components/templates/create";
+"use client";
+
+import EnterTemplate from "@/components/templates/enter";
+import useGame from "@/hooks/useGame";
+import createRoomId from "@/utils/createRoomId";
 
 const Create = () => {
-  return <CreateTemplate />;
+  const roomId = createRoomId();
+  const { createRoom } = useGame();
+
+  return (
+    <EnterTemplate roomId={roomId} type={"create"} enterRoom={createRoom} />
+  );
 };
 
 export default Create;

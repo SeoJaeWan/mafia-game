@@ -10,10 +10,10 @@ interface IDayBackgroundProps extends StripDollar<IDayBackgroundStyleProps> {
 
 const DayBackground: React.FC<IDayBackgroundProps> = (props) => {
   const { children, isShow } = props;
-  const { time } = useGame();
+  const { timePeriod } = useGame();
 
   return (
-    <DayBackgroundStyle $isShow={isShow} $time={time}>
+    <DayBackgroundStyle $isShow={isShow} $timePeriod={timePeriod}>
       {children}
     </DayBackgroundStyle>
   );

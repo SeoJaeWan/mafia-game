@@ -14,7 +14,7 @@ const Global = styled.createGlobalStyle`
     --gray-background-active-rgba: rgba(223, 228, 234, 1);
 
     --day-background-night: #2d3436;
-    --day-background-morning: #dfe6e9;
+    --day-background-morning: #ffffff;
   }
 
   @media (prefers-color-scheme: dark) {

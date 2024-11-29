@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface IChatItemStyleProps {
   $isMe?: boolean;
-  $color?: string;
+  $color: string;
 }
 
 const SystemChatting = styled.li`
@@ -14,8 +14,8 @@ const SystemChatting = styled.li`
 
   width: 80%;
 
-  padding: ${toRem(8)} ${toRem(10)};
-  border-radius: ${toRem(20)};
+  padding: 8px 10px;
+  border-radius: 20px;
 
   background-color: var(--gray-background-rgba);
 `;
@@ -28,10 +28,10 @@ const PlayerChatting = styled.li<IChatItemStyleProps>`
   align-items: flex-start;
   align-self: ${(props) => (props.$isMe ? "flex-end" : "flex-start")};
 
-  padding: ${toRem(8)} ${toRem(8)};
+  padding: 8px 8px;
   border: 2px solid ${(props) => props.$color};
   background-color: ${(props) => props.$color};
-  border-radius: ${toRem(10)};
+  border-radius: 10px;
 
   ${(props) => (props.$isMe ? "margin-right: 9px;" : "margin-left: 9px;")}
 
@@ -80,19 +80,21 @@ const PlayerChatting = styled.li<IChatItemStyleProps>`
 `;
 
 interface IChat {
-  $isBlack?: boolean;
+  $isSystem?: boolean;
 }
 
-const NickName = styled.p<IChat>`
+const NickName = styled.p`
   font-size: ${toRem(12)};
-  color: ${(props) => (props.$isBlack ? "var(--black)" : "var(--white)")};
+  color: var(--white);
 `;
 
 const Chat = styled.p<IChat>`
   font-size: ${toRem(16)};
   font-weight: 500;
 
-  color: ${(props) => (props.$isBlack ? "var(--black)" : "var(--white)")};
+  color: ${(props) => (props.$isSystem ? "var(--black)" : "var(--white)")};
+
+  white-space: pre-wrap;
 `;
 
 export type ChatItemStyleType = IChatItemStyleProps;

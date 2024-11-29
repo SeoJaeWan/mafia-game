@@ -13,10 +13,10 @@ const Card = styled.div`
 `;
 
 const FrontCard = styled(Image)`
-  width: 70%;
+  width: 80%;
   height: auto;
 
-  aspect-ratio: 299/427;
+  aspect-ratio: 1/1;
 `;
 
 interface ICardScreenProps {
@@ -38,8 +38,8 @@ const CardScreen = styled.div<ICardScreenProps>`
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
-  border: ${toRem(7)} solid black;
-  border-radius: ${toRem(10)};
+  border: 7px solid var(--black);
+  border-radius: 10px;
 
   background-color: ${(props) => props.$color};
 `;
@@ -71,17 +71,19 @@ interface IContainerProps {
 }
 
 const Container = styled.div<IContainerProps>`
-  width: ${toRem(150)};
+  width: 150px;
   height: auto;
   aspect-ratio: 63/88;
 
   background-color: transparent;
   border: none;
 
+  transition: transform 0.5s;
+
   ${(props) =>
     props.$isClick &&
     css`
-      transform: scale(1.1);
+      transform: scale(1.05);
     `}
 
   &.animation {
@@ -92,6 +94,10 @@ const Container = styled.div<IContainerProps>`
 
   &:hover ${Card} {
     transform: rotateY(180deg);
+  }
+
+  @media (max-width: 768px) {
+    width: calc((100% - 20px) / 2);
   }
 `;
 

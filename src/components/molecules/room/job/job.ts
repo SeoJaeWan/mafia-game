@@ -5,7 +5,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: ${toRem(10)};
+  gap: 10px;
 
   width: 100%;
   height: 100%;
@@ -14,7 +14,7 @@ const Container = styled.div`
 const Info = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${toRem(10)};
+  gap: 10px;
   flex: 1;
 
   font-size: ${toRem(14)};
@@ -22,10 +22,10 @@ const Info = styled.div`
 
 const MoodBox = styled.div`
   display: flex;
-  gap: ${toRem(5)};
+  gap: 5px;
 
   width: 100%;
-  height: ${toRem(40)};
+  height: 40px;
 `;
 
 const Mood = styled.button`

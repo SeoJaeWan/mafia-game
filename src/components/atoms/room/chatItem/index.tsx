@@ -1,16 +1,13 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import ChatItemStyle, { ChatItemStyleType } from "./chatItem.style";
-import { IChats } from "@/hooks/useGame/useRoom";
-import useGame from "@/hooks/useGame";
-
-interface IChatItemProps extends StripDollar<ChatItemStyleType>, IChats {}
+import useGame, { Message } from "@/hooks/useGame";
+interface IChatItemProps extends StripDollar<ChatItemStyleType>, Message {}
 
 const ChatItem: React.FC<IChatItemProps> = (props) => {
-  const { name, message, isMe, isSystem } = props;
-  const { players, isPlaying } = useGame();
+  const { name, color, message, isSystem } = props;
+  const { player } = useGame();
 
-  const color = players.find((player) => player.name === name)?.color;
-  const isBlack = !isPlaying || isSystem;
+  const isMe = player!.name === name;
 
   const Chatting = isSystem
     ? ChatItemStyle.SystemChatting
@@ -18,12 +15,8 @@ const ChatItem: React.FC<IChatItemProps> = (props) => {
 
   return (
     <Chatting $isMe={isMe} $color={color}>
-      {!isSystem && (
-        <ChatItemStyle.NickName $isBlack={isBlack}>
-          {name}
-        </ChatItemStyle.NickName>
-      )}
-      <ChatItemStyle.Chat $isBlack={isBlack}>{message}</ChatItemStyle.Chat>
+      {!isSystem && <ChatItemStyle.NickName>{name}</ChatItemStyle.NickName>}
+      <ChatItemStyle.Chat $isSystem={isSystem}>{message}</ChatItemStyle.Chat>
     </Chatting>
   );
 };

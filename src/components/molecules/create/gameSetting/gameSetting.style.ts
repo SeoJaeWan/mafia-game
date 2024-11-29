@@ -28,6 +28,10 @@ const Background = styled.button`
   background-color: transparent;
 
   cursor: pointer;
+
+  @media (max-width: 1070px) {
+    display: none;
+  }
 `;
 
 const OpenAnimation = keyframes`
@@ -59,7 +63,7 @@ const Box = styled.div`
   width: 30vw;
   height: 100vh;
 
-  padding: ${toRem(20)} 0;
+  padding: 20px 0;
 
   background-color: var(--background);
 
@@ -67,6 +71,10 @@ const Box = styled.div`
 
   &.close {
     animation: ${CloseAnimation} 0.3s ease-in-out forwards;
+  }
+
+  @media (max-width: 1070px) {
+    width: 100vw;
   }
 `;
 

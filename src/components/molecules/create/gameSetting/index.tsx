@@ -2,13 +2,11 @@ import StripDollar from "@/styles/utils/stripDollar";
 import GameSettingStyle, { IGameSettingStyleProps } from "./gameSetting.style";
 import Layout from "@/styles/layout";
 import Count from "@/components/atoms/create/count";
-import toRem from "@/styles/utils/toRem";
 import Button from "@/components/atoms/common/button";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import Select from "@/components/atoms/create/select";
 import Label from "@/components/atoms/create/label";
-import { playableRoles, playMode } from "@/hooks/useGame/useGameModeForm";
+import { playableRoles } from "@/hooks/useGame";
 import useGame from "@/hooks/useGame";
 
 interface IGameSettingProps extends StripDollar<IGameSettingStyleProps> {
@@ -40,11 +38,11 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           flexDirection={"column"}
           justifyContent={"center"}
           alignItems={"center"}
-          gap={toRem(20)}
-          marginTop={toRem(40)}
-          marginBottom={toRem(30)}
+          gap={"20px"}
+          marginTop={"40px"}
+          marginBottom={"30px"}
         >
-          {playableRoles.map(({ label, name }) => (
+          {Object.values(playableRoles).map(({ label, name }) => (
             <Controller
               key={label}
               control={control}
@@ -62,7 +60,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
-          gap={toRem(20)}
+          gap={"20px"}
         >
           <Button isSmall onClick={resetPlayable}>
             자동 설정
@@ -72,10 +70,10 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
         <Layout
           display={"flex"}
           flexDirection={"column"}
-          gap={toRem(20)}
+          gap={"20px"}
           //
-          marginTop={toRem(50)}
-          marginBottom={toRem(30)}
+          marginTop={"50px"}
+          marginBottom={"30px"}
         >
           <Controller
             control={control}
@@ -86,15 +84,15 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
               </Label>
             )}
           />
-
+          {/* 
           <Controller
             control={control}
             name={"mode"}
             render={({ field: { value, onChange } }) => (
               <Label label={"게임 모드"}>
                 <Select
-                  width={toRem(139)}
-                  height={toRem(24)}
+                  width={"139px"}
+                  height={"24px"}
                   value={value.label}
                   onChange={onChange}
                 >
@@ -106,17 +104,17 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
                 </Select>
               </Label>
             )}
-          />
+          /> */}
         </Layout>
 
         <Layout
           display={"flex"}
           justifyContent={"center"}
           alignItems={"center"}
-          gap={toRem(20)}
+          gap={"20px"}
         >
           <Button isSmall onClick={handleCloseSetting}>
-            완료
+            닫기
           </Button>
         </Layout>
       </GameSettingStyle.Box>

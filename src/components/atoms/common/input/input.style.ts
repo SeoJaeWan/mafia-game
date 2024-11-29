@@ -13,15 +13,14 @@ export interface IInputStyleProps {
 const InputStyle = styled.input<IInputStyleProps>`
   flex: ${(props) => props.$flex || "initial"};
 
-  width: ${(props) => props.$width || "100%"};
-  height: ${(props) => props.$height || "100%"};
+  width: 100%;
 
-  padding: 0 ${toRem(10)};
+  padding: 8px 10px;
 
   background-color: var(--gray-background-rgba);
 
   border: 3px solid transparent;
-  border-radius: ${toRem(5)};
+  border-radius: 5px;
   outline: none;
 
   font-size: ${toRem(20)};

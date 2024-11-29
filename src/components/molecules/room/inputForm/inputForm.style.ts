@@ -1,4 +1,3 @@
-import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
 interface IContainer {
@@ -12,12 +11,12 @@ const Container = styled.form<IContainer>`
   justify-content: space-between;
   align-items: center;
 
-  gap: ${toRem(5)};
+  gap: 5px;
 
   width: 100%;
   height: 100%;
 
-  padding: 0 ${toRem(10)};
+  padding: 0 10px;
 
   background-color: ${(props) =>
     props.$isChatAble
@@ -30,12 +29,12 @@ const EmojiButton = styled.button`
   align-items: center;
   justify-content: center;
 
-  width: ${toRem(30)};
-  height: ${toRem(30)};
+  width: 30px;
+  height: 30px;
 
   background: none;
   border: 2px solid var(--gray-background-active-rgba);
-  border-radius: ${toRem(5)};
+  border-radius: 5px;
 
   cursor: pointer;
 `;
@@ -46,20 +45,20 @@ interface IEmojiBoxProps {
 
 const EmojiBox = styled.div<IEmojiBoxProps>`
   position: absolute;
-  top: ${toRem(-62)};
-  right: ${toRem(10)};
+  top: -62px;
+  right: 10px;
 
   display: ${(props) => (props.$show ? "flex" : "none")};
   flex-wrap: wrap;
-  gap: ${toRem(5)};
+  gap: 5px;
 
-  width: ${toRem(200)};
-  height: ${toRem(50)};
+  width: 200px;
+  height: 50px;
 
-  padding: ${toRem(10)};
+  padding: 10px;
 
-  border: ${toRem(3)} solid var(--gray-background-active-rgba);
-  border-radius: ${toRem(5)};
+  border: 3px solid var(--gray-background-active-rgba);
+  border-radius: 5px;
 
   background: var(--background);
 
@@ -68,7 +67,7 @@ const EmojiBox = styled.div<IEmojiBoxProps>`
 
     position: absolute;
     top: 100%;
-    right: ${`calc(${toRem(48)} + ${toRem(5)} + ${toRem(4.5)})`};
+    right: calc(48px + 5px + 4.5px);
     z-index: 1;
 
     width: 0;
@@ -85,7 +84,7 @@ const EmojiBox = styled.div<IEmojiBoxProps>`
 
     position: absolute;
     top: 100%;
-    right: ${`calc(${toRem(48)} + ${toRem(5)} + ${toRem(0.5)})`};
+    right: calc(48px + 5px + 0.5px);
 
     width: 0;
     height: 0;
