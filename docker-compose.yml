@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  nextjs:
+    build:
+      context: ./next-app
+    container_name: mafia-client
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-mafia
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - nextjs
