@@ -18,8 +18,8 @@ COPY package.json yarn.lock ./
 
 RUN yarn install --production
 
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
+COPY --from=builder /builder/.next ./.next
+COPY --from=builder /builder/public ./public
 
 EXPOSE 3000
 
