@@ -121,7 +121,7 @@ export type Turn =
   | "citizenWin" // 시민 승리
   | "gameFinish"; // 게임 종료
 
-const socketUrl = "http://seojaewan.com/server";
+const socketUrl = "http://localhost:4000";
 
 const defaultPlayerRoles = Object.values(playableRoles).reduce(
   (acc, cur) => ({
