@@ -121,7 +121,7 @@ export type Turn =
   | "citizenWin" // 시민 승리
   | "gameFinish"; // 게임 종료
 
-const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
+const socketUrl = "/server";
 
 const defaultPlayerRoles = Object.values(playableRoles).reduce(
   (acc, cur) => ({
