@@ -430,6 +430,7 @@ export const GameProvider = (props: PropsWithChildren) => {
   };
 
   const createRoom = ({ name, roomId }: EnterRoom) => {
+    console.log(socketUrl);
     const socket = io(socketUrl);
 
     socket.on("connect", () => {
