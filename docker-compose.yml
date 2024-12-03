@@ -5,6 +5,7 @@ services:
     build:
       context: .
     container_name: mafia-client
+    image: mafia-client
     ports:
       - "3000:3000"
     environment:
