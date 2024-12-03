@@ -32,13 +32,19 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            cd /home/${{ secrets.SERVER_USER }}/mafia/client
+            cd /home/${{ secrets.SERVER_USER }}
 
-            git pull origin main
+            if [ ! -d  mafia-client/.git" ]; then
+              echo "Repository does not exist. Cloning the repository..."
+              git clone https://github.com/${{ github.repository }}.git mafia-client
+              cd mafia-client
+              git checkout main
+            else
+              echo "Repository exists. Pulling latest changes..."
+              cd mafia-client
+              git pull origin main
+            fi
 
             docker-compose pull
             docker-compose down
             docker-compose up -d
-
-        env:
-          DEBUG: true
