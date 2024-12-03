@@ -14,5 +14,3 @@ services:
 networks:
   shared_network:
     external: true
-# docker network create shared_network
-# docker network inspect shared_network
