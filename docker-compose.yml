@@ -2,10 +2,8 @@ version: "3.8"
 
 services:
   mafia-client:
-    build:
-      context: .
+    image: sjw7324/mafia-client:latest
     container_name: mafia-client
-    image: mafia-client
     ports:
       - "3000:3000"
     environment:
