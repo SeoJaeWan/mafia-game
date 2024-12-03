@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface IChatItemStyleProps {
   $isMe?: boolean;
-  $color: string;
+  $color?: string;
 }
 
 const SystemChatting = styled.li`
@@ -29,8 +29,8 @@ const PlayerChatting = styled.li<IChatItemStyleProps>`
   align-self: ${(props) => (props.$isMe ? "flex-end" : "flex-start")};
 
   padding: 8px 8px;
-  border: 2px solid ${(props) => props.$color};
-  background-color: ${(props) => props.$color};
+  border: 2px solid ${(props) => props.$color || "var(--black)"};
+  background-color: ${(props) => props.$color || "var(--black)"};
   border-radius: 10px;
 
   ${(props) => (props.$isMe ? "margin-right: 9px;" : "margin-left: 9px;")}

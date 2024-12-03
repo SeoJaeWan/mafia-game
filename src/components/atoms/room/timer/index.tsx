@@ -22,7 +22,7 @@ const Timer = () => {
         }
       }, 1000);
     }
-  }, [isActive]);
+  }, [isActive, form]);
 
   return <TimerStyle $isActive={isActive}>{time}</TimerStyle>;
 };

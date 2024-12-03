@@ -23,7 +23,7 @@ const selectAble = [
 ];
 
 const GameBoard = () => {
-  const { turn, player, playerList, deadPlayerList } = useGame();
+  const { turn, timePeriod, player, playerList, deadPlayerList } = useGame();
   const [selected, setSelected] = useState("");
 
   const handleClickCard = (name: string) => {
@@ -43,7 +43,7 @@ const GameBoard = () => {
   }, [turn]);
 
   return (
-    <GameBoardStyle.Container $time={"night"}>
+    <GameBoardStyle.Container $timePeriod={timePeriod}>
       <AnimationHelper key={turn} />
 
       <Timer />

@@ -11,7 +11,7 @@ interface ILayoutProps extends StripDollar<ILayoutStyleProps> {
 const Layout = forwardRef<HTMLDivElement, ILayoutProps>((props, ref) => {
   const {
     children,
-    as,
+    as = "div",
 
     position,
     top,
@@ -115,5 +115,7 @@ const Layout = forwardRef<HTMLDivElement, ILayoutProps>((props, ref) => {
     </LayoutStyle>
   );
 });
+
+Layout.displayName = "Layout";
 
 export default Layout;

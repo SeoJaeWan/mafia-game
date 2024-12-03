@@ -1,10 +1,10 @@
 import CardStyle from "@/components/atoms/room/card/card.style";
-import { Time } from "@/hooks/game/hooks/room/useGameState";
+import { timePeriod } from "@/hooks/useGame";
 import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
 interface IContainer {
-  $time: Time;
+  $timePeriod: timePeriod;
 }
 
 const Text = styled.p`
@@ -46,13 +46,13 @@ const Container = styled.div<IContainer>`
   overflow-y: auto;
 
   background-color: ${(props) =>
-    props.$time === "night"
+    props.$timePeriod === "night"
       ? "var(--day-background-night)"
       : "var(--day-background-morning)"};
 
   ${Text} {
     color: ${(props) =>
-      props.$time === "night"
+      props.$timePeriod === "night"
         ? "var(--day-background-morning)"
         : "var(--day-background-night)"};
   }

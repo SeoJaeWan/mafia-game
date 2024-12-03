@@ -84,27 +84,6 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
               </Label>
             )}
           />
-          {/* 
-          <Controller
-            control={control}
-            name={"mode"}
-            render={({ field: { value, onChange } }) => (
-              <Label label={"게임 모드"}>
-                <Select
-                  width={"139px"}
-                  height={"24px"}
-                  value={value.label}
-                  onChange={onChange}
-                >
-                  {playMode.map((mode) => (
-                    <Select.Option value={mode} key={mode.label}>
-                      {mode.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Label>
-            )}
-          /> */}
         </Layout>
 
         <Layout

@@ -76,13 +76,15 @@ const Count: React.FC<ICountProps> = (props) => {
       });
     });
 
-    if (inputRef.current) {
-      observer.observe(inputRef.current);
+    const inputElement = inputRef.current;
+
+    if (inputElement) {
+      observer.observe(inputElement);
     }
 
     return () => {
-      if (inputRef.current) {
-        observer.unobserve(inputRef.current);
+      if (inputElement) {
+        observer.unobserve(inputElement);
       }
     };
   }, []);

@@ -59,7 +59,7 @@ const WaitingBoard = () => {
 
   useEffect(() => {
     setCopyUrl(`${window.location.origin}/join/${id}`);
-  }, []);
+  }, [id]);
 
   return (
     <WaitingBoardStyle.Container>
