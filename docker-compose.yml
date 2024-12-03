@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  mafia-client:
+    image: sjw7324/mafia-client:latest
+    container_name: mafia-client
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+    external: true
+# docker network create shared_network
+# docker network inspect shared_network
