@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/components/atoms/common/button";
 import Input from "@/components/atoms/common/input";
 import InputFormStyle from "./inputForm.style";
 import { useState } from "react";
@@ -36,18 +35,16 @@ const InputForm = () => {
     setInput("");
   };
 
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
   return (
     <InputFormStyle.Container
       onSubmit={handleSendChat}
       $isChatAble={isChatAble}
     >
-      <Input
-        flex={"1"}
-        height={"30px"}
-        value={input}
-        onChange={setInput}
-        isDisable={!isChatAble}
-      />
+      <InputFormStyle.Input value={input} onChange={handleChangeInput} />
 
       {/* <InputFormStyle.EmojiBox $show={showEmoji}></InputFormStyle.EmojiBox> */}
 
@@ -59,15 +56,6 @@ const InputForm = () => {
           height={25}
         />
       </InputFormStyle.EmojiButton> */}
-      <Button
-        width={"48px"}
-        height={"30px"}
-        isSmall
-        type={"submit"}
-        isDisable={!isChatAble}
-      >
-        전송
-      </Button>
     </InputFormStyle.Container>
   );
 };

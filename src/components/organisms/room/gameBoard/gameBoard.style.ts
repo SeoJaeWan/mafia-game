@@ -37,9 +37,9 @@ const Container = styled.div<IContainer>`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  flex-grow: 1;
 
   width: 100%;
-  height: 100%;
 
   padding: 20px;
 

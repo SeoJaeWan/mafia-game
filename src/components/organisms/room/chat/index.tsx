@@ -19,11 +19,9 @@ const Chat = () => {
         <ChatStyle.ChattingBox>
           <ChattingList />
         </ChatStyle.ChattingBox>
-
-        <ChatStyle.InputBox>
-          <InputForm />
-        </ChatStyle.InputBox>
       </ChatStyle.ChatBox>
+
+      <InputForm />
     </ChatStyle.Container>
   );
 };

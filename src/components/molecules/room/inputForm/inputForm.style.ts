@@ -1,3 +1,4 @@
+import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
 interface IContainer {
@@ -5,7 +6,10 @@ interface IContainer {
 }
 
 const Container = styled.form<IContainer>`
-  position: relative;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 
   display: flex;
   justify-content: space-between;
@@ -13,15 +17,32 @@ const Container = styled.form<IContainer>`
 
   gap: 5px;
 
-  width: 100%;
-  height: 100%;
-
-  padding: 0 10px;
-
   background-color: ${(props) =>
     props.$isChatAble
       ? "var(--gray-background)"
       : "var(--gray-background-active-rgba)"};
+`;
+
+const Input = styled.input`
+  width: 600px;
+
+  padding: 10px 20px 12px;
+
+  border-radius: 30px;
+  border: 2px solid var(--gray-background-rgba);
+  background-color: var(--gray-background-rgba);
+
+  font-size: ${toRem(18)};
+  line-height: 1;
+
+  &:hover {
+    border-color: var(--gray-background-active-rgba);
+  }
+  &:focus {
+    outline: none;
+    border-color: var(--gray-background-active-rgba);
+    background-color: var(--gray-background-active-rgba);
+  }
 `;
 
 const EmojiButton = styled.button`
@@ -100,6 +121,7 @@ const InputFormStyle = {
   Container,
   EmojiButton,
   EmojiBox,
+  Input,
 };
 
 export default InputFormStyle;

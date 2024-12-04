@@ -8,8 +8,7 @@ const Container = styled.div`
   flex-direction: column;
 
   width: 100%;
-
-  padding: 25px 0;
+  height: 125px;
 
   background-color: var(--gray-background-active-rgba);
 `;

@@ -54,7 +54,8 @@ const GameTemplate = () => {
   return (
     <RoomStyle.Container>
       <Players />
-      {isPlaying ? <GameBoard /> : <WaitingBoard />}
+      <GameBoard />
+      <WaitingBoard />
       <Chat />
     </RoomStyle.Container>
   );
