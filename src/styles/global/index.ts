@@ -53,6 +53,11 @@ const Global = styled.createGlobalStyle`
     text-decoration: none;
   }
 
+  ul,
+  ol {
+    list-style: none;
+  }
+
   @media (prefers-color-scheme: dark) {
     html {
       color-scheme: dark;

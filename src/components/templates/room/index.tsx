@@ -7,6 +7,7 @@ import RoomStyle from "./room.style";
 import useGame from "@/hooks/useGame";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
+import Players from "@/components/organisms/room/players";
 
 const GameTemplate = () => {
   const { socket, isPlaying, gameLeave } = useGame();
@@ -52,13 +53,9 @@ const GameTemplate = () => {
 
   return (
     <RoomStyle.Container>
-      <RoomStyle.PlayingBoard>
-        {/* 테스트 */}
-        {isPlaying ? <GameBoard /> : <WaitingBoard />}
-      </RoomStyle.PlayingBoard>
-      <RoomStyle.ChatBoard>
-        <Chat />
-      </RoomStyle.ChatBoard>
+      <Players />
+      {isPlaying ? <GameBoard /> : <WaitingBoard />}
+      <Chat />
     </RoomStyle.Container>
   );
 };

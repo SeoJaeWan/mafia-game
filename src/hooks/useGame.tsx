@@ -121,7 +121,7 @@ export type Turn =
   | "citizenWin" // 시민 승리
   | "gameFinish"; // 게임 종료
 
-const socketUrl = "http://seojaewan.com";
+const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 
 const defaultPlayerRoles = Object.values(playableRoles).reduce(
   (acc, cur) => ({
@@ -430,7 +430,6 @@ export const GameProvider = (props: PropsWithChildren) => {
   };
 
   const createRoom = ({ name, roomId }: EnterRoom) => {
-    console.log(socketUrl);
     const socket = io(socketUrl);
 
     socket.on("connect", () => {

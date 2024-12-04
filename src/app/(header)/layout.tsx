@@ -11,7 +11,7 @@ const Layout = (props: LayoutProps) => {
 
   return (
     <GameProvider>
-      <Header />
+      {/* <Header /> */}
       <Main>{children}</Main>
     </GameProvider>
   );

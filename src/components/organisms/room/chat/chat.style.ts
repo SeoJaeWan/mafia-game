@@ -1,21 +1,18 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 
-  @media (max-width: 1070px) {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-
-    width: 50px;
-    height: 50px;
-  }
+  width: 50px;
+  height: 50px;
 `;
 
 const ChatToggleButton = styled.button`
-  display: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   width: 50px;
   height: 50px;
@@ -29,12 +26,6 @@ const ChatToggleButton = styled.button`
   svg {
     color: var(--white);
   }
-
-  @media (max-width: 1070px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 `;
 
 interface ChatBoxProps {
@@ -42,38 +33,26 @@ interface ChatBoxProps {
 }
 
 const ChatBox = styled.div<ChatBoxProps>`
-  display: flex;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+
+  display: ${({ $open }) => ($open ? "flex" : "none")};
   flex-direction: column;
 
-  width: 100%;
-  height: 100%;
+  width: calc(100vw - 40px);
+  max-width: 400px;
 
-  border-left: 2px solid var(--gray-background-active-rgba);
+  height: 60vh;
+
+  border: 2px solid var(--gray-background-active-rgba);
+
   background-color: var(--white);
-
-  @media (max-width: 1070px) {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-
-    border-right: 2px solid var(--gray-background-active-rgba);
-
-    display: ${({ $open }) => ($open ? "flex" : "none")};
-
-    width: calc(100vw - 40px);
-    max-width: 400px;
-
-    height: 60vh;
-  }
-`;
-
-const UserBox = styled.div`
-  height: 35px;
 `;
 
 const ChattingBox = styled.div`
   width: 100%;
-  height: calc(100% - 95px);
+  height: calc(100% - 60px);
 `;
 
 const InputBox = styled.div`
@@ -85,17 +64,12 @@ const InputBox = styled.div`
   height: 60px;
 
   border-top: 2px solid var(--gray-background-active-rgba);
-
-  @media (max-width: 1070px) {
-    border-bottom: 2px solid var(--gray-background-active-rgba);
-  }
 `;
 
 const ChatStyle = {
   Container,
   ChatToggleButton,
   ChatBox,
-  UserBox,
   ChattingBox,
   InputBox,
 };

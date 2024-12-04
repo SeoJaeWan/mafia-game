@@ -16,10 +16,6 @@ const Chat = () => {
         {open ? <IoClose size={35} /> : <IoChatboxEllipses size={35} />}
       </ChatStyle.ChatToggleButton>
       <ChatStyle.ChatBox $open={open}>
-        <ChatStyle.UserBox>
-          <Users />
-        </ChatStyle.UserBox>
-
         <ChatStyle.ChattingBox>
           <ChattingList />
         </ChatStyle.ChattingBox>
