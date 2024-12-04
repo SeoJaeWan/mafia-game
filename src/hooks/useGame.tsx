@@ -180,7 +180,7 @@ export const GameProvider = (props: PropsWithChildren) => {
   const [selectedList, setSelectedList] = useState<Selected[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [turn, setTurn] = useState<Turn | null>(null);
-  const [timePeriod, setTimePeriod] = useState<timePeriod>("night");
+  const [timePeriod, setTimePeriod] = useState<timePeriod>("morning");
   const [maxSelectable, setMaxSelectable] = useState(Infinity);
 
   const systemMessageRef = useRef("");
@@ -229,6 +229,7 @@ export const GameProvider = (props: PropsWithChildren) => {
     socket.on("startGameSuccess", (role: PlayableRoleNames) => {
       setIsPlaying(true);
       setTurn("intro");
+      setTimePeriod("night");
       setSystemMessage("게임이 시작되었습니다.");
 
       if (isAdmin) {

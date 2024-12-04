@@ -1,13 +1,15 @@
 "use client";
 
-import Input from "@/components/atoms/common/input";
 import InputFormStyle from "./inputForm.style";
 import { useState } from "react";
 import useGame from "@/hooks/useGame";
+import GameSetting from "@/components/molecules/room/gameSetting";
+import { FaGear } from "react-icons/fa6";
 
 const InputForm = () => {
   // const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
+  const [isGameSetting, setIsGameSetting] = useState(false);
 
   const { isPlaying, player, turn, sendMessage } = useGame();
 
@@ -35,20 +37,30 @@ const InputForm = () => {
     setInput("");
   };
 
+  const handleGameSetting = () => {
+    setIsGameSetting((prev) => !prev);
+  };
+
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
   return (
-    <InputFormStyle.Container
-      onSubmit={handleSendChat}
-      $isChatAble={isChatAble}
-    >
-      <InputFormStyle.Input value={input} onChange={handleChangeInput} />
+    <>
+      <InputFormStyle.Container
+        onSubmit={handleSendChat}
+        $isChatAble={isChatAble}
+      >
+        <InputFormStyle.Input value={input} onChange={handleChangeInput} />
+        {player!.isAdmin && (
+          <InputFormStyle.OptionButton onClick={handleGameSetting}>
+            <FaGear size={28} />
+          </InputFormStyle.OptionButton>
+        )}
 
-      {/* <InputFormStyle.EmojiBox $show={showEmoji}></InputFormStyle.EmojiBox> */}
+        {/* <InputFormStyle.EmojiBox $show={showEmoji}></InputFormStyle.EmojiBox> */}
 
-      {/* <InputFormStyle.EmojiButton type={"button"} onClick={handleEmojiToggle}>
+        {/* <InputFormStyle.EmojiButton type={"button"} onClick={handleEmojiToggle}>
         <Image
           src={"/assets/emoji/emoji.png"}
           alt={""}
@@ -56,7 +68,12 @@ const InputForm = () => {
           height={25}
         />
       </InputFormStyle.EmojiButton> */}
-    </InputFormStyle.Container>
+      </InputFormStyle.Container>
+      <GameSetting
+        isGameSetting={isGameSetting}
+        handleGameSetting={handleGameSetting}
+      />
+    </>
   );
 };
 

@@ -2,12 +2,11 @@ import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: fixed;
 
-  width: 100%;
-  height: 100%;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const Box = styled.div`
@@ -70,7 +69,7 @@ const ButtonCover = styled.div<IButtonCoverProps>`
     ${(props) => (props.$isActive ? "var(--black)" : "transparent")};
 `;
 
-const WaitingBoardStyle = {
+const InviteStyle = {
   Container,
   Box,
   WaitingPeople,
@@ -78,4 +77,4 @@ const WaitingBoardStyle = {
   ButtonCover,
 };
 
-export default WaitingBoardStyle;
+export default InviteStyle;

@@ -1,19 +1,17 @@
 "use client";
 
 import Layout from "@/styles/layout";
-import WaitingBoardStyle from "./waitingBoard.style";
-import Title from "@/components/atoms/common/title";
+import InviteStyle from "./invite.style";
 import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useGame from "@/hooks/useGame";
-import GameSetting from "@/components/molecules/create/gameSetting";
+import GameSetting from "@/components/molecules/room/gameSetting";
 
 const minPlayer = 3;
 
-const WaitingBoard = () => {
+const Invite = () => {
   const { id } = useParams();
-  const [isGameSetting, setIsGameSetting] = useState(false);
   const [copyUrl, setCopyUrl] = useState("");
   const { player, playerList, readyPlayerList, ready, gameStart } = useGame();
 
@@ -45,10 +43,6 @@ const WaitingBoard = () => {
     navigator.clipboard.writeText(copyUrl);
   };
 
-  const handleGameSetting = () => {
-    setIsGameSetting((prev) => !prev);
-  };
-
   const handlePlaying = () => {
     if (isAdmin) {
       gameStart();
@@ -62,19 +56,9 @@ const WaitingBoard = () => {
   }, [id]);
 
   return (
-    <WaitingBoardStyle.Container>
-      <WaitingBoardStyle.Box>
-        <Layout
-          display={"flex"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-          width={"100%"}
-        >
-          <Title>접속 링크</Title>
-        </Layout>
-        <WaitingBoardStyle.Url onClick={handleCopyUrl}>
-          {copyUrl}
-        </WaitingBoardStyle.Url>
+    <InviteStyle.Container>
+      <InviteStyle.Box>
+        <InviteStyle.Url onClick={handleCopyUrl}>{copyUrl}</InviteStyle.Url>
 
         <Layout
           display={"flex"}
@@ -82,23 +66,17 @@ const WaitingBoard = () => {
           alignItems={"center"}
           gap={"10px"}
         >
-          {isAdmin && <Button onClick={handleGameSetting}>게임 설정</Button>}
           {playable && (
-            <WaitingBoardStyle.ButtonCover $isActive={isReady}>
+            <InviteStyle.ButtonCover $isActive={isReady}>
               <Button onClick={handlePlaying}>
                 {isAdmin ? "시작하기" : "준비"}
               </Button>
-            </WaitingBoardStyle.ButtonCover>
+            </InviteStyle.ButtonCover>
           )}
         </Layout>
-      </WaitingBoardStyle.Box>
-
-      <GameSetting
-        isGameSetting={isGameSetting}
-        handleGameSetting={handleGameSetting}
-      />
-    </WaitingBoardStyle.Container>
+      </InviteStyle.Box>
+    </InviteStyle.Container>
   );
 };
 
-export default WaitingBoard;
+export default Invite;

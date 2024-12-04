@@ -2,7 +2,7 @@ import toRem from "@/styles/utils/toRem";
 import Image from "next/image";
 import styled, { css, keyframes } from "styled-components";
 
-const Card = styled.div`
+const Player = styled.div`
   position: relative;
 
   width: 100%;
@@ -12,48 +12,23 @@ const Card = styled.div`
   transition: transform 0.5s;
 `;
 
-const FrontCard = styled(Image)`
+const Character = styled(Image)`
   width: 80%;
   height: auto;
 
   aspect-ratio: 1/1;
 `;
 
-interface ICardScreenProps {
+interface NameProps {
   $color: string;
 }
 
-const CardScreen = styled.div<ICardScreenProps>`
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  height: 100%;
-
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-
-  border: 7px solid var(--black);
-  border-radius: 10px;
-
-  background-color: ${(props) => props.$color};
-`;
-
-const Front = styled(CardScreen)`
-  color: white;
+const Name = styled.p<NameProps>`
+  color: ${(props) => props.$color};
 
   text-align: center;
   font-size: ${toRem(24)};
   font-weight: 700;
-`;
-
-const Back = styled(CardScreen)`
-  transform: rotateY(180deg);
 `;
 
 const showAnimation = keyframes`
@@ -87,12 +62,12 @@ const Container = styled.div<IContainerProps>`
     `}
 
   &.animation {
-    ${Card} {
+    ${Player} {
       animation: ${showAnimation} 2s;
     }
   }
 
-  &:hover ${Card} {
+  &:hover ${Player} {
     transform: rotateY(180deg);
   }
 
@@ -101,14 +76,12 @@ const Container = styled.div<IContainerProps>`
   }
 `;
 
-export type CardStyleProps = ICardScreenProps;
+export type PlayerStyleProps = IPlayerScreenProps;
 
-const CardStyle = {
+const PlayerStyle = {
   Container,
-  Card,
-  Front,
-  FrontCard,
-  Back,
+  Name,
+  Character,
 };
 
-export default CardStyle;
+export default PlayerStyle;

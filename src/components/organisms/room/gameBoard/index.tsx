@@ -1,11 +1,10 @@
-import Layout from "@/styles/layout";
 import GameBoardStyle from "./gameBoard.style";
-import Card from "@/components/atoms/room/card";
 import AnimationHelper from "@/components/molecules/room/animationHelper";
 import Submit from "@/components/atoms/room/submit";
 import Timer from "@/components/atoms/room/timer";
 import useGame from "@/hooks/useGame";
 import { useEffect, useState } from "react";
+import Player from "@/components/atoms/room/player";
 
 const selectAble = [
   {
@@ -26,7 +25,7 @@ const GameBoard = () => {
   const { turn, timePeriod, player, playerList, deadPlayerList } = useGame();
   const [selected, setSelected] = useState("");
 
-  const handleClickCard = (name: string) => {
+  const handleClickPlayer = (name: string) => {
     if (name !== player!.name) {
       const isSelectAble = selectAble.find(
         (item) => item.turn === turn && item.role === player!.role
@@ -47,40 +46,21 @@ const GameBoard = () => {
       <AnimationHelper key={turn} />
 
       <Timer />
-      <GameBoardStyle.PlayBoard $isAnimationFinish={true}>
-        <Layout>
-          <GameBoardStyle.Text>생존자</GameBoardStyle.Text>
-          <Layout position={"relative"}>
-            <GameBoardStyle.CardList>
-              {playerList.map(({ name, color }, idx) => (
-                <GameBoardStyle.Selector
-                  key={idx}
-                  onClick={() => handleClickCard(name)}
-                >
-                  <Card
-                    name={name}
-                    color={color}
-                    showAnimation
-                    isButton
-                    selected={selected}
-                    //
-                    setSelected={setSelected}
-                  />
-                </GameBoardStyle.Selector>
-              ))}
-            </GameBoardStyle.CardList>
-          </Layout>
-        </Layout>
-        {deadPlayerList.length !== 0 && (
-          <Layout>
-            <GameBoardStyle.Text>사망자</GameBoardStyle.Text>
-            <GameBoardStyle.CardList>
-              {deadPlayerList.map(({ name, color }, idx) => (
-                <Card key={idx} name={name} color={color} showAnimation />
-              ))}
-            </GameBoardStyle.CardList>
-          </Layout>
-        )}
+      <GameBoardStyle.PlayBoard>
+        {playerList.map(({ name, color }, idx) => (
+          <GameBoardStyle.Selector
+            key={idx}
+            onClick={() => handleClickPlayer(name)}
+          >
+            <Player
+              name={name}
+              color={color}
+              selected={selected}
+              //
+              setSelected={setSelected}
+            />
+          </GameBoardStyle.Selector>
+        ))}
 
         <Submit selected={selected} />
       </GameBoardStyle.PlayBoard>

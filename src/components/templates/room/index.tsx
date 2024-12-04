@@ -2,12 +2,13 @@
 
 import Chat from "@/components/organisms/room/chat";
 import GameBoard from "@/components/organisms/room/gameBoard";
-import WaitingBoard from "@/components/organisms/room/waitingBoard";
+import InviteLink from "@/components/organisms/room/inviteLink";
 import RoomStyle from "./room.style";
 import useGame from "@/hooks/useGame";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import Players from "@/components/organisms/room/players";
+import InputForm from "@/components/organisms/room/inputForm";
 
 const GameTemplate = () => {
   const { socket, isPlaying, gameLeave } = useGame();
@@ -55,8 +56,10 @@ const GameTemplate = () => {
     <RoomStyle.Container>
       <Players />
       <GameBoard />
-      <WaitingBoard />
+      <InviteLink />
       <Chat />
+
+      <InputForm />
     </RoomStyle.Container>
   );
 };

@@ -6,7 +6,7 @@ interface IContainer {
 }
 
 const Container = styled.form<IContainer>`
-  position: fixed;
+  position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
@@ -117,11 +117,31 @@ const EmojiBox = styled.div<IEmojiBoxProps>`
   }
 `;
 
+const OptionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  background-color: var(--gray-background-rgba);
+
+  &:hover {
+    background-color: var(--gray-background-active-rgba);
+  }
+
+  cursor: pointer;
+`;
+
 const InputFormStyle = {
   Container,
   EmojiButton,
   EmojiBox,
   Input,
+  OptionButton,
 };
 
 export default InputFormStyle;

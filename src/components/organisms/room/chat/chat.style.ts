@@ -46,32 +46,15 @@ const ChatBox = styled.div<ChatBoxProps>`
   height: 60vh;
 
   border: 2px solid var(--gray-background-active-rgba);
+  border-radius: 5px;
 
   background-color: var(--white);
-`;
-
-const ChattingBox = styled.div`
-  width: 100%;
-  height: calc(100% - 60px);
-`;
-
-const InputBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 100%;
-  height: 60px;
-
-  border-top: 2px solid var(--gray-background-active-rgba);
 `;
 
 const ChatStyle = {
   Container,
   ChatToggleButton,
   ChatBox,
-  ChattingBox,
-  InputBox,
 };
 
 export default ChatStyle;

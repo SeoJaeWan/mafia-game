@@ -1,47 +1,29 @@
-import CardStyle from "@/components/atoms/room/card/card.style";
+import CardStyle from "@/components/atoms/room/player/player.style";
 import { timePeriod } from "@/hooks/useGame";
-import toRem from "@/styles/utils/toRem";
 import styled from "styled-components";
 
-interface IContainer {
-  $timePeriod: timePeriod;
-}
-
-const Text = styled.p`
-  margin-bottom: 20px;
-
-  font-size: ${toRem(20)};
-  font-weight: 800;
-`;
-
-const CardList = styled.div`
+const PlayBoard = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-`;
-
-interface IPlayBoard {
-  $isAnimationFinish: boolean;
-}
-
-const PlayBoard = styled.div<IPlayBoard>`
-  display: ${(props) => (props.$isAnimationFinish ? "block" : "none")};
+  justify-content: center;
+  gap: 5px;
+  align-items: flex-end;
 
   width: 100%;
   height: 100%;
 `;
 
+interface IContainer {
+  $timePeriod: timePeriod;
+}
+
 const Container = styled.div<IContainer>`
   position: relative;
-
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
   flex-grow: 1;
 
   width: 100%;
 
   padding: 20px;
+  padding-bottom: 80px;
 
   overflow-y: auto;
 
@@ -49,13 +31,6 @@ const Container = styled.div<IContainer>`
     props.$timePeriod === "night"
       ? "var(--day-background-night)"
       : "var(--day-background-morning)"};
-
-  ${Text} {
-    color: ${(props) =>
-      props.$timePeriod === "night"
-        ? "var(--day-background-morning)"
-        : "var(--day-background-night)"};
-  }
 `;
 
 const Selector = styled.button`
@@ -82,8 +57,6 @@ const Selector = styled.button`
 
 const GameBoardStyle = {
   Container,
-  Text,
-  CardList,
   PlayBoard,
   Selector,
 };
