@@ -7,8 +7,9 @@ interface ITimerStyleProps {
 
 const TimerStyle = styled.p<ITimerStyleProps>`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 
   display: ${(props) => (props.$isActive ? "block" : "none")};
 

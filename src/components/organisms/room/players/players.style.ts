@@ -8,13 +8,14 @@ const Container = styled.div`
   flex-direction: column;
 
   width: 100%;
-  height: 125px;
+  min-height: 125px;
 
   background-color: var(--gray-background-active-rgba);
 `;
 
 const List = styled.ul`
   display: flex;
+  flex-wrap: wrap;
   margin-top: 15px;
 
   gap: 5px;

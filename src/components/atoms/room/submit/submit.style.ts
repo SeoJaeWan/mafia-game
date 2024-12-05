@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const SubmitContainer = styled.div`
   position: absolute;
-  bottom: 20px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
 

@@ -23,13 +23,13 @@ const AnimationHelper = () => {
       case "intro":
         return ["day", "job"];
       case "killCitizen":
-        return ["day", "mafiaKill"];
+        return ["day"];
       case "healCitizen":
-        return ["day", "doctorHeal"];
+        return ["day"];
       case "killMafia":
-        return ["day", "citizenKill"];
+        return ["day"];
       case "safeMafia":
-        return ["day", "citizenSafe"];
+        return ["day"];
       case "mafiaWin":
         return ["mafiaWin"];
       case "citizenWin":
@@ -50,8 +50,8 @@ const AnimationHelper = () => {
 
   return (
     <>
-      <DayAnimation animationEnd={animationEnd} />
-      <Animation events={events} animationEnd={animationEnd} />
+      {/* <DayAnimation animationEnd={animationEnd} /> */}
+      {/* <Animation events={events} animationEnd={animationEnd} /> */}
       <JobInformation events={events} animationEnd={animationEnd} />
     </>
   );

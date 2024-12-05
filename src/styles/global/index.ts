@@ -51,11 +51,25 @@ const Global = styled.createGlobalStyle`
   a {
     color: inherit;
     text-decoration: none;
+
+    transition: transform 0.5s;
+
+    &:active {
+      transform: scale(0.95);
+    }
   }
 
   ul,
   ol {
     list-style: none;
+  }
+
+  button {
+    transition: transform 0.5s;
+
+    &:active {
+      transform: scale(0.95);
+    }
   }
 
   @media (prefers-color-scheme: dark) {

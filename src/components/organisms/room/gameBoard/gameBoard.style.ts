@@ -72,7 +72,7 @@ const PlayBoard = styled.div<PlayBoardProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 
   width: 100%;
   height: 100%;

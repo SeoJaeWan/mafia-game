@@ -1,17 +1,43 @@
 import toRem from "@/styles/utils/toRem";
 import Image from "next/image";
-import styled, { css, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const Character = styled(Image)`
+  position: relative;
+  z-index: 2;
+
   width: auto;
   height: 100%;
 
   aspect-ratio: 767/654;
 `;
 
+const SelectorList = styled.ul`
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+`;
+
 interface ColorProps {
   $color: string;
 }
+
+const SelectorName = styled.li<ColorProps>`
+  font-size: ${toRem(14)};
+  font-weight: 500;
+  color: ${(props) => props.$color};
+
+  &::before {
+    content: "✔";
+    margin-right: 3px;
+  }
+`;
 
 const Name = styled.p<ColorProps>`
   position: absolute;
@@ -28,15 +54,11 @@ const Name = styled.p<ColorProps>`
   font-weight: 700;
 `;
 
-interface IContainerProps {
-  $isClick: boolean;
-}
+const Container = styled.div`
+  position: relative;
 
-const Container = styled.div<IContainerProps>`
   width: 100%;
   height: 100%;
-
-  position: relative;
 
   background-color: transparent;
   border: none;
@@ -49,7 +71,7 @@ const Container = styled.div<IContainerProps>`
     position: absolute;
     bottom: -5px;
     left: 50%;
-    z-index: -1;
+
     transform: translateX(-50%);
 
     width: 50%;
@@ -59,12 +81,6 @@ const Container = styled.div<IContainerProps>`
 
     background-color: rgba(0, 0, 0, 0.2);
   }
-
-  ${(props) =>
-    props.$isClick &&
-    css`
-      transform: scale(1.05);
-    `}
 `;
 
 const MessageList = styled.ul`
@@ -122,6 +138,7 @@ const Mouse = styled.div<MouseProps>`
   top: 50%;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 3;
 
   display: ${(props) => (props.$mouseAni ? "block" : "none")};
 
@@ -204,6 +221,8 @@ const PlayerStyle = {
   MessageList,
   Message,
   Mouse,
+  SelectorList,
+  SelectorName,
 };
 
 export default PlayerStyle;

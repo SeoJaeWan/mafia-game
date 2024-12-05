@@ -1,8 +1,13 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import PlayerStyle, { PlayerStyleProps } from "./player.style";
-import useGame, { Selected } from "@/hooks/useGame";
+import useGame from "@/hooks/useGame";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+
+interface Selector {
+  name: string;
+  color: string;
+}
 
 interface IPlayerProps extends StripDollar<PlayerStyleProps> {
   name: string;
@@ -15,17 +20,23 @@ interface IPlayerProps extends StripDollar<PlayerStyleProps> {
 
 const Player: React.FC<IPlayerProps> = (props) => {
   const { name, role = "citizen", color } = props;
-  const { selectedList, messageList } = useGame();
+  const { selectedList, messageList, playerList } = useGame();
   const [mouseAni, setMouseAni] = useState(false);
 
   const currentSelectedList = selectedList.reduce((acc, cur) => {
     if (cur.name === name) {
-      return [...acc, cur];
+      return [
+        ...acc,
+        {
+          name: cur.selector,
+          color: playerList.find((player) => player.name === cur.selector)!
+            .color,
+        },
+      ];
     }
 
     return acc;
-  }, [] as Selected[]);
-  const isSelected = currentSelectedList.length > 0;
+  }, [] as Selector[]);
 
   const playerMessage = useMemo(
     () => messageList.filter((item) => item.name === name),
@@ -37,6 +48,7 @@ const Player: React.FC<IPlayerProps> = (props) => {
 
     if (playerMessage.length > 0) {
       setMouseAni(true);
+
       timer = setTimeout(() => {
         setMouseAni(false);
       }, 3000);
@@ -48,7 +60,7 @@ const Player: React.FC<IPlayerProps> = (props) => {
   }, [playerMessage.length]);
 
   return (
-    <PlayerStyle.Container $isClick={isSelected}>
+    <PlayerStyle.Container>
       <PlayerStyle.MessageList>
         {playerMessage.slice(-4).map(({ message, time }) => (
           <PlayerStyle.Message key={time} $color={color}>
@@ -56,11 +68,20 @@ const Player: React.FC<IPlayerProps> = (props) => {
           </PlayerStyle.Message>
         ))}
       </PlayerStyle.MessageList>
+
+      <PlayerStyle.SelectorList>
+        {currentSelectedList.map(({ name, color }) => (
+          <PlayerStyle.SelectorName key={name} $color={color}>
+            {name}
+          </PlayerStyle.SelectorName>
+        ))}
+      </PlayerStyle.SelectorList>
+
       <PlayerStyle.Character
         src={`/assets/playable/${role}.png`}
         width={200}
         height={200}
-        alt={"알수 없는 플레이어"}
+        alt={""}
       />
       <PlayerStyle.Mouse $mouseAni={mouseAni}>
         <Image

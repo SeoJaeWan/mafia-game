@@ -32,7 +32,7 @@ const GameBoard = () => {
   // 2 3 5 3 2
   // 0 1 2 4 5 9 10 12 13 14
   const boardPlayer = [...playerList];
-  const gameBoard = new Array(13).fill(0).reduce(
+  const gameBoard = new Array(11).fill(0).reduce(
     (acc, _, idx) => {
       const currentLine = line[acc.length - 1];
       const currentArray = acc[acc.length - 1];
@@ -109,21 +109,6 @@ const GameBoard = () => {
             ))}
           </GameBoardStyle.Line>
         ))}
-        {/* {playerList.map(({ name, color, role }, idx) => (
-          <GameBoardStyle.Selector
-            key={idx}
-            onClick={() => handleClickPlayer(name)}
-          >
-            <Player
-              name={name}
-              color={color}
-              role={role}
-              selected={selected}
-              //
-              setSelected={setSelected}
-            />
-          </GameBoardStyle.Selector>
-        ))} */}
 
         <Submit selected={selected} />
       </GameBoardStyle.PlayBoard>

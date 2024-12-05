@@ -24,6 +24,8 @@ const InputForm = () => {
 
   const isChatAble = getIsChatAble();
 
+  const isOption = player!.isAdmin && !isPlaying;
+
   // const handleEmojiToggle = () => {
   //   setShowEmoji(!showEmoji);
   // };
@@ -52,14 +54,14 @@ const InputForm = () => {
         $isChatAble={isChatAble}
       >
         <InputFormStyle.Input value={input} onChange={handleChangeInput} />
-        {player!.isAdmin && (
+        {/* {isOption && (
           <InputFormStyle.OptionButton
             type={"button"}
             onClick={handleGameSetting}
           >
             <FaGear size={28} />
           </InputFormStyle.OptionButton>
-        )}
+        )} */}
 
         {/* <InputFormStyle.EmojiBox $show={showEmoji}></InputFormStyle.EmojiBox> */}
 
@@ -72,10 +74,10 @@ const InputForm = () => {
         />
       </InputFormStyle.EmojiButton> */}
       </InputFormStyle.Container>
-      <GameSetting
+      {/* <GameSetting
         isGameSetting={isGameSetting}
         handleGameSetting={handleGameSetting}
-      />
+      /> */}
     </>
   );
 };
