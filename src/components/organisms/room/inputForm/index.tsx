@@ -53,7 +53,10 @@ const InputForm = () => {
       >
         <InputFormStyle.Input value={input} onChange={handleChangeInput} />
         {player!.isAdmin && (
-          <InputFormStyle.OptionButton onClick={handleGameSetting}>
+          <InputFormStyle.OptionButton
+            type={"button"}
+            onClick={handleGameSetting}
+          >
             <FaGear size={28} />
           </InputFormStyle.OptionButton>
         )}

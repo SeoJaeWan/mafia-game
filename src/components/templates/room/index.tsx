@@ -11,7 +11,7 @@ import Players from "@/components/organisms/room/players";
 import InputForm from "@/components/organisms/room/inputForm";
 
 const GameTemplate = () => {
-  const { socket, isPlaying, gameLeave } = useGame();
+  const { socket, gameLeave } = useGame();
 
   useEffect(() => {
     if (!socket) {

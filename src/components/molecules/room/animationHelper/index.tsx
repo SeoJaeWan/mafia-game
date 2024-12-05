@@ -1,5 +1,4 @@
 import DayAnimation from "@/components/atoms/room/dayAnimation";
-import DayBackground from "@/components/atoms/room/dayBackground";
 import JobInformation from "@/components/atoms/room/jobInformation";
 import { useState } from "react";
 import useGame from "@/hooks/useGame";
@@ -11,8 +10,8 @@ export interface EventProps {
   animationEnd: () => void;
 }
 
-export const DayAnimationDuration = 5 * 1000;
-export const JobInfoDuration = 20 * 1000;
+export const DayAnimationDuration = 3 * 1000;
+export const JobInfoDuration = 10 * 1000;
 
 export const EventAnimation = 4 * 1000;
 
@@ -41,7 +40,6 @@ const AnimationHelper = () => {
   };
 
   const [events, setEvents] = useState<string[]>(getAnimation());
-  const isShow = events.length !== 0;
 
   const animationEnd = () => {
     const updatedEvents = [...events];
@@ -51,11 +49,11 @@ const AnimationHelper = () => {
   };
 
   return (
-    <DayBackground isShow={isShow}>
-      <DayAnimation events={events} animationEnd={animationEnd} />
+    <>
+      <DayAnimation animationEnd={animationEnd} />
       <Animation events={events} animationEnd={animationEnd} />
       <JobInformation events={events} animationEnd={animationEnd} />
-    </DayBackground>
+    </>
   );
 };
 

@@ -6,31 +6,22 @@ import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useGame from "@/hooks/useGame";
-import GameSetting from "@/components/molecules/room/gameSetting";
 
-const minPlayer = 3;
+const minPlayer = 4;
 
 const Invite = () => {
   const { id } = useParams();
   const [copyUrl, setCopyUrl] = useState("");
-  const { player, playerList, readyPlayerList, ready, gameStart } = useGame();
+  const { player, playerList, isPlaying, gameStart } = useGame();
 
   const isAdmin = player!.isAdmin;
-  const isReady = readyPlayerList.includes(player!.name);
 
   const totalLength = playerList.length;
-  const readyLength = readyPlayerList.length;
 
   const getShowButton = () => {
     const ablePlayerLength = totalLength >= minPlayer;
 
-    if (isAdmin) {
-      const playable = totalLength - 1 === readyLength && ablePlayerLength;
-
-      if (playable) {
-        return true;
-      }
-    } else if (ablePlayerLength) {
+    if (isAdmin && ablePlayerLength) {
       return true;
     }
 
@@ -40,20 +31,26 @@ const Invite = () => {
   const playable = getShowButton();
 
   const handleCopyUrl = () => {
-    navigator.clipboard.writeText(copyUrl);
-  };
+    const textArea = document.createElement("textarea");
+    textArea.value = copyUrl;
 
-  const handlePlaying = () => {
-    if (isAdmin) {
-      gameStart();
-    } else {
-      ready();
+    document.body.prepend(textArea);
+    textArea.select();
+
+    try {
+      document.execCommand("copy");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      textArea.remove();
     }
   };
 
   useEffect(() => {
     setCopyUrl(`${window.location.origin}/join/${id}`);
   }, [id]);
+
+  if (isPlaying) return null;
 
   return (
     <InviteStyle.Container>
@@ -67,10 +64,8 @@ const Invite = () => {
           gap={"10px"}
         >
           {playable && (
-            <InviteStyle.ButtonCover $isActive={isReady}>
-              <Button onClick={handlePlaying}>
-                {isAdmin ? "시작하기" : "준비"}
-              </Button>
+            <InviteStyle.ButtonCover>
+              <Button onClick={gameStart}>시작하기</Button>
             </InviteStyle.ButtonCover>
           )}
         </Layout>

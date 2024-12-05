@@ -24,6 +24,7 @@ const Container = styled.div<ContainerProps>`
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 2;
 
   transform: translate(-50%, -50%);
 

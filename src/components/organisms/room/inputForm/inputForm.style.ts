@@ -16,11 +16,6 @@ const Container = styled.form<IContainer>`
   align-items: center;
 
   gap: 5px;
-
-  background-color: ${(props) =>
-    props.$isChatAble
-      ? "var(--gray-background)"
-      : "var(--gray-background-active-rgba)"};
 `;
 
 const Input = styled.input`
