@@ -17,7 +17,7 @@ const Box = styled.div`
 
   width: 600px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     width: 100%;
     padding: 0 10px;
   }
@@ -53,7 +53,7 @@ const Url = styled.button`
   text-overflow: ellipsis;
   word-break: break-all;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     font-size: ${toRem(24)};
   }
 `;

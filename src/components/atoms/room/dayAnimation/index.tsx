@@ -12,8 +12,6 @@ const DayAnimation = (props: DayAnimationProps) => {
   const { animationEnd } = props;
   const { timePeriod } = useGame();
 
-  console.log(timePeriod === "night");
-
   return (
     // SVG 작업 필요
     <DayAnimationStyle.Container>

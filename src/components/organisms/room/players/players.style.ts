@@ -11,11 +11,18 @@ const Container = styled.div`
   min-height: 125px;
 
   background-color: var(--gray-background-active-rgba);
+
+  @media (max-width: 1024px) {
+    min-height: 100px;
+    padding: 10px;
+  }
 `;
 
 const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   margin-top: 15px;
 
   gap: 5px;
@@ -47,6 +54,11 @@ const Item = styled.li<ItemProps>`
   transform: translateX(20px);
 
   animation: ${showItem} 1s linear forwards;
+
+  @media (max-width: 1024px) {
+    font-size: ${toRem(16)};
+    padding: 3px 8px 5px;
+  }
 `;
 
 const PlayerStyle = {

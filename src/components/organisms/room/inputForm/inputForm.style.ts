@@ -16,6 +16,13 @@ const Container = styled.form<IContainer>`
   align-items: center;
 
   gap: 5px;
+
+  @media (max-width: 768px) {
+    left: 20px;
+    transform: translateX(0);
+
+    width: calc(100% - 60px - 40px);
+  }
 `;
 
 const Input = styled.input`
@@ -37,6 +44,10 @@ const Input = styled.input`
     outline: none;
     border-color: var(--gray-background-active-rgba);
     background-color: var(--gray-background-active-rgba);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
   }
 `;
 

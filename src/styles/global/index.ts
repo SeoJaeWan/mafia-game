@@ -15,13 +15,9 @@ const Global = styled.createGlobalStyle`
 
     --day-background-night: #2d3436;
     --day-background-morning: #ffffff;
-  }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: #0a0a0a;
-      --foreground: #ededed;
-    }
+    --breakpoint-mobile: 768px;
+    --breakpoint-tablet: 1024px;
   }
 
   html,
@@ -52,10 +48,10 @@ const Global = styled.createGlobalStyle`
     color: inherit;
     text-decoration: none;
 
-    transition: transform 0.5s;
+    transition: transform 0.3s;
 
     &:active {
-      transform: scale(0.95);
+      transform: scale(0.9);
     }
   }
 
@@ -65,10 +61,10 @@ const Global = styled.createGlobalStyle`
   }
 
   button {
-    transition: transform 0.5s;
+    transition: transform 0.2s;
 
     &:active {
-      transform: scale(0.95);
+      transform: scale(0.9);
     }
   }
 

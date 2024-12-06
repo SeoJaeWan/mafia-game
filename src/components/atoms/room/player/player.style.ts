@@ -6,10 +6,8 @@ const Character = styled(Image)`
   position: relative;
   z-index: 2;
 
-  width: auto;
+  width: 100%;
   height: 100%;
-
-  aspect-ratio: 767/654;
 `;
 
 const SelectorList = styled.ul`
@@ -57,8 +55,10 @@ const Name = styled.p<ColorProps>`
 const Container = styled.div`
   position: relative;
 
-  width: 100%;
+  width: auto;
   height: 100%;
+
+  aspect-ratio: 767/654;
 
   background-color: transparent;
   border: none;
@@ -88,6 +88,7 @@ const MessageList = styled.ul`
   left: 15%;
   top: 0;
   transform: translateY(-100%);
+  z-index: 3;
 
   display: flex;
   flex-direction: column;

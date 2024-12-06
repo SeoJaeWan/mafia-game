@@ -1,8 +1,6 @@
-import DayAnimation from "@/components/atoms/room/dayAnimation";
 import JobInformation from "@/components/atoms/room/jobInformation";
 import { useState } from "react";
 import useGame from "@/hooks/useGame";
-import Animation from "@/components/atoms/room/animation";
 
 export interface EventProps {
   events: string[];
@@ -21,15 +19,15 @@ const AnimationHelper = () => {
   const getAnimation = () => {
     switch (turn) {
       case "intro":
-        return ["day", "job"];
+        return ["job"];
       case "killCitizen":
-        return ["day"];
+        return [];
       case "healCitizen":
-        return ["day"];
+        return [];
       case "killMafia":
-        return ["day"];
+        return [];
       case "safeMafia":
-        return ["day"];
+        return [];
       case "mafiaWin":
         return ["mafiaWin"];
       case "citizenWin":

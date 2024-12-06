@@ -3,13 +3,10 @@
 import InputFormStyle from "./inputForm.style";
 import { useState } from "react";
 import useGame from "@/hooks/useGame";
-import GameSetting from "@/components/molecules/room/gameSetting";
-import { FaGear } from "react-icons/fa6";
 
 const InputForm = () => {
   // const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
-  const [isGameSetting, setIsGameSetting] = useState(false);
 
   const { isPlaying, player, turn, sendMessage } = useGame();
 
@@ -24,8 +21,6 @@ const InputForm = () => {
 
   const isChatAble = getIsChatAble();
 
-  const isOption = player!.isAdmin && !isPlaying;
-
   // const handleEmojiToggle = () => {
   //   setShowEmoji(!showEmoji);
   // };
@@ -37,10 +32,6 @@ const InputForm = () => {
 
     sendMessage(input);
     setInput("");
-  };
-
-  const handleGameSetting = () => {
-    setIsGameSetting((prev) => !prev);
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {

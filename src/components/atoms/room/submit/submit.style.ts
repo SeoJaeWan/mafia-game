@@ -6,6 +6,7 @@ const SubmitContainer = styled.div`
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 10;
 
   display: flex;
   justify-content: center;

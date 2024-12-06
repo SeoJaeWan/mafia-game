@@ -8,21 +8,6 @@ import Player from "@/components/atoms/room/player";
 import Fire from "@/components/atoms/room/fire";
 import SystemMessage from "@/components/atoms/room/systemMessage";
 
-const selectAble = [
-  {
-    turn: "mafiaVote",
-    role: "mafia",
-  },
-  {
-    turn: "check",
-    role: "police",
-  },
-  {
-    turn: "heal",
-    role: "doctor",
-  },
-];
-
 const line = [2, 3, 3, 3, 2];
 
 const GameBoard = () => {
@@ -45,13 +30,12 @@ const GameBoard = () => {
         const currentPlayer = boardPlayer.shift()!;
 
         currentArray.push(
-          <GameBoardStyle.Selector
-            onClick={() => handleClickPlayer(currentPlayer.name)}
-          >
+          <GameBoardStyle.Selector>
             <Player
               name={currentPlayer.name}
               color={currentPlayer.color}
               role={currentPlayer.role}
+              isDie={currentPlayer.isDie}
               selected={selected}
               //
               setSelected={setSelected}
@@ -77,18 +61,6 @@ const GameBoard = () => {
 
     [[] as JSX.Element[]] as JSX.Element[][]
   ) as JSX.Element[][];
-
-  const handleClickPlayer = (name: string) => {
-    if (name !== player!.name) {
-      const isSelectAble = selectAble.find(
-        (item) => item.turn === turn && item.role === player!.role
-      );
-
-      if (turn === "citizenVote" || isSelectAble) {
-        setSelected!(name);
-      }
-    }
-  };
 
   useEffect(() => {
     setSelected("");

@@ -85,8 +85,8 @@ export interface Player {
 interface ShortPlayer {
   name: string;
   color: string;
-  role?: PlayableRoleNames;
-  isDie?: boolean;
+  role: PlayableRoleNames;
+  isDie: boolean;
 }
 
 export type PlayerList = ShortPlayer[];
@@ -136,7 +136,8 @@ const defaultPlayerRoles = Object.values(playableRoles).reduce(
 
 export interface ISetting extends Record<PlayableRoleNames, number> {
   mode: PlayModeValues;
-  time: number;
+  killVote: number;
+  otherVote: number;
 }
 
 type GameContextType = {
@@ -148,7 +149,6 @@ type GameContextType = {
   selectedList: Selected[];
   turn: Turn | null;
   timePeriod: timePeriod;
-  maxSelectable: number;
   form: UseFormReturn<ISetting>;
   //
   createRoom: (room: EnterRoom) => void;
@@ -157,7 +157,6 @@ type GameContextType = {
   gameStart: () => void;
   resetPlayable: () => void;
   selectPlayer: (name: string) => void;
-  submitSelect: () => void;
   gameLeave: () => void;
 };
 
@@ -179,9 +178,6 @@ export const GameProvider = (props: PropsWithChildren) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [turn, setTurn] = useState<Turn | null>(null);
   const [timePeriod, setTimePeriod] = useState<timePeriod>("morning");
-  const [maxSelectable, setMaxSelectable] = useState(Infinity);
-
-  const systemMessageRef = useRef("");
 
   const socketRef = useRef<Socket | null>(null);
 
@@ -189,7 +185,8 @@ export const GameProvider = (props: PropsWithChildren) => {
     defaultValues: {
       ...defaultPlayerRoles,
       mode: playMode[0],
-      time: 40,
+      killVote: 10,
+      otherVote: 10,
     },
   });
 
@@ -209,7 +206,9 @@ export const GameProvider = (props: PropsWithChildren) => {
 
   const roomSocket = (socket: Socket, isAdmin: boolean) => {
     const delayStart = (time: number) => {
-      socket.emit("delayStart", time);
+      if (isAdmin) {
+        socket.emit("delayStart", time);
+      }
     };
 
     socket.on("playerList", (playerList: PlayerList) => {
@@ -232,27 +231,23 @@ export const GameProvider = (props: PropsWithChildren) => {
         setIsPlaying(true);
         setTurn("intro");
         setTimePeriod("night");
+
+        delayStart(JobInfoDuration);
+
         setSystemMessage("게임이 시작되었습니다.");
-
-        if (isAdmin) {
-          socket.emit("delayStart", DayAnimationDuration + JobInfoDuration);
-        }
-
-        systemMessageRef.current =
-          "마피아는 시민을 살해할 플레이어를 선택해주세요.";
         setPlayer((prev) => ({ ...(prev as Player), role, alive: true }));
         setPlayerList((prev) =>
           prev.map((item) => ({
             ...item,
             role: colleague.includes(item.name) ? role : "citizen",
+            isDie: false,
           }))
         );
       }
     );
 
-    socket.on(
-      "selectPlayerSuccess",
-      ({ selected, max }: { selected: Selected; max: number }) => {
+    socket.on("selectPlayerSuccess", (selected?: Selected) => {
+      if (selected)
         setSelectedList((prev) => {
           const updated = [...prev];
           const findIndex = updated.findIndex(
@@ -269,19 +264,19 @@ export const GameProvider = (props: PropsWithChildren) => {
 
           return updated;
         });
-
-        setMaxSelectable(max);
-      }
-    );
+    });
 
     // 마피아 투표 결과 : 시민 사망
-    socket.on("citizenDie", (player: ShortPlayer) => {
+    socket.on("citizenDie", (playerName: string) => {
       setPlayerList((prev) =>
-        prev.map((item) => ({ ...item, isDie: item.name === player.name }))
+        prev.map((item) => ({
+          ...item,
+          isDie: item.name === playerName ? true : item.isDie,
+        }))
       );
 
       setPlayer((prev) => {
-        if (prev.name === player.name) {
+        if (prev.name === playerName) {
           return { ...prev, alive: false };
         }
 
@@ -291,131 +286,150 @@ export const GameProvider = (props: PropsWithChildren) => {
       setTurn("killCitizen");
       setTimePeriod("morning");
 
-      systemMessageRef.current = `${player.name}님이 마피아에게 사망하였습니다.`;
+      delayStart(DayAnimationDuration);
 
-      if (isAdmin) {
-        delayStart(DayAnimationDuration + EventAnimation);
-      }
+      setSystemMessage(`${playerName}님이 마피아에게 사망하였습니다.`);
+    });
+    // 마피아 투표 결과 : 시민 살해 실패
+    socket.on("citizenSafe", () => {
+      setTurn("killCitizen");
+      setTimePeriod("morning");
+
+      delayStart(DayAnimationDuration);
+
+      setSystemMessage(`마피아가 살인에 실패하였습니다.`);
     });
 
     // 마피아 투표 결과 : 시민 사망 회피 (의사 치료)
     socket.on("citizenHeal", () => {
       setTurn("healCitizen");
       setTimePeriod("morning");
-      if (isAdmin) {
-        delayStart(DayAnimationDuration + EventAnimation);
-      }
-      systemMessageRef.current = `의사의 노력으로 아무 일도 일어나지 않았습니다.`;
+
+      delayStart(DayAnimationDuration);
+
+      setSystemMessage(`의사의 노력으로 아무 일도 일어나지 않았습니다.`);
     });
 
     // 시민 투표 결과 : 사형
-    socket.on("voteKill", (player: ShortPlayer) => {
+    socket.on("voteKill", (playerName: string) => {
       setPlayerList((prev) =>
-        prev.map((item) => ({ ...item, isDie: item.name === player.name }))
+        prev.map((item) => ({
+          ...item,
+          isDie: item.name === playerName ? true : item.isDie,
+        }))
       );
       setTurn("killMafia");
       setTimePeriod("night");
 
+      delayStart(DayAnimationDuration);
+
       setPlayer((prev) => {
-        if (prev.name === player.name) {
+        if (prev.name === playerName) {
           return { ...prev, alive: false };
         }
 
         return prev;
       });
 
-      if (isAdmin) {
-        delayStart(DayAnimationDuration + EventAnimation);
-      }
-
-      systemMessageRef.current = `${player.name}님이 시민 투표로 사형되었습니다`;
+      setSystemMessage(`${player.name}님이 시민 투표로 사형되었습니다`);
     });
 
     // 시민 투표 결과 : 사형 회피
     socket.on("voteSafe", () => {
       setTurn("safeMafia");
       setTimePeriod("night");
-      if (isAdmin) {
-        delayStart(DayAnimationDuration + EventAnimation);
-      }
 
-      systemMessageRef.current = `과반수를 넘기지 못해 아무 일도 일어나지 않았습니다.`;
+      delayStart(DayAnimationDuration);
+
+      setSystemMessage(`과반수를 넘기지 못해 아무 일도 일어나지 않았습니다.`);
+    });
+
+    // 조사 결과 (경찰)
+    socket.on("policeResult", (role?: PlayableRoleNames) => {
+      const { killVote } = form.getValues();
+      setTurn("heal");
+
+      delayStart(killVote * 1000);
+
+      if (role) {
+        const label = playableRoles[role].label;
+
+        setSystemMessage(
+          `조사 결과 해당 플레이어의 직업은 ${label}입니다.\n의사는 위험해 보이는 플레이어를 선택해주세요.`
+        );
+      } else {
+        setSystemMessage(`의사는 위험해 보이는 플레이어를 선택해주세요.`);
+      }
     });
 
     // 의사 치료
     socket.on("healSuccess", () => {
+      const { killVote } = form.getValues();
+
+      setSystemMessage("마피아는 시민을 살해할 플레이어를 선택해주세요.");
+      delayStart(killVote * 1000);
+
       setTurn("mafiaVote");
-    });
-
-    // 조사 결과 (경찰)
-    socket.on("policeResult", (role?: string) => {
-      setTurn("heal");
-
-      if (role) {
-        setSystemMessage(`조사 결과 해당 플레이어의 직업은 ${role}입니다.`);
-      }
-
-      setSystemMessage(`의사는 위험해 보이는 플레이어를 선택해주세요.`);
     });
 
     socket.on("mafiaWin", () => {
       setTurn("mafiaWin");
-      if (isAdmin) {
-        delayStart(EventAnimation);
-      }
+
+      delayStart(EventAnimation);
     });
 
     socket.on("citizenWin", () => {
       setTurn("citizenWin");
-      if (isAdmin) {
-        delayStart(EventAnimation);
-      }
+
+      delayStart(EventAnimation);
     });
 
     socket.on("delayFinish", () => {
       const { getValues } = form;
 
-      const { time } = getValues();
-
-      setSystemMessage(systemMessageRef.current);
+      const { killVote, otherVote } = getValues();
 
       setTurn((prev) => {
         if (prev === "intro") {
+          delayStart(killVote * 1000);
+          setSystemMessage("마피아는 시민을 살해할 플레이어를 선택해주세요.");
+
           return "mafiaVote";
         }
 
         if (prev === "discussion") {
+          delayStart(killVote * 1000);
+          setSystemMessage("마피아로 의심되는 플레이어를 선택해주세요.");
+
           return "citizenVote";
         }
 
         // 마피아 작업
         if (prev === "killCitizen") {
-          if (isAdmin) {
-            delayStart(time * 1000);
-            systemMessageRef.current =
-              "마피아로 생각되는 플레이어를 선택해주세요.";
-          }
+          delayStart(killVote * 1000);
+          setSystemMessage("제한시간 동안 토론을 진행해주세요.");
 
           return "discussion";
         }
 
         if (prev === "healCitizen") {
-          if (isAdmin) {
-            delayStart(time * 1000);
-            systemMessageRef.current =
-              "마피아로 생각되는 플레이어를 선택해주세요.";
-          }
+          delayStart(killVote * 1000);
+          setSystemMessage("제한시간 동안 토론을 진행해주세요.");
 
           return "discussion";
         }
 
         // 시민 작업
         if (prev === "killMafia") {
+          delayStart(otherVote * 1000);
+
           setSystemMessage("경찰은 의심가는 플레이어를 선택해주세요.");
           return "check";
         }
 
         if (prev === "safeMafia") {
+          delayStart(otherVote * 1000);
+
           setSystemMessage("경찰은 의심가는 플레이어를 선택해주세요.");
           return "check";
         }
@@ -429,12 +443,30 @@ export const GameProvider = (props: PropsWithChildren) => {
           return "gameFinish";
         }
 
+        if (prev === "check" && isAdmin) {
+          socket.emit("check");
+        }
+
+        if (prev === "heal" && isAdmin) {
+          socket.emit("heal");
+        }
+
+        if (prev === "mafiaVote" && isAdmin) {
+          socket.emit("mafiaVote");
+        }
+
+        if (prev === "citizenVote" && isAdmin) {
+          socket.emit("citizenVote");
+        }
+
+        setSelectedList([]);
         return prev;
       });
     });
 
     socket.on("playerLeave", (name: string) => {
       setIsPlaying(false);
+      setTimePeriod("morning");
       setPlayerList((prev) => prev.filter((item) => item.name !== name));
 
       setSystemMessage(`${name}님이 게임을 나갔습니다.`);
@@ -451,7 +483,14 @@ export const GameProvider = (props: PropsWithChildren) => {
 
     socket.on("createRoomSuccess", (player: Player) => {
       setPlayer(player);
-      setPlayerList([{ name: player.name, color: player.color }]);
+      setPlayerList([
+        {
+          name: player.name,
+          color: player.color,
+          isDie: false,
+          role: "citizen",
+        },
+      ]);
 
       roomSocket(socket, true);
 
@@ -516,7 +555,7 @@ export const GameProvider = (props: PropsWithChildren) => {
   };
 
   const gameStart = () => {
-    const { time, mode, ...roles } = form.getValues();
+    const { killVote, otherVote, mode, ...roles } = form.getValues();
     let curRoles = roles;
 
     const total = playerList.length;
@@ -527,7 +566,8 @@ export const GameProvider = (props: PropsWithChildren) => {
       form.reset({
         ...curRoles,
         mode,
-        time,
+        killVote,
+        otherVote,
       });
     }
 
@@ -535,27 +575,7 @@ export const GameProvider = (props: PropsWithChildren) => {
   };
 
   const selectPlayer = (name: string) => {
-    socketRef.current!.emit("selectPlayer", name);
-  };
-
-  const submitSelect = () => {
-    setSelectedList([]);
-    switch (turn) {
-      case "mafiaVote":
-        socketRef.current!.emit("mafiaVote", selectedList);
-        break;
-      case "citizenVote":
-        socketRef.current!.emit("citizenVote", selectedList);
-        break;
-      case "check":
-        socketRef.current!.emit("check", selectedList);
-        break;
-      case "heal":
-        socketRef.current!.emit("heal", selectedList);
-        break;
-      default:
-        break;
-    }
+    socketRef.current!.emit("selectPlayer", { name, turn });
   };
 
   const gameLeave = () => {
@@ -605,7 +625,6 @@ export const GameProvider = (props: PropsWithChildren) => {
         form,
         turn,
         timePeriod,
-        maxSelectable,
         //
         createRoom,
         joinRoom,
@@ -613,7 +632,6 @@ export const GameProvider = (props: PropsWithChildren) => {
         gameStart,
         resetPlayable,
         selectPlayer,
-        submitSelect,
         gameLeave,
       }}
     >

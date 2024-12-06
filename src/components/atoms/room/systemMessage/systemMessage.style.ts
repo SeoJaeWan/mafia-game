@@ -33,6 +33,7 @@ const Text = styled.p`
   font-weight: 700;
   color: var(--black);
   text-align: center;
+  white-space: pre-wrap;
 
   animation: ${fadeOut} 5s forwards;
 `;

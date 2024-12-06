@@ -9,20 +9,37 @@ const Timer = () => {
   const isActive = turn === "discussion";
 
   useEffect(() => {
-    if (isActive) {
-      let time = form.getValues("time");
+    const getActive = () => {
+      const { killVote, otherVote } = form.getValues();
 
+      if (
+        turn === "discussion" ||
+        turn === "citizenVote" ||
+        turn === "mafiaVote" ||
+        turn === "heal"
+      ) {
+        return killVote;
+      } else if (turn === "check") {
+        return otherVote;
+      } else {
+        return 0;
+      }
+    };
+
+    let active = getActive();
+
+    if (active) {
       const interval = setInterval(() => {
-        setTime(time--);
+        setTime(active--);
 
-        if (time === 0) {
+        if (active === 0) {
           clearInterval(interval);
           // game.discussionFinish();
           //
         }
       }, 1000);
     }
-  }, [isActive, form]);
+  }, [turn, form]);
 
   return <TimerStyle $isActive={isActive}>{time}</TimerStyle>;
 };

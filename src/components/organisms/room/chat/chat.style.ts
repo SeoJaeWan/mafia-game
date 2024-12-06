@@ -36,6 +36,7 @@ const ChatBox = styled.div<ChatBoxProps>`
   position: fixed;
   bottom: 80px;
   right: 20px;
+  z-index: 5;
 
   display: ${({ $open }) => ($open ? "flex" : "none")};
   flex-direction: column;

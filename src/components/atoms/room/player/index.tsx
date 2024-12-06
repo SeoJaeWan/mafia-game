@@ -14,13 +14,29 @@ interface IPlayerProps extends StripDollar<PlayerStyleProps> {
   isButton?: boolean;
   selected?: string;
   role?: string;
+  isDie: boolean;
   //
-  setSelected?: (name: string) => void;
+  setSelected: (name: string) => void;
 }
 
+const selectAble = [
+  {
+    turn: "mafiaVote",
+    role: "mafia",
+  },
+  {
+    turn: "check",
+    role: "police",
+  },
+  {
+    turn: "heal",
+    role: "doctor",
+  },
+];
+
 const Player: React.FC<IPlayerProps> = (props) => {
-  const { name, role = "citizen", color } = props;
-  const { selectedList, messageList, playerList } = useGame();
+  const { name, isDie, role = "citizen", color, setSelected } = props;
+  const { selectedList, messageList, player, playerList, turn } = useGame();
   const [mouseAni, setMouseAni] = useState(false);
 
   const currentSelectedList = selectedList.reduce((acc, cur) => {
@@ -42,6 +58,20 @@ const Player: React.FC<IPlayerProps> = (props) => {
     () => messageList.filter((item) => item.name === name),
     [messageList, name]
   );
+
+  const handleClickPlayer = () => {
+    if (isDie) return;
+
+    if (player!.alive && name !== player!.name) {
+      const isSelectAble = selectAble.find(
+        (item) => item.turn === turn && item.role === player!.role
+      );
+
+      if (turn === "citizenVote" || isSelectAble) {
+        setSelected(name);
+      }
+    }
+  };
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -82,6 +112,7 @@ const Player: React.FC<IPlayerProps> = (props) => {
         width={200}
         height={200}
         alt={""}
+        onClick={handleClickPlayer}
       />
       <PlayerStyle.Mouse $mouseAni={mouseAni}>
         <Image

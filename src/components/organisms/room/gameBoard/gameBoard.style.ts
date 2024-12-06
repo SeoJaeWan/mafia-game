@@ -31,7 +31,7 @@ const Line = styled.div`
   width: 800px;
 `;
 
-const Block = styled.div`
+const Block = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,7 +39,7 @@ const Block = styled.div`
   width: calc(25%);
 `;
 
-const Fire = styled.div`
+const Fire = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,7 +47,7 @@ const Fire = styled.div`
   width: calc(40%);
 `;
 
-const Selector = styled.button`
+const Selector = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,9 +57,8 @@ const Selector = styled.button`
   aspect-ratio: 3/2;
 
   background-color: transparent;
-  border: none;
 
-  transition: all 0.5s;
+  transition: transform 0.5s;
 `;
 
 interface PlayBoardProps {
@@ -77,12 +76,13 @@ const PlayBoard = styled.div<PlayBoardProps>`
   width: 100%;
   height: 100%;
 
+  ${Fire},
   ${Block} {
     display: ${(props) => (props.$isPlaying ? "flex" : "none")};
-  }
 
-  ${Fire} {
-    display: ${(props) => (props.$isPlaying ? "flex" : "none")};
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   ${(props) =>
@@ -166,6 +166,13 @@ const PlayBoard = styled.div<PlayBoardProps>`
     width: ${(props) =>
       props.$isPlaying ? "calc(100% / 5)" : "calc(100% / 8)"};
     ${(props) => !props.$isPlaying && `min-width: 110px;`}
+  }
+
+  @media (max-width: 768px) {
+    gap: 10px;
+    justify-content: flex-end;
+
+    padding: 0 0 20px;
   }
 `;
 
