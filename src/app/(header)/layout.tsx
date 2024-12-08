@@ -1,5 +1,3 @@
-import Header from "@/components/templates/header";
-import Main from "@/components/templates/main";
 import { GameProvider } from "@/hooks/useGame";
 
 interface LayoutProps {
@@ -9,12 +7,7 @@ interface LayoutProps {
 const Layout = (props: LayoutProps) => {
   const { children } = props;
 
-  return (
-    <GameProvider>
-      {/* <Header /> */}
-      <Main>{children}</Main>
-    </GameProvider>
-  );
+  return <GameProvider>{children}</GameProvider>;
 };
 
 export default Layout;

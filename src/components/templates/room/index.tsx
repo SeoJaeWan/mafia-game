@@ -9,13 +9,15 @@ import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import Players from "@/components/organisms/room/players";
 import InputForm from "@/components/organisms/room/inputForm";
+import { useNoti } from "@/components/atoms/common/noti";
 
 const GameTemplate = () => {
   const { socket, gameLeave } = useGame();
+  const { addNoti } = useNoti();
 
   useEffect(() => {
     if (!socket) {
-      alert("잘못된 접근입니다.");
+      addNoti("잘못된 접근입니다.", "error");
       redirect("/");
     }
   }, [socket]);

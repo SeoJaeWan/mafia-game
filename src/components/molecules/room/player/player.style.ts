@@ -1,20 +1,11 @@
 import toRem from "@/styles/utils/toRem";
-import Image from "next/image";
 import styled, { keyframes } from "styled-components";
-
-const Character = styled(Image)`
-  position: relative;
-  z-index: 2;
-
-  width: 100%;
-  height: 100%;
-`;
 
 const SelectorList = styled.ul`
   position: absolute;
   left: 50%;
-  top: 0;
-  transform: translateX(-50%);
+  top: 10px;
+  transform: translate(-50%, -100%);
 
   display: flex;
   flex-direction: column;
@@ -37,58 +28,31 @@ const SelectorName = styled.li<ColorProps>`
   }
 `;
 
-const Name = styled.p<ColorProps>`
-  position: absolute;
-  bottom: 0px;
-  left: 50%;
-  transform: translate(-50%, 100%);
-
-  width: 100%;
-
-  color: ${(props) => props.$color};
-
-  text-align: center;
-  font-size: ${toRem(18)};
-  font-weight: 700;
-`;
-
 const Container = styled.div`
   position: relative;
 
-  width: auto;
-  height: 100%;
+  display: flex;
+  justify-content: center;
 
-  aspect-ratio: 767/654;
+  width: 100%;
+  height: 100%;
 
   background-color: transparent;
   border: none;
 
   transition: transform 0.5s;
-
-  &::after {
-    content: "";
-
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 50%;
-    height: 20%;
-
-    border-radius: 100%;
-
-    background-color: rgba(0, 0, 0, 0.2);
-  }
 `;
 
-const MessageList = styled.ul`
+interface MessageListProps {
+  $isChatAble: boolean;
+}
+
+const MessageList = styled.ul<MessageListProps>`
   position: absolute;
   left: 15%;
   top: 0;
   transform: translateY(-100%);
-  z-index: 3;
+  z-index: 6;
 
   display: flex;
   flex-direction: column;
@@ -96,6 +60,11 @@ const MessageList = styled.ul`
   gap: 5px;
 
   width: 120%;
+
+  visibility: ${(props) => (props.$isChatAble ? "visible" : "hidden")};
+  opacity: ${(props) => (props.$isChatAble ? 1 : 0)};
+
+  transition: visibility 0.5s, opacity 0.5s;
 `;
 
 const messagePop = keyframes`
@@ -117,44 +86,7 @@ const messagePop = keyframes`
   100% {
     opacity: 0;
     transform: translateY(-50%);
-  }
-`;
-
-const mouseAni = keyframes`
-  from {
-   transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-100%);
-  }
-`;
-
-interface MouseProps {
-  $mouseAni: boolean;
-}
-
-const Mouse = styled.div<MouseProps>`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-
-  display: ${(props) => (props.$mouseAni ? "block" : "none")};
-
-  width: 12%;
-  height: auto;
-
-  aspect-ratio: 102/97;
-
-  overflow: hidden;
-
-  img {
-    width: 200%;
-    height: auto;
-
-    animation: ${mouseAni} 0.5s steps(2) infinite;
+    visibility: hidden;
   }
 `;
 
@@ -163,8 +95,7 @@ const Message = styled.li<ColorProps>`
   padding: 10px;
   border-radius: 5px;
 
-  max-width: 100%;
-
+  width: 100%;
   color: var(--white);
   background-color: ${(props) => props.$color};
 
@@ -211,17 +142,20 @@ const Message = styled.li<ColorProps>`
 
     border-top: 12px solid ${(props) => props.$color};
   }
+
+  @media (max-width: 768px) {
+    padding: 5px;
+
+    font-size: ${toRem(12)};
+  }
 `;
 
 export type PlayerStyleProps = ColorProps;
 
 const PlayerStyle = {
   Container,
-  Name,
-  Character,
   MessageList,
   Message,
-  Mouse,
   SelectorList,
   SelectorName,
 };

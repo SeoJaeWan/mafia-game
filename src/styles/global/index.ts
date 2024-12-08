@@ -16,6 +16,9 @@ const Global = styled.createGlobalStyle`
     --day-background-night: #2d3436;
     --day-background-morning: #ffffff;
 
+    --error: #ff3f34;
+    --info: #2d3436;
+
     --breakpoint-mobile: 768px;
     --breakpoint-tablet: 1024px;
   }
@@ -61,10 +64,19 @@ const Global = styled.createGlobalStyle`
   }
 
   button {
+    border: none;
+    outline: none;
+    background: none;
+
     transition: transform 0.2s;
 
     &:active {
       transform: scale(0.9);
+    }
+
+    &:disabled {
+      transform: none;
+      cursor: default;
     }
   }
 

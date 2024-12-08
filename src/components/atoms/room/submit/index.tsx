@@ -14,9 +14,7 @@ const Submit = (props: SubmitProps) => {
     selectPlayer,
   } = useGame();
 
-  const mySelected = selectedList.find(
-    (item) => item.selector === player!.name
-  );
+  const mySelected = selectedList.find((item) => item.selector === player.name);
 
   const isSelected = !!mySelected;
   const isOtherChoice = isSelected && mySelected?.name !== selected;

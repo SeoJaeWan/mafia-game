@@ -6,6 +6,7 @@ import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useGame from "@/hooks/useGame";
+import { useNoti } from "@/components/atoms/common/noti";
 
 const minPlayer = 4;
 
@@ -13,8 +14,9 @@ const Invite = () => {
   const { id } = useParams();
   const [copyUrl, setCopyUrl] = useState("");
   const { player, playerList, isPlaying, gameStart } = useGame();
+  const { addNoti } = useNoti();
 
-  const isAdmin = player!.isAdmin;
+  const isAdmin = player.isAdmin;
 
   const totalLength = playerList.length;
 
@@ -39,6 +41,7 @@ const Invite = () => {
 
     try {
       document.execCommand("copy");
+      addNoti("링크가 복사되었습니다.", "info");
     } catch (error) {
       console.error(error);
     } finally {

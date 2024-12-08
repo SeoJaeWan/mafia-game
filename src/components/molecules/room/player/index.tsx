@@ -1,8 +1,8 @@
 import StripDollar from "@/styles/utils/stripDollar";
 import PlayerStyle, { PlayerStyleProps } from "./player.style";
 import useGame from "@/hooks/useGame";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import Character from "@/components/atoms/common/character";
 
 interface Selector {
   name: string;
@@ -14,7 +14,7 @@ interface IPlayerProps extends StripDollar<PlayerStyleProps> {
   isButton?: boolean;
   selected?: string;
   role?: string;
-  isDie: boolean;
+  alive: boolean;
   //
   setSelected: (name: string) => void;
 }
@@ -35,9 +35,21 @@ const selectAble = [
 ];
 
 const Player: React.FC<IPlayerProps> = (props) => {
-  const { name, isDie, role = "citizen", color, setSelected } = props;
-  const { selectedList, messageList, player, playerList, turn } = useGame();
+  const { name, alive, role = "citizen", color, setSelected } = props;
+  const { isChatAble, selectedList, messageList, player, playerList, turn } =
+    useGame();
   const [mouseAni, setMouseAni] = useState(false);
+
+  const characterRole = !alive ? "die" : role;
+
+  const isAlive = !alive || !player.alive;
+  const isCitizenVote = turn === "citizenVote";
+  const isMe = player.name === name;
+  const isSelectAble = !!selectAble.find(
+    (item) => item.turn === turn && item.role === player.role
+  );
+
+  const selectDisable = isAlive || !(isCitizenVote || isSelectAble) || isMe;
 
   const currentSelectedList = selectedList.reduce((acc, cur) => {
     if (cur.name === name) {
@@ -60,17 +72,7 @@ const Player: React.FC<IPlayerProps> = (props) => {
   );
 
   const handleClickPlayer = () => {
-    if (isDie) return;
-
-    if (player!.alive && name !== player!.name) {
-      const isSelectAble = selectAble.find(
-        (item) => item.turn === turn && item.role === player!.role
-      );
-
-      if (turn === "citizenVote" || isSelectAble) {
-        setSelected(name);
-      }
-    }
+    setSelected(name);
   };
 
   useEffect(() => {
@@ -91,7 +93,7 @@ const Player: React.FC<IPlayerProps> = (props) => {
 
   return (
     <PlayerStyle.Container>
-      <PlayerStyle.MessageList>
+      <PlayerStyle.MessageList $isChatAble={isChatAble}>
         {playerMessage.slice(-4).map(({ message, time }) => (
           <PlayerStyle.Message key={time} $color={color}>
             {message}
@@ -107,22 +109,15 @@ const Player: React.FC<IPlayerProps> = (props) => {
         ))}
       </PlayerStyle.SelectorList>
 
-      <PlayerStyle.Character
-        src={`/assets/playable/${role}.png`}
-        width={200}
-        height={200}
-        alt={""}
-        onClick={handleClickPlayer}
-      />
-      <PlayerStyle.Mouse $mouseAni={mouseAni}>
-        <Image
-          src={"/assets/playable/mouse.png"}
-          alt={""}
-          width={205}
-          height={97}
-        />
-      </PlayerStyle.Mouse>
-      <PlayerStyle.Name $color={color}>{name}</PlayerStyle.Name>
+      <button onClick={handleClickPlayer} disabled={selectDisable}>
+        <Character
+          characterRole={characterRole}
+          mouseAni={mouseAni}
+          color={color}
+        >
+          {name}
+        </Character>
+      </button>
     </PlayerStyle.Container>
   );
 };

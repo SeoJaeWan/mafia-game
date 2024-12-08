@@ -6,30 +6,30 @@ const Timer = () => {
   const { turn, form } = useGame();
   const [time, setTime] = useState(0);
 
-  const isActive = turn === "discussion";
+  const getActive = () => {
+    const { killVote, otherVote } = form.getValues();
+
+    if (
+      turn === "discussion" ||
+      turn === "citizenVote" ||
+      turn === "mafiaVote" ||
+      turn === "heal"
+    ) {
+      return killVote;
+    } else if (turn === "check") {
+      return otherVote;
+    } else {
+      return 0;
+    }
+  };
+
+  let active = getActive();
 
   useEffect(() => {
-    const getActive = () => {
-      const { killVote, otherVote } = form.getValues();
-
-      if (
-        turn === "discussion" ||
-        turn === "citizenVote" ||
-        turn === "mafiaVote" ||
-        turn === "heal"
-      ) {
-        return killVote;
-      } else if (turn === "check") {
-        return otherVote;
-      } else {
-        return 0;
-      }
-    };
-
-    let active = getActive();
+    let interval: NodeJS.Timeout | undefined = undefined;
 
     if (active) {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setTime(active--);
 
         if (active === 0) {
@@ -39,9 +39,14 @@ const Timer = () => {
         }
       }, 1000);
     }
-  }, [turn, form]);
 
-  return <TimerStyle $isActive={isActive}>{time}</TimerStyle>;
+    return () => {
+      clearInterval(interval!);
+      setTime(0);
+    };
+  }, [active, turn]);
+
+  return <TimerStyle $isActive={!!time}>{time}</TimerStyle>;
 };
 
 export default Timer;

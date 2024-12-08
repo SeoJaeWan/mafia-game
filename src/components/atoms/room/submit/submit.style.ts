@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const SubmitContainer = styled.div`
   position: absolute;
-  top: 20px;
+  top: 70px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -12,6 +12,11 @@ const SubmitContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    bottom: 0;
+    top: auto;
+  }
 `;
 
 const SubmitButton = styled.button`

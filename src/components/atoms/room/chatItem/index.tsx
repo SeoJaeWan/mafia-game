@@ -8,7 +8,7 @@ const ChatItem: React.FC<IChatItemProps> = (props) => {
   const { name, color, message, isSystem } = props;
   const { player } = useGame();
 
-  const isMe = player!.name === name;
+  const isMe = player.name === name;
 
   const Chatting = isSystem
     ? ChatItemStyle.SystemChatting

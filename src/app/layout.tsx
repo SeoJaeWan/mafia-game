@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import StyledComponentsRegistry from "@/styles/lib/registry";
+import { NotiProvoder } from "@/components/atoms/common/noti";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -29,7 +30,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${pretendard.variable} ${anton.variable}`}>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <div id="noti" />
+          <NotiProvoder>{children}</NotiProvoder>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

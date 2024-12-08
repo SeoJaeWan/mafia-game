@@ -1,6 +1,7 @@
 "use client";
 import StripDollar from "@/styles/utils/stripDollar";
 import InputStyle, { IInputStyleProps } from "./input.style";
+import { forwardRef } from "react";
 
 interface IInputProps extends StripDollar<IInputStyleProps> {
   value: string;
@@ -11,7 +12,7 @@ interface IInputProps extends StripDollar<IInputStyleProps> {
   onChange: (value: string) => void;
 }
 
-const Input: React.FC<IInputProps> = (props) => {
+const Input = forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
   const {
     flex,
     //
@@ -33,6 +34,7 @@ const Input: React.FC<IInputProps> = (props) => {
 
   return (
     <InputStyle
+      ref={ref}
       $flex={flex}
       //
       $width={width}
@@ -44,6 +46,8 @@ const Input: React.FC<IInputProps> = (props) => {
       onChange={handleChange}
     />
   );
-};
+});
+
+Input.displayName = "Input";
 
 export default Input;

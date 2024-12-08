@@ -1,4 +1,5 @@
 "use client";
+import { useNoti } from "@/components/atoms/common/noti";
 import {
   DayAnimationDuration,
   EventAnimation,
@@ -86,7 +87,7 @@ interface ShortPlayer {
   name: string;
   color: string;
   role: PlayableRoleNames;
-  isDie: boolean;
+  alive: boolean;
 }
 
 export type PlayerList = ShortPlayer[];
@@ -137,13 +138,15 @@ const defaultPlayerRoles = Object.values(playableRoles).reduce(
 export interface ISetting extends Record<PlayableRoleNames, number> {
   mode: PlayModeValues;
   killVote: number;
+  citizenVote: number;
   otherVote: number;
 }
 
 type GameContextType = {
   isPlaying: boolean;
+  isChatAble: boolean;
   socket: Socket | null;
-  player: Player | undefined;
+  player: Player;
   playerList: PlayerList;
   messageList: Message[];
   selectedList: Selected[];
@@ -171,6 +174,8 @@ export interface IGameProviderProps {
 export const GameProvider = (props: PropsWithChildren) => {
   const { children } = props;
 
+  const { addNoti } = useNoti();
+
   const [player, setPlayer] = useState<Player>({} as Player);
   const [playerList, setPlayerList] = useState<PlayerList>([]);
   const [messageList, setMessageList] = useState<Message[]>([]);
@@ -186,9 +191,21 @@ export const GameProvider = (props: PropsWithChildren) => {
       ...defaultPlayerRoles,
       mode: playMode[0],
       killVote: 10,
+      citizenVote: 10,
       otherVote: 10,
     },
   });
+
+  const getIsChatAble = () => {
+    if (!isPlaying) return true;
+
+    if (turn === "discussion" && player.alive) return true;
+    if (turn === "mafiaVote" && player.role === "mafia") return true;
+
+    return false;
+  };
+
+  const isChatAble = getIsChatAble();
 
   const router = useRouter();
 
@@ -202,6 +219,12 @@ export const GameProvider = (props: PropsWithChildren) => {
         time: Date.now(),
       },
     ]);
+  };
+
+  const gameFinish = () => {
+    setIsPlaying(false);
+    setTimePeriod("morning");
+    setTurn(null);
   };
 
   const roomSocket = (socket: Socket, isAdmin: boolean) => {
@@ -240,7 +263,7 @@ export const GameProvider = (props: PropsWithChildren) => {
           prev.map((item) => ({
             ...item,
             role: colleague.includes(item.name) ? role : "citizen",
-            isDie: false,
+            alive: true,
           }))
         );
       }
@@ -271,7 +294,7 @@ export const GameProvider = (props: PropsWithChildren) => {
       setPlayerList((prev) =>
         prev.map((item) => ({
           ...item,
-          isDie: item.name === playerName ? true : item.isDie,
+          alive: item.name === playerName ? false : item.alive,
         }))
       );
 
@@ -315,7 +338,7 @@ export const GameProvider = (props: PropsWithChildren) => {
       setPlayerList((prev) =>
         prev.map((item) => ({
           ...item,
-          isDie: item.name === playerName ? true : item.isDie,
+          alive: item.name === playerName ? false : item.alive,
         }))
       );
       setTurn("killMafia");
@@ -331,7 +354,7 @@ export const GameProvider = (props: PropsWithChildren) => {
         return prev;
       });
 
-      setSystemMessage(`${player.name}님이 시민 투표로 사형되었습니다`);
+      setSystemMessage(`${playerName}님이 시민 투표로 사형되었습니다`);
     });
 
     // 시민 투표 결과 : 사형 회피
@@ -372,22 +395,28 @@ export const GameProvider = (props: PropsWithChildren) => {
       setTurn("mafiaVote");
     });
 
-    socket.on("mafiaWin", () => {
+    socket.on("mafiaWin", (roles: PlayableRoleNames[]) => {
       setTurn("mafiaWin");
 
       delayStart(EventAnimation);
+      setPlayerList((prev) =>
+        prev.map((player, idx) => ({ ...player, role: roles[idx] }))
+      );
     });
 
-    socket.on("citizenWin", () => {
+    socket.on("citizenWin", (roles: PlayableRoleNames[]) => {
       setTurn("citizenWin");
 
       delayStart(EventAnimation);
+      setPlayerList((prev) =>
+        prev.map((player, idx) => ({ ...player, role: roles[idx] }))
+      );
     });
 
     socket.on("delayFinish", () => {
       const { getValues } = form;
 
-      const { killVote, otherVote } = getValues();
+      const { killVote, citizenVote, otherVote } = getValues();
 
       setTurn((prev) => {
         if (prev === "intro") {
@@ -406,14 +435,14 @@ export const GameProvider = (props: PropsWithChildren) => {
 
         // 마피아 작업
         if (prev === "killCitizen") {
-          delayStart(killVote * 1000);
+          delayStart(citizenVote * 1000);
           setSystemMessage("제한시간 동안 토론을 진행해주세요.");
 
           return "discussion";
         }
 
         if (prev === "healCitizen") {
-          delayStart(killVote * 1000);
+          delayStart(citizenVote * 1000);
           setSystemMessage("제한시간 동안 토론을 진행해주세요.");
 
           return "discussion";
@@ -434,15 +463,6 @@ export const GameProvider = (props: PropsWithChildren) => {
           return "check";
         }
 
-        if (prev === "mafiaWin" || prev === "citizenWin") {
-          setIsPlaying(false);
-          setPlayerList((prev) =>
-            prev.map((item) => ({ ...item, role: "citizen" }))
-          );
-
-          return "gameFinish";
-        }
-
         if (prev === "check" && isAdmin) {
           socket.emit("check");
         }
@@ -459,15 +479,27 @@ export const GameProvider = (props: PropsWithChildren) => {
           socket.emit("citizenVote");
         }
 
+        if (prev === "mafiaWin" || prev === "citizenWin") {
+          gameFinish();
+          setPlayerList((prev) =>
+            prev.map((player) => ({ ...player, alive: true, role: "citizen" }))
+          );
+
+          return null;
+        }
+
         setSelectedList([]);
         return prev;
       });
     });
 
     socket.on("playerLeave", (name: string) => {
-      setIsPlaying(false);
-      setTimePeriod("morning");
-      setPlayerList((prev) => prev.filter((item) => item.name !== name));
+      gameFinish();
+      setPlayerList((prev) =>
+        prev
+          .filter((item) => item.name !== name)
+          .map((player) => ({ ...player, alive: true, role: "citizen" }))
+      );
 
       setSystemMessage(`${name}님이 게임을 나갔습니다.`);
     });
@@ -487,7 +519,7 @@ export const GameProvider = (props: PropsWithChildren) => {
         {
           name: player.name,
           color: player.color,
-          isDie: false,
+          alive: true,
           role: "citizen",
         },
       ]);
@@ -498,7 +530,7 @@ export const GameProvider = (props: PropsWithChildren) => {
     });
 
     socket.on("createRoomFail", () => {
-      alert("이미 존재하는 방입니다.");
+      addNoti("이미 존재하는 방입니다.", "error");
     });
 
     socketRef.current = socket;
@@ -526,13 +558,19 @@ export const GameProvider = (props: PropsWithChildren) => {
 
     socket.on(
       "joinRoomFail",
-      ({ type }: { type: "sameName" | "noRoom" | "fullRoom" }) => {
+      ({
+        type,
+      }: {
+        type: "sameName" | "noRoom" | "fullRoom" | "gameStart";
+      }) => {
         if (type === "sameName") {
-          alert("이미 존재하는 이름입니다.");
+          addNoti("이미 존재하는 이름입니다.", "error");
         } else if (type === "fullRoom") {
-          alert("최대 인원을 초과했습니다.");
+          addNoti("최대 인원을 초과했습니다.", "error");
+        } else if (type === "gameStart") {
+          addNoti("이미 시작된 방입니다.", "error");
         } else {
-          alert("존재하지 않는 방입니다.");
+          addNoti("존재하지 않는 방입니다.", "error");
         }
       }
     );
@@ -542,9 +580,9 @@ export const GameProvider = (props: PropsWithChildren) => {
 
   const sendMessage = (message: string) => {
     const messageData = {
-      name: player!.name,
+      name: player.name,
       message,
-      color: player!.color,
+      color: player.color,
     };
 
     if (turn === "mafiaVote") {
@@ -555,7 +593,8 @@ export const GameProvider = (props: PropsWithChildren) => {
   };
 
   const gameStart = () => {
-    const { killVote, otherVote, mode, ...roles } = form.getValues();
+    const { killVote, citizenVote, otherVote, mode, ...roles } =
+      form.getValues();
     let curRoles = roles;
 
     const total = playerList.length;
@@ -567,6 +606,7 @@ export const GameProvider = (props: PropsWithChildren) => {
         ...curRoles,
         mode,
         killVote,
+        citizenVote,
         otherVote,
       });
     }
@@ -617,8 +657,9 @@ export const GameProvider = (props: PropsWithChildren) => {
     <GameContext.Provider
       value={{
         isPlaying,
+        isChatAble,
         socket: socketRef.current,
-        player,
+        player: player!,
         playerList,
         messageList,
         selectedList,

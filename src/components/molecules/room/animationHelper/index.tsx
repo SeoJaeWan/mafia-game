@@ -1,12 +1,7 @@
-import JobInformation from "@/components/atoms/room/jobInformation";
-import { useState } from "react";
-import useGame from "@/hooks/useGame";
-
-export interface EventProps {
-  events: string[];
-  //
-  animationEnd: () => void;
-}
+import AnimationHelperStyle from "./animationHelper.style";
+import Character from "@/components/atoms/common/character";
+import useGame, { playableRoles, PlayerList } from "@/hooks/useGame";
+import Layout from "@/styles/layout";
 
 export const DayAnimationDuration = 3 * 1000;
 export const JobInfoDuration = 10 * 1000;
@@ -14,43 +9,89 @@ export const JobInfoDuration = 10 * 1000;
 export const EventAnimation = 4 * 1000;
 
 const AnimationHelper = () => {
-  const { turn } = useGame();
+  const { player, playerList, turn } = useGame();
+  const roleInfo = playableRoles[player.role];
 
-  const getAnimation = () => {
-    switch (turn) {
-      case "intro":
-        return ["job"];
-      case "killCitizen":
-        return [];
-      case "healCitizen":
-        return [];
-      case "killMafia":
-        return [];
-      case "safeMafia":
-        return [];
-      case "mafiaWin":
-        return ["mafiaWin"];
-      case "citizenWin":
-        return ["citizenWin"];
-      default:
-        return [];
-    }
-  };
+  const showJobInfo = turn === "intro";
+  const showFinish = turn === "citizenWin" || turn === "mafiaWin";
 
-  const [events, setEvents] = useState<string[]>(getAnimation());
+  const [winner, loser] = playerList.reduce(
+    (acc, cur) => {
+      if (turn === "mafiaWin") {
+        if (cur.role === "mafia") {
+          acc[0].push(cur);
+        } else {
+          acc[1].push(cur);
+        }
+      } else {
+        if (cur.role === "mafia") {
+          acc[1].push(cur);
+        } else {
+          acc[0].push(cur);
+        }
+      }
 
-  const animationEnd = () => {
-    const updatedEvents = [...events];
-    updatedEvents.shift();
-
-    setEvents(updatedEvents);
-  };
+      return acc;
+    },
+    [[] as PlayerList, [] as PlayerList]
+  );
 
   return (
     <>
-      {/* <DayAnimation animationEnd={animationEnd} /> */}
-      {/* <Animation events={events} animationEnd={animationEnd} /> */}
-      <JobInformation events={events} animationEnd={animationEnd} />
+      {showFinish && (
+        <AnimationHelperStyle.FinishContainer $duration={EventAnimation}>
+          <Layout
+            position={"relative"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            width={"100%"}
+          >
+            {loser.map(({ color, name }) => {
+              return (
+                <AnimationHelperStyle.Loser key={name}>
+                  <Character characterRole={"die"} color={color}>
+                    {name}
+                  </Character>
+                </AnimationHelperStyle.Loser>
+              );
+            })}
+          </Layout>
+          <Layout
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            width={"100%"}
+          >
+            {winner.map(({ color, name, role }) => {
+              return (
+                <AnimationHelperStyle.Winner key={name}>
+                  <Character characterRole={role} color={color}>
+                    {name}
+                  </Character>
+                </AnimationHelperStyle.Winner>
+              );
+            })}
+          </Layout>
+        </AnimationHelperStyle.FinishContainer>
+      )}
+
+      {showJobInfo && (
+        <AnimationHelperStyle.JobContainer $duration={JobInfoDuration}>
+          <AnimationHelperStyle.Playable>
+            <Character characterRole={roleInfo.name} />
+          </AnimationHelperStyle.Playable>
+
+          <AnimationHelperStyle.Information>
+            <AnimationHelperStyle.Title>
+              {roleInfo.label}
+            </AnimationHelperStyle.Title>
+            <AnimationHelperStyle.Contents>
+              {roleInfo.info}
+            </AnimationHelperStyle.Contents>
+          </AnimationHelperStyle.Information>
+        </AnimationHelperStyle.JobContainer>
+      )}
     </>
   );
 };

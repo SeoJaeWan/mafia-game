@@ -36,6 +36,12 @@ const Text = styled.p`
   white-space: pre-wrap;
 
   animation: ${fadeOut} 5s forwards;
+
+  @media (max-width: 768px) {
+    width: 70%;
+    font-size: ${toRem(14)};
+    word-break: keep-all;
+  }
 `;
 
 const SystemMessageStyle = {

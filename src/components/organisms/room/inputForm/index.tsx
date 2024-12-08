@@ -8,18 +8,7 @@ const InputForm = () => {
   // const [showEmoji, setShowEmoji] = useState(false);
   const [input, setInput] = useState("");
 
-  const { isPlaying, player, turn, sendMessage } = useGame();
-
-  const getIsChatAble = () => {
-    if (!isPlaying) return true;
-
-    if (turn === "discussion" && player!.alive) return true;
-    if (turn === "mafiaVote" && player!.role === "mafia") return true;
-
-    return false;
-  };
-
-  const isChatAble = getIsChatAble();
+  const { isChatAble, sendMessage } = useGame();
 
   // const handleEmojiToggle = () => {
   //   setShowEmoji(!showEmoji);
@@ -44,7 +33,11 @@ const InputForm = () => {
         onSubmit={handleSendChat}
         $isChatAble={isChatAble}
       >
-        <InputFormStyle.Input value={input} onChange={handleChangeInput} />
+        <InputFormStyle.Input
+          value={input}
+          maxLength={15}
+          onChange={handleChangeInput}
+        />
         {/* {isOption && (
           <InputFormStyle.OptionButton
             type={"button"}

@@ -7,14 +7,17 @@ interface ITimerStyleProps {
 
 const TimerStyle = styled.p<ITimerStyleProps>`
   position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 40px;
+  right: 20px;
 
   display: ${(props) => (props.$isActive ? "block" : "none")};
 
   font-size: ${toRem(30)};
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    top: 100px;
+  }
 `;
 
 export default TimerStyle;
