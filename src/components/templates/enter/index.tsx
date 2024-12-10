@@ -53,7 +53,7 @@ const EnterTemplate: React.FC<IEnterTemplateProps> = (props) => {
             <Input
               ref={inputRef}
               value={value}
-              maxLength={6}
+              maxLength={5}
               placeholder={"닉네임을 입력해주세요."}
               onChange={onChange}
             />
