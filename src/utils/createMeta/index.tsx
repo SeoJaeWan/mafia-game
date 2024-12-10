@@ -3,7 +3,7 @@ import { Metadata } from "next";
 const client = process.env.NEXT_PUBLIC_CLIENT;
 
 const createMeta = ({
-  title,
+  title = "",
   description,
 }: {
   title?: string;
