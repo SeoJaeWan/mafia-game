@@ -6,7 +6,8 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
 `;
 
 const Form = styled.form`
@@ -19,7 +20,7 @@ const Form = styled.form`
 
   margin: 20px 0 60px;
 
-  @media (max-width: 550px) {
+  @media (max-width: 768px) {
     width: 100%;
     padding: 0 10px;
   }

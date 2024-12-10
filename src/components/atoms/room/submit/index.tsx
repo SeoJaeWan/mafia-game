@@ -10,16 +10,11 @@ const Submit = (props: SubmitProps) => {
   const {
     player,
     selectedList,
-    maxSelectable,
     //
     selectPlayer,
-    submitSelect,
   } = useGame();
 
-  const fixable = selectedList.length === maxSelectable;
-  const mySelected = selectedList.find(
-    (item) => item.selector === player!.name
-  );
+  const mySelected = selectedList.find((item) => item.selector === player.name);
 
   const isSelected = !!mySelected;
   const isOtherChoice = isSelected && mySelected?.name !== selected;
@@ -39,11 +34,6 @@ const Submit = (props: SubmitProps) => {
       <SubmitStyle.SubmitButton onClick={handleSubmitUser}>
         선택 {selectButton}
       </SubmitStyle.SubmitButton>
-      {fixable && (
-        <SubmitStyle.SubmitButton onClick={submitSelect}>
-          확정
-        </SubmitStyle.SubmitButton>
-      )}
     </SubmitStyle.SubmitContainer>
   );
 };

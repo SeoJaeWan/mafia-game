@@ -1,6 +1,7 @@
 "use client";
+import A from "@/components/atoms/common/a/a.style";
 import Button from "@/components/atoms/common/button";
-import A from "@/components/atoms/common/a";
+
 import MainTitle from "@/components/atoms/home/mainTItle";
 import Layout from "@/styles/layout";
 import Link from "next/link";
@@ -29,7 +30,9 @@ const HomeTemplate: React.FC = () => {
           <Button>방 만들기</Button>
         </Link>
 
-        <A href={"/rule"}>플레이 방법</A>
+        <Link href={"/rule"} passHref legacyBehavior>
+          <A>플레이 방법</A>
+        </Link>
       </Layout>
     </Layout>
   );

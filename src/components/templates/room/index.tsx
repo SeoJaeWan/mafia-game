@@ -2,18 +2,22 @@
 
 import Chat from "@/components/organisms/room/chat";
 import GameBoard from "@/components/organisms/room/gameBoard";
-import WaitingBoard from "@/components/organisms/room/waitingBoard";
+import InviteLink from "@/components/organisms/room/inviteLink";
 import RoomStyle from "./room.style";
 import useGame from "@/hooks/useGame";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
+import Players from "@/components/organisms/room/players";
+import InputForm from "@/components/organisms/room/inputForm";
+import { useNoti } from "@/components/atoms/common/noti";
 
 const GameTemplate = () => {
-  const { socket, isPlaying, gameLeave } = useGame();
+  const { socket, gameLeave } = useGame();
+  const { addNoti } = useNoti();
 
   useEffect(() => {
     if (!socket) {
-      alert("잘못된 접근입니다.");
+      addNoti("잘못된 접근입니다.", "error");
       redirect("/");
     }
   }, [socket]);
@@ -52,13 +56,12 @@ const GameTemplate = () => {
 
   return (
     <RoomStyle.Container>
-      <RoomStyle.PlayingBoard>
-        {/* 테스트 */}
-        {isPlaying ? <GameBoard /> : <WaitingBoard />}
-      </RoomStyle.PlayingBoard>
-      <RoomStyle.ChatBoard>
-        <Chat />
-      </RoomStyle.ChatBoard>
+      <Players />
+      <GameBoard />
+      <InviteLink />
+      <Chat />
+
+      <InputForm />
     </RoomStyle.Container>
   );
 };

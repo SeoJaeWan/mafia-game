@@ -5,6 +5,7 @@ import Button from "@/components/atoms/common/button";
 import { Controller, useForm } from "react-hook-form";
 import { EnterGameType, EnterRoom } from "@/hooks/useGame";
 import EnterTemplateStyle from "./enter.style";
+import { useEffect, useRef } from "react";
 
 interface IEnterTemplateProps {
   roomId: string;
@@ -25,12 +26,17 @@ const EnterTemplate: React.FC<IEnterTemplateProps> = (props) => {
       name: "",
     },
   });
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleCreateRoom = (data: { name: string }) => {
     const { name } = data;
 
     enterRoom({ roomId, name });
   };
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <EnterTemplateStyle.Container>
@@ -43,6 +49,7 @@ const EnterTemplate: React.FC<IEnterTemplateProps> = (props) => {
           control={control}
           render={({ field: { value, onChange } }) => (
             <Input
+              ref={inputRef}
               value={value}
               maxLength={6}
               placeholder={"닉네임을 입력해주세요."}
@@ -51,7 +58,9 @@ const EnterTemplate: React.FC<IEnterTemplateProps> = (props) => {
           )}
         />
 
-        <Button type={"submit"}>만들기</Button>
+        <Button type={"submit"}>
+          {type === "create" ? "만들기" : "참가하기"}
+        </Button>
       </EnterTemplateStyle.Form>
     </EnterTemplateStyle.Container>
   );
