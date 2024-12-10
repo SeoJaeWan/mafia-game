@@ -27,8 +27,6 @@ const Background = styled.button`
   border: none;
   background-color: transparent;
 
-  cursor: pointer;
-
   @media (max-width: 1070px) {
     display: none;
   }

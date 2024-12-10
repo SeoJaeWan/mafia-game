@@ -53,6 +53,8 @@ const Global = styled.createGlobalStyle`
 
     transition: transform 0.3s;
 
+    cursor: pointer;
+
     &:active {
       transform: scale(0.9);
     }
@@ -69,6 +71,8 @@ const Global = styled.createGlobalStyle`
     background: none;
 
     transition: transform 0.2s;
+
+    cursor: pointer;
 
     &:active {
       transform: scale(0.9);
