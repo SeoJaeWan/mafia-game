@@ -127,6 +127,8 @@ export type Turn =
 
 const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 
+console.log(socketUrl);
+
 const defaultPlayerRoles = Object.values(playableRoles).reduce(
   (acc, cur) => ({
     ...acc,
