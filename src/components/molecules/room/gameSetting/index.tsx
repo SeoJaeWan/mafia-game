@@ -67,7 +67,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
           </Button>
         </Layout>
 
-        <Layout
+        {/* <Layout
           display={"flex"}
           flexDirection={"column"}
           gap={"20px"}
@@ -84,7 +84,7 @@ const GameSetting: React.FC<IGameSettingProps> = (props) => {
               </Label>
             )}
           />
-        </Layout>
+        </Layout> */}
 
         <Layout
           display={"flex"}
