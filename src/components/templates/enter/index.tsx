@@ -3,35 +3,37 @@ import Input from "@/components/atoms/common/input";
 import Title from "@/components/atoms/common/title";
 import Button from "@/components/atoms/common/button";
 import { Controller, useForm } from "react-hook-form";
-import { EnterGameType, EnterRoom } from "@/hooks/useGame";
+import useGame, { EnterGameType } from "@/hooks/useGame";
 import EnterTemplateStyle from "./enter.style";
 import { useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
+import createRoomId from "@/utils/createRoomId";
 
 interface IEnterTemplateProps {
-  roomId: string;
   type: EnterGameType;
-  //
-  enterRoom: (room: EnterRoom) => void;
 }
 
 const EnterTemplate: React.FC<IEnterTemplateProps> = (props) => {
-  const {
-    roomId,
-    type,
-    //
-    enterRoom,
-  } = props;
+  const { type } = props;
   const { control, handleSubmit } = useForm({
     defaultValues: {
       name: "",
     },
   });
+  const { joinRoom, createRoom } = useGame();
+  const params = useParams<{ roomId: string }>();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleCreateRoom = (data: { name: string }) => {
     const { name } = data;
 
-    enterRoom({ roomId, name });
+    if (type === "join") {
+      joinRoom({ roomId: params.roomId, name });
+    } else {
+      const roomId = createRoomId();
+
+      createRoom({ roomId, name });
+    }
   };
 
   useEffect(() => {
