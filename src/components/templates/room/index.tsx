@@ -32,7 +32,6 @@ const GameTemplate = () => {
     const handlePopState = () => {
       const confirmation = confirm("게임을 떠나시겠습니까?");
       if (confirmation) {
-        history.back();
         gameLeave();
       } else {
         history.pushState(null, "", "");

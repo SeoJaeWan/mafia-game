@@ -58,7 +58,7 @@ const Invite = () => {
   return (
     <InviteStyle.Container>
       <InviteStyle.Box>
-        <InviteStyle.Url onClick={handleCopyUrl}>{copyUrl}</InviteStyle.Url>
+        <InviteStyle.Url onClick={handleCopyUrl}>초대 링크</InviteStyle.Url>
 
         <Layout
           display={"flex"}
