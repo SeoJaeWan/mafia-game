@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ko_KR",
     images: {
-      url: "/assets/og-image.png",
+      url: "/assets/common/og-image.png",
     },
     url: "http://mafia-game.seojaewan.com",
   },
