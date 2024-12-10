@@ -1,7 +1,7 @@
 "use client";
 
 import Layout from "@/styles/layout";
-import InviteStyle from "./invite.style";
+import InviteLinkStyle from "./inviteLink.style";
 import Button from "@/components/atoms/common/button";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -56,9 +56,11 @@ const Invite = () => {
   if (isPlaying) return null;
 
   return (
-    <InviteStyle.Container>
-      <InviteStyle.Box>
-        <InviteStyle.Url onClick={handleCopyUrl}>초대 링크</InviteStyle.Url>
+    <InviteLinkStyle.Container>
+      <InviteLinkStyle.Box>
+        <InviteLinkStyle.Url onClick={handleCopyUrl}>
+          초대 링크
+        </InviteLinkStyle.Url>
 
         <Layout
           display={"flex"}
@@ -67,13 +69,13 @@ const Invite = () => {
           gap={"10px"}
         >
           {playable && (
-            <InviteStyle.ButtonCover>
+            <InviteLinkStyle.ButtonCover>
               <Button onClick={gameStart}>시작하기</Button>
-            </InviteStyle.ButtonCover>
+            </InviteLinkStyle.ButtonCover>
           )}
         </Layout>
-      </InviteStyle.Box>
-    </InviteStyle.Container>
+      </InviteLinkStyle.Box>
+    </InviteLinkStyle.Container>
   );
 };
 

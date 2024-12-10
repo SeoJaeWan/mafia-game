@@ -18,8 +18,6 @@ const ButtonStyle = styled.button<IButtonStyleProps>`
   font-size: ${toRem(20)};
   font-weight: 500;
 
-  cursor: pointer;
-
   ${(props) =>
     !props.$isDisable &&
     css`

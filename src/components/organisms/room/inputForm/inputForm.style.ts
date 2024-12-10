@@ -62,8 +62,6 @@ const EmojiButton = styled.button`
   background: none;
   border: 2px solid var(--gray-background-active-rgba);
   border-radius: 5px;
-
-  cursor: pointer;
 `;
 
 interface IEmojiBoxProps {
@@ -138,8 +136,6 @@ const OptionButton = styled.button`
   &:hover {
     background-color: var(--gray-background-active-rgba);
   }
-
-  cursor: pointer;
 `;
 
 const InputFormStyle = {

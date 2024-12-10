@@ -36,18 +36,15 @@ const WaitingPeople = styled.p`
 const Url = styled.button`
   display: block;
 
-  width: 100%;
-
   border: none;
   border-radius: 5px;
   background-color: var(--gray-background-rgba);
 
   margin: 10px 0 20px;
-  padding: 15px 5px;
+  padding: 15px 35px;
 
   font-size: ${toRem(30)};
-  font-weight: 600;
-  cursor: pointer;
+  font-weight: 700;
 
   overflow: hidden;
   white-space: nowrap;
@@ -70,7 +67,7 @@ const ButtonCover = styled.div<IButtonCoverProps>`
     ${(props) => (props.$isActive ? "var(--black)" : "transparent")};
 `;
 
-const InviteStyle = {
+const InviteLinkStyle = {
   Container,
   Box,
   WaitingPeople,
@@ -78,4 +75,4 @@ const InviteStyle = {
   ButtonCover,
 };
 
-export default InviteStyle;
+export default InviteLinkStyle;

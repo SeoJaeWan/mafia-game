@@ -7,8 +7,6 @@ const TextButtonStyle = styled.button`
 
   font-size: ${toRem(18)};
   font-weight: 600;
-
-  cursor: pointer;
 `;
 
 export default TextButtonStyle;

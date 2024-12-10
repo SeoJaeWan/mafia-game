@@ -47,8 +47,6 @@ const Number = styled.button`
   &:hover {
     background-color: var(--gray-background-active-rgba);
   }
-
-  cursor: pointer;
 `;
 
 const Input = styled.input`
