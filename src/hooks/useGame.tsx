@@ -127,8 +127,6 @@ export type Turn =
 
 const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_SERVER;
 
-console.log(socketUrl);
-
 const defaultPlayerRoles = Object.values(playableRoles).reduce(
   (acc, cur) => ({
     ...acc,
@@ -623,6 +621,8 @@ export const GameProvider = (props: PropsWithChildren) => {
   const gameLeave = () => {
     socketRef.current!.disconnect();
     socketRef.current = null;
+
+    window.location.replace("/");
   };
 
   const calculatePlayable = () => {

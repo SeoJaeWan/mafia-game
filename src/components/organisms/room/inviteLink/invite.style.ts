@@ -46,6 +46,7 @@ const Url = styled.button`
   padding: 15px 5px;
 
   font-size: ${toRem(30)};
+  font-weight: 600;
   cursor: pointer;
 
   overflow: hidden;
