@@ -20,7 +20,7 @@ const GameTemplate = () => {
       addNoti("잘못된 접근입니다.", "error");
       redirect("/");
     }
-  }, [socket]);
+  }, [socket, addNoti]);
 
   useEffect(() => {
     const beforeUnloadListener = (e: BeforeUnloadEvent) => {
