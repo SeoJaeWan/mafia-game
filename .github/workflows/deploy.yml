@@ -19,6 +19,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Generate Environment File
+        run: |
+          echo "NEXT_PUBLIC_WEBSOCKET_SERVER=${{ secrets.WEBSOCKET_SERVER }}" > .env.production
+
       - name: Build and Push Docker Image
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME}}/mafia-client:latest .
