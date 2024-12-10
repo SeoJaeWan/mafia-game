@@ -1,8 +1,4 @@
-"use client";
-
 import EnterTemplate from "@/components/templates/enter";
-import useGame from "@/hooks/useGame";
-import createRoomId from "@/utils/createRoomId";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,12 +15,7 @@ export const metadata: Metadata = {
 };
 
 const Create = () => {
-  const roomId = createRoomId();
-  const { createRoom } = useGame();
-
-  return (
-    <EnterTemplate roomId={roomId} type={"create"} enterRoom={createRoom} />
-  );
+  return <EnterTemplate type={"create"} />;
 };
 
 export default Create;
