@@ -1,47 +1,19 @@
-import CardStyle from "@/components/atoms/room/card/card.style";
 import { timePeriod } from "@/hooks/useGame";
-import toRem from "@/styles/utils/toRem";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-interface IContainer {
+interface ContainerProps {
   $timePeriod: timePeriod;
+  $duration: number;
 }
 
-const Text = styled.p`
-  margin-bottom: 20px;
-
-  font-size: ${toRem(20)};
-  font-weight: 800;
-`;
-
-const CardList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-`;
-
-interface IPlayBoard {
-  $isAnimationFinish: boolean;
-}
-
-const PlayBoard = styled.div<IPlayBoard>`
-  display: ${(props) => (props.$isAnimationFinish ? "block" : "none")};
-
-  width: 100%;
-  height: 100%;
-`;
-
-const Container = styled.div<IContainer>`
+const Container = styled.div<ContainerProps>`
   position: relative;
-
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  flex-grow: 1;
 
   width: 100%;
-  height: 100%;
 
   padding: 20px;
+  padding-bottom: 80px;
 
   overflow-y: auto;
 
@@ -49,42 +21,209 @@ const Container = styled.div<IContainer>`
     props.$timePeriod === "night"
       ? "var(--day-background-night)"
       : "var(--day-background-morning)"};
+  transition: background ${(props) => props.$duration}ms;
+`;
 
-  ${Text} {
-    color: ${(props) =>
-      props.$timePeriod === "night"
-        ? "var(--day-background-morning)"
-        : "var(--day-background-night)"};
+interface PlayingProps {
+  $isPlaying: boolean;
+}
+
+const Line = styled.div<PlayingProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  width: 800px;
+
+  ${(props) =>
+    !props.$isPlaying &&
+    css`
+      &:nth-child(1) {
+        ${Selector}:nth-of-type(1) {
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(0%);
+
+          z-index: 4;
+
+          @media (max-width: 768px) {
+            left: 52%;
+          }
+        }
+
+        ${Selector}:nth-of-type(2) {
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(-100%);
+
+          z-index: 4;
+
+          @media (max-width: 768px) {
+            left: 48%;
+          }
+        }
+      }
+
+      &:nth-child(2) {
+        ${Selector}:nth-of-type(1) {
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(100%);
+
+          z-index: 3;
+
+          @media (max-width: 768px) {
+            bottom: 100px;
+            left: 54%;
+          }
+        }
+
+        ${Selector}:nth-of-type(2) {
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(-200%);
+
+          z-index: 3;
+
+          @media (max-width: 768px) {
+            bottom: 100px;
+            left: 46%;
+          }
+        }
+      }
+
+      &:nth-child(3) {
+        ${Selector}:nth-of-type(1) {
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(200%);
+
+          z-index: 2;
+
+          @media (max-width: 768px) {
+            bottom: 180px;
+          }
+        }
+
+        ${Selector}:nth-of-type(2) {
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(-300%);
+
+          z-index: 2;
+
+          @media (max-width: 768px) {
+            bottom: 180px;
+          }
+        }
+      }
+
+      &:nth-child(4) {
+        ${Selector}:nth-of-type(1) {
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(300%);
+
+          z-index: 1;
+
+          @media (max-width: 768px) {
+            bottom: 260px;
+            left: 20%;
+          }
+        }
+
+        ${Selector}:nth-of-type(2) {
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(-400%);
+
+          z-index: 1;
+
+          @media (max-width: 768px) {
+            bottom: 260px;
+            left: 80%;
+          }
+        }
+      }
+    `}
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-around;
   }
 `;
 
-const Selector = styled.button`
-  background-color: transparent;
-  border: none;
+const Block = styled.span<PlayingProps>`
+  display: ${(props) => (props.$isPlaying ? "flex" : "none")};
 
-  width: 150px;
-  height: auto;
-  aspect-ratio: 63/88;
+  justify-content: center;
+  align-items: center;
+
+  width: calc(25%);
 
   @media (max-width: 768px) {
-    width: calc((100% - 20px) / 2);
+    display: none;
   }
+`;
 
-  ${CardStyle.Container} {
-    width: 100%;
-    height: 100%;
+const Fire = styled.span<PlayingProps>`
+  display: ${(props) => (props.$isPlaying ? "flex" : "none")};
 
-    @media (max-width: 768px) {
-      width: 100%;
-    }
+  justify-content: center;
+  align-items: center;
+
+  width: calc(40%);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const Selector = styled.div<PlayingProps>`
+  position: ${(props) => (props.$isPlaying ? "relative" : "absolute")};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: auto;
+  height: 100px;
+
+  background-color: transparent;
+
+  transition: transform 0.5s;
+
+  @media (max-width: 768px) {
+    height: 73px;
+  }
+`;
+
+const PlayBoard = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+    justify-content: flex-end;
+
+    padding: 0 0 20px;
   }
 `;
 
 const GameBoardStyle = {
   Container,
-  Text,
-  CardList,
   PlayBoard,
+  Line,
+  Block,
+  Fire,
   Selector,
 };
 

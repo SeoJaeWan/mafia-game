@@ -1,8 +1,7 @@
-import Link from "next/link";
 import styled from "styled-components";
 
-const AStyle = styled(Link)`
+const A = styled.a`
   color: #e84118;
 `;
 
-export default AStyle;
+export default A;

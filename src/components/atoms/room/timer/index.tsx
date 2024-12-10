@@ -6,25 +6,47 @@ const Timer = () => {
   const { turn, form } = useGame();
   const [time, setTime] = useState(0);
 
-  const isActive = turn === "discussion";
+  const getActive = () => {
+    const { killVote, otherVote } = form.getValues();
+
+    if (
+      turn === "discussion" ||
+      turn === "citizenVote" ||
+      turn === "mafiaVote" ||
+      turn === "heal"
+    ) {
+      return killVote;
+    } else if (turn === "check") {
+      return otherVote;
+    } else {
+      return 0;
+    }
+  };
+
+  let active = getActive();
 
   useEffect(() => {
-    if (isActive) {
-      let time = form.getValues("time");
+    let interval: NodeJS.Timeout | undefined = undefined;
 
-      const interval = setInterval(() => {
-        setTime(time--);
+    if (active) {
+      interval = setInterval(() => {
+        setTime(active--);
 
-        if (time === 0) {
+        if (active === 0) {
           clearInterval(interval);
           // game.discussionFinish();
           //
         }
       }, 1000);
     }
-  }, [isActive, form]);
 
-  return <TimerStyle $isActive={isActive}>{time}</TimerStyle>;
+    return () => {
+      clearInterval(interval!);
+      setTime(0);
+    };
+  }, [active, turn]);
+
+  return <TimerStyle $isActive={!!time}>{time}</TimerStyle>;
 };
 
 export default Timer;

@@ -12,7 +12,7 @@ const SystemChatting = styled.li`
   align-self: center;
   align-items: center;
 
-  width: 80%;
+  width: 100%;
 
   padding: 8px 10px;
   border-radius: 20px;
@@ -36,6 +36,7 @@ const PlayerChatting = styled.li<IChatItemStyleProps>`
   ${(props) => (props.$isMe ? "margin-right: 9px;" : "margin-left: 9px;")}
 
   width: auto;
+  word-break: break-all;
 
   &::before {
     content: "";

@@ -15,13 +15,14 @@ const ChattingList: React.FC = () => {
 
   return (
     <ChattingStyle.Container ref={listRef}>
-      {messageList.map((item, index) => (
+      {messageList.map((item, idx) => (
         <ChatItem
           name={item.name}
           message={item.message}
           color={item.color}
           isSystem={item.isSystem}
-          key={index}
+          time={item.time}
+          key={idx}
         />
       ))}
     </ChattingStyle.Container>

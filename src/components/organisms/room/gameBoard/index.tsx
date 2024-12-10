@@ -1,86 +1,89 @@
-import Layout from "@/styles/layout";
 import GameBoardStyle from "./gameBoard.style";
-import Card from "@/components/atoms/room/card";
-import AnimationHelper from "@/components/molecules/room/animationHelper";
+import AnimationHelper, {
+  DayAnimationDuration,
+} from "@/components/molecules/room/animationHelper";
 import Submit from "@/components/atoms/room/submit";
 import Timer from "@/components/atoms/room/timer";
 import useGame from "@/hooks/useGame";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import Player from "@/components/molecules/room/player";
+import Fire from "@/components/atoms/room/fire";
+import SystemMessage from "@/components/atoms/room/systemMessage";
 
-const selectAble = [
-  {
-    turn: "mafiaVote",
-    role: "mafia",
-  },
-  {
-    turn: "check",
-    role: "police",
-  },
-  {
-    turn: "heal",
-    role: "doctor",
-  },
-];
+const line = [2, 3, 3, 3, 2];
 
 const GameBoard = () => {
-  const { turn, timePeriod, player, playerList, deadPlayerList } = useGame();
+  const { turn, timePeriod, playerList, isPlaying } = useGame();
   const [selected, setSelected] = useState("");
 
-  const handleClickCard = (name: string) => {
-    if (name !== player!.name) {
-      const isSelectAble = selectAble.find(
-        (item) => item.turn === turn && item.role === player!.role
-      );
+  const boardPlayer = [...playerList];
+  const gameBoard = new Array(11).fill(0).reduce(
+    (acc, _, idx) => {
+      const currentLine = line[acc.length - 1];
+      const currentArray = acc[acc.length - 1];
+      const index = currentArray.length;
 
-      if (turn === "citizenVote" || isSelectAble) {
-        setSelected!(name);
+      if (
+        (index === 0 || index === currentLine - 1) &&
+        boardPlayer.length !== 0
+      ) {
+        const currentPlayer = boardPlayer.shift()!;
+
+        currentArray.push(
+          <GameBoardStyle.Selector $isPlaying={isPlaying}>
+            <Player
+              name={currentPlayer.name}
+              color={currentPlayer.color}
+              role={currentPlayer.role}
+              alive={currentPlayer.alive}
+              selected={selected}
+              //
+              setSelected={setSelected}
+            />
+          </GameBoardStyle.Selector>
+        );
+      } else if (idx === 6) {
+        currentArray.push(
+          <GameBoardStyle.Fire $isPlaying={isPlaying}>
+            <Fire />
+          </GameBoardStyle.Fire>
+        );
+      } else {
+        currentArray.push(<GameBoardStyle.Block $isPlaying={isPlaying} />);
       }
-    }
-  };
+
+      if (idx !== 12 && currentArray.length === currentLine) {
+        acc.push([]);
+      }
+
+      return acc;
+    },
+
+    [[] as JSX.Element[]] as JSX.Element[][]
+  ) as JSX.Element[][];
 
   useEffect(() => {
     setSelected("");
   }, [turn]);
 
   return (
-    <GameBoardStyle.Container $timePeriod={timePeriod}>
+    <GameBoardStyle.Container
+      $timePeriod={timePeriod}
+      $duration={DayAnimationDuration}
+    >
       <AnimationHelper key={turn} />
 
+      <SystemMessage />
+
       <Timer />
-      <GameBoardStyle.PlayBoard $isAnimationFinish={true}>
-        <Layout>
-          <GameBoardStyle.Text>생존자</GameBoardStyle.Text>
-          <Layout position={"relative"}>
-            <GameBoardStyle.CardList>
-              {playerList.map(({ name, color }, idx) => (
-                <GameBoardStyle.Selector
-                  key={idx}
-                  onClick={() => handleClickCard(name)}
-                >
-                  <Card
-                    name={name}
-                    color={color}
-                    showAnimation
-                    isButton
-                    selected={selected}
-                    //
-                    setSelected={setSelected}
-                  />
-                </GameBoardStyle.Selector>
-              ))}
-            </GameBoardStyle.CardList>
-          </Layout>
-        </Layout>
-        {deadPlayerList.length !== 0 && (
-          <Layout>
-            <GameBoardStyle.Text>사망자</GameBoardStyle.Text>
-            <GameBoardStyle.CardList>
-              {deadPlayerList.map(({ name, color }, idx) => (
-                <Card key={idx} name={name} color={color} showAnimation />
-              ))}
-            </GameBoardStyle.CardList>
-          </Layout>
-        )}
+      <GameBoardStyle.PlayBoard>
+        {gameBoard.map((line, idx) => (
+          <GameBoardStyle.Line key={idx} $isPlaying={isPlaying}>
+            {line.map((block, idx) => (
+              <Fragment key={idx}>{block}</Fragment>
+            ))}
+          </GameBoardStyle.Line>
+        ))}
 
         <Submit selected={selected} />
       </GameBoardStyle.PlayBoard>
