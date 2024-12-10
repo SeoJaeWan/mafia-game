@@ -2,6 +2,8 @@ import toRem from "@/styles/utils/toRem";
 import styled, { keyframes } from "styled-components";
 
 const Container = styled.div`
+  position: relative;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,6 +17,23 @@ const Container = styled.div`
   @media (max-width: 1024px) {
     min-height: 100px;
     padding: 10px;
+  }
+`;
+
+const Leave = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 30px;
+  height: 30px;
+
+  background-image: url("/assets/room/close.svg");
+  background-size: cover;
+  background-position: center;
+
+  &:hover {
+    background-image: url("/assets/room/open.svg");
   }
 `;
 
@@ -61,10 +80,11 @@ const Item = styled.li<ItemProps>`
   }
 `;
 
-const PlayerStyle = {
+const PlayersStyle = {
   Container,
+  Leave,
   List,
   Item,
 };
 
-export default PlayerStyle;
+export default PlayersStyle;
