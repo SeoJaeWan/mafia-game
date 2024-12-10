@@ -1,9 +1,5 @@
-"use client";
-
 import EnterTemplate from "@/components/templates/enter";
-import useGame from "@/hooks/useGame";
 import { Metadata } from "next";
-import { useParams } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "마피아 게임 - 방 참가",
@@ -19,10 +15,7 @@ export const metadata: Metadata = {
 };
 
 const Join = () => {
-  const { roomId } = useParams<{ roomId: string }>();
-  const { joinRoom } = useGame();
-
-  return <EnterTemplate roomId={roomId} type={"join"} enterRoom={joinRoom} />;
+  return <EnterTemplate type={"join"} />;
 };
 
 export default Join;
