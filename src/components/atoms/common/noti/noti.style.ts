@@ -8,6 +8,10 @@ const Container = styled.ul`
   left: 50%;
   transform: translateX(-50%);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 100%;
 
   z-index: 9999;
@@ -40,10 +44,6 @@ interface BoxProps {
 }
 
 const Box = styled.li<BoxProps>`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-
   padding: 15px 20px;
 
   background-color: ${({ $type }) =>
