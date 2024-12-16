@@ -7,6 +7,11 @@ const Title = styled.h1`
   font-weight: 600;
 
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: ${toRem(50)};
+    line-height: ${toRem(50)};
+  }
 `;
 
 const SubTitle = styled.p`
