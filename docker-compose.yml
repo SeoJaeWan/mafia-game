@@ -4,6 +4,7 @@ services:
   mafia-client:
     image: sjw7324/mafia-client:latest
     container_name: mafia-client
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
