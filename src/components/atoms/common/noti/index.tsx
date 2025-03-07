@@ -71,7 +71,7 @@ export const NotiProvoder = ({ children }: PropsWithChildren) => {
 
       setTimeout(() => {
         removeMessage(id);
-      }, 30000);
+      }, 3000);
     },
     [removeMessage]
   );
