@@ -46,7 +46,7 @@ interface BoxProps {
 const Box = styled.li<BoxProps>`
   position: absolute;
   left: 50%;
-  top: 50%:
+  top: 50%;
 
   padding: 15px 20px;
 
